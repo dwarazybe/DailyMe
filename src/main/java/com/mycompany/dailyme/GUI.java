@@ -83,6 +83,12 @@ public class GUI extends javax.swing.JFrame {
         ageText = new javax.swing.JLabel();
         ageValueText = new javax.swing.JLabel();
         kgText = new javax.swing.JLabel();
+        notesPanel = new javax.swing.JPanel();
+        notesText = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        notesTextArea = new javax.swing.JTextArea();
+        saveNotesButton = new javax.swing.JLabel();
+        modifyNotesButton = new javax.swing.JLabel();
         mealDiaryPanel = new javax.swing.JPanel();
         mealDiaryBanner = new javax.swing.JLabel();
         workoutDiaryPanel = new javax.swing.JPanel();
@@ -360,7 +366,7 @@ public class GUI extends javax.swing.JFrame {
         kcalValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
         kcalValueText.setForeground(new java.awt.Color(238, 238, 238));
         kcalValueText.setText("1452");
-        kcalPanel.add(kcalValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 18, 180, 70));
+        kcalPanel.add(kcalValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 18, 190, 70));
 
         kcalIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kcal_13_13.png"))); // NOI18N
         kcalPanel.add(kcalIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 8, -1, -1));
@@ -454,6 +460,14 @@ public class GUI extends javax.swing.JFrame {
         paramChangeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         paramChangeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         paramChangeButton.setOpaque(true);
+        paramChangeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                paramChangeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                paramChangeButtonMouseExited(evt);
+            }
+        });
         weightValuePanel.add(paramChangeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 215, 45, 15));
 
         cmText.setBackground(new java.awt.Color(0, 173, 181));
@@ -479,9 +493,77 @@ public class GUI extends javax.swing.JFrame {
         kgText.setText("kg");
         weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
 
-        userParamPanel.add(weightValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 240));
+        userParamPanel.add(weightValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 235));
 
         myProfilePanel.add(userParamPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 400, 235));
+
+        notesPanel.setBackground(new java.awt.Color(50, 54, 61));
+        notesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        notesText.setBackground(new java.awt.Color(238, 238, 238));
+        notesText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        notesText.setForeground(new java.awt.Color(138, 152, 173));
+        notesText.setText("Notatki:");
+        notesPanel.add(notesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
+
+        notesTextArea.setEditable(false);
+        notesTextArea.setBackground(new java.awt.Color(50, 54, 61));
+        notesTextArea.setColumns(20);
+        notesTextArea.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        notesTextArea.setForeground(new java.awt.Color(238, 238, 238));
+        notesTextArea.setLineWrap(true);
+        notesTextArea.setRows(6);
+        notesTextArea.setBorder(null);
+        notesTextArea.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        notesTextArea.setDisabledTextColor(new java.awt.Color(238, 238, 238));
+        notesTextArea.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        notesTextArea.setSelectionColor(new java.awt.Color(0, 173, 181));
+        jScrollPane1.setViewportView(notesTextArea);
+        jScrollPane1.setBorder(null);
+
+        notesPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 25, 370, 210));
+
+        saveNotesButton.setBackground(new java.awt.Color(63, 69, 79));
+        saveNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        saveNotesButton.setForeground(new java.awt.Color(238, 238, 238));
+        saveNotesButton.setText("    Zapisz");
+        saveNotesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveNotesButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveNotesButton.setOpaque(true);
+        saveNotesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveNotesButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                saveNotesButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                saveNotesButtonMouseExited(evt);
+            }
+        });
+        notesPanel.add(saveNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 248, 55, 15));
+
+        modifyNotesButton.setBackground(new java.awt.Color(63, 69, 79));
+        modifyNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        modifyNotesButton.setForeground(new java.awt.Color(238, 238, 238));
+        modifyNotesButton.setText("     Dodaj");
+        modifyNotesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyNotesButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        modifyNotesButton.setOpaque(true);
+        modifyNotesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyNotesButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                modifyNotesButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                modifyNotesButtonMouseExited(evt);
+            }
+        });
+        notesPanel.add(modifyNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 248, 55, 15));
+
+        myProfilePanel.add(notesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 415, 400, 270));
 
         jDesktopPane1.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -699,6 +781,54 @@ public class GUI extends javax.swing.JFrame {
         setExtendedState(Frame.ICONIFIED);
         
     }//GEN-LAST:event_minimizeButtonMouseClicked
+
+    private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
+         
+        notesTextArea.setEditable(true);
+       
+    }//GEN-LAST:event_modifyNotesButtonMouseClicked
+
+    private void saveNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseClicked
+        
+        notesTextArea.setEditable(false);
+        
+    }//GEN-LAST:event_saveNotesButtonMouseClicked
+
+    private void saveNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseEntered
+        
+        saveNotesButton.setBackground(Color.decode("#4A515D"));
+        
+    }//GEN-LAST:event_saveNotesButtonMouseEntered
+
+    private void saveNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseExited
+        
+        saveNotesButton.setBackground(Color.decode("#3F454F"));
+        
+    }//GEN-LAST:event_saveNotesButtonMouseExited
+
+    private void modifyNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseEntered
+        
+        modifyNotesButton.setBackground(Color.decode("#4A515D"));
+        
+    }//GEN-LAST:event_modifyNotesButtonMouseEntered
+
+    private void modifyNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseExited
+        
+        modifyNotesButton.setBackground(Color.decode("#3F454F"));
+        
+    }//GEN-LAST:event_modifyNotesButtonMouseExited
+
+    private void paramChangeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseEntered
+        
+        paramChangeButton.setBackground(Color.decode("#E2E2E2"));
+        
+    }//GEN-LAST:event_paramChangeButtonMouseEntered
+
+    private void paramChangeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseExited
+        
+        paramChangeButton.setBackground(Color.decode("#EEEEEE"));
+        
+    }//GEN-LAST:event_paramChangeButtonMouseExited
     
     
         
@@ -786,6 +916,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel infoPanel;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kcalIcon;
     private javax.swing.JPanel kcalPanel;
     private javax.swing.JLabel kcalValueText;
@@ -800,6 +931,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel mealDiaryPanel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JLabel minimizeButton;
+    private javax.swing.JLabel modifyNotesButton;
     private javax.swing.JLabel myProfileBanner;
     private javax.swing.JPanel myProfileButton;
     private javax.swing.JLabel myProfileButtonBar;
@@ -810,8 +942,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel nameText;
     private javax.swing.JLabel noteText;
     private javax.swing.JLabel noteValueText;
+    private javax.swing.JPanel notesPanel;
+    private javax.swing.JLabel notesText;
+    private javax.swing.JTextArea notesTextArea;
     private javax.swing.JLabel paramChangeButton;
     private javax.swing.JLabel profileNameText;
+    private javax.swing.JLabel saveNotesButton;
     private javax.swing.JLabel statsBanner;
     private javax.swing.JPanel statsButton;
     private javax.swing.JLabel statsButtonBar;
