@@ -27,19 +27,6 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ParametersDialog = new javax.swing.JDialog();
-        parametersDialogPanel = new javax.swing.JPanel();
-        entryWeightText = new javax.swing.JLabel();
-        entryHeightText = new javax.swing.JLabel();
-        entryAgeText = new javax.swing.JLabel();
-        entryWeightTextField = new javax.swing.JTextField();
-        entryWeightKgText = new javax.swing.JLabel();
-        entryHeightTextField = new javax.swing.JTextField();
-        entryHeightCmText = new javax.swing.JLabel();
-        entryAgeTextField = new javax.swing.JTextField();
-        entryAgeYearsText = new javax.swing.JLabel();
-        saveParametersModifyButton = new javax.swing.JLabel();
-        cancelParametersModifyButton = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         myProfileButton = new javax.swing.JPanel();
@@ -126,116 +113,6 @@ public class GUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         infoPanel = new javax.swing.JPanel();
         infoBanner = new javax.swing.JLabel();
-
-        ParametersDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        ParametersDialog.setUndecorated(true);
-        ParametersDialog.setResizable(false);
-
-        parametersDialogPanel.setBackground(new java.awt.Color(50, 54, 61));
-        parametersDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        entryWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        entryWeightText.setForeground(new java.awt.Color(138, 152, 173));
-        entryWeightText.setText("Podaj wagę:");
-        parametersDialogPanel.add(entryWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        entryHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        entryHeightText.setForeground(new java.awt.Color(138, 152, 173));
-        entryHeightText.setText("Podaj wzrost:");
-        parametersDialogPanel.add(entryHeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
-
-        entryAgeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        entryAgeText.setForeground(new java.awt.Color(138, 152, 173));
-        entryAgeText.setText("Podaj wiek:");
-        parametersDialogPanel.add(entryAgeText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
-
-        entryWeightTextField.setBackground(new java.awt.Color(55, 59, 66));
-        entryWeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryWeightTextField.setForeground(new java.awt.Color(238, 238, 238));
-        entryWeightTextField.setBorder(null);
-        parametersDialogPanel.add(entryWeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 160, 50));
-
-        entryWeightKgText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryWeightKgText.setForeground(new java.awt.Color(138, 152, 173));
-        entryWeightKgText.setText("kg");
-        parametersDialogPanel.add(entryWeightKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 50, -1, -1));
-
-        entryHeightTextField.setBackground(new java.awt.Color(55, 59, 66));
-        entryHeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryHeightTextField.setForeground(new java.awt.Color(238, 238, 238));
-        entryHeightTextField.setBorder(null);
-        parametersDialogPanel.add(entryHeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 160, 50));
-
-        entryHeightCmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryHeightCmText.setForeground(new java.awt.Color(138, 152, 173));
-        entryHeightCmText.setText("cm");
-        parametersDialogPanel.add(entryHeightCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 140, -1, -1));
-
-        entryAgeTextField.setBackground(new java.awt.Color(55, 59, 66));
-        entryAgeTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryAgeTextField.setForeground(new java.awt.Color(238, 238, 238));
-        entryAgeTextField.setBorder(null);
-        parametersDialogPanel.add(entryAgeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 160, 50));
-
-        entryAgeYearsText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        entryAgeYearsText.setForeground(new java.awt.Color(138, 152, 173));
-        entryAgeYearsText.setText("lat");
-        parametersDialogPanel.add(entryAgeYearsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 230, -1, -1));
-
-        saveParametersModifyButton.setBackground(new java.awt.Color(0, 173, 181));
-        saveParametersModifyButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
-        saveParametersModifyButton.setForeground(new java.awt.Color(238, 238, 238));
-        saveParametersModifyButton.setText("     Zapisz");
-        saveParametersModifyButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        saveParametersModifyButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        saveParametersModifyButton.setOpaque(true);
-        saveParametersModifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                saveParametersModifyButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                saveParametersModifyButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                saveParametersModifyButtonMouseExited(evt);
-            }
-        });
-        parametersDialogPanel.add(saveParametersModifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 279, 55, 15));
-
-        cancelParametersModifyButton.setBackground(new java.awt.Color(63, 69, 79));
-        cancelParametersModifyButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
-        cancelParametersModifyButton.setForeground(new java.awt.Color(238, 238, 238));
-        cancelParametersModifyButton.setText("     Anuluj");
-        cancelParametersModifyButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cancelParametersModifyButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        cancelParametersModifyButton.setOpaque(true);
-        cancelParametersModifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelParametersModifyButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                cancelParametersModifyButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                cancelParametersModifyButtonMouseExited(evt);
-            }
-        });
-        parametersDialogPanel.add(cancelParametersModifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 279, 55, 15));
-
-        javax.swing.GroupLayout ParametersDialogLayout = new javax.swing.GroupLayout(ParametersDialog.getContentPane());
-        ParametersDialog.getContentPane().setLayout(ParametersDialogLayout);
-        ParametersDialogLayout.setHorizontalGroup(
-            ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-            .addGroup(ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(parametersDialogPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        ParametersDialogLayout.setVerticalGroup(
-            ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-            .addGroup(ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(parametersDialogPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DailyMe");
@@ -990,32 +867,6 @@ public class GUI extends javax.swing.JFrame {
             modifyNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_modifyNotesButtonMouseExited
 
-    private void saveParametersModifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseClicked
-        
-        
-        
-    }//GEN-LAST:event_saveParametersModifyButtonMouseClicked
-
-    private void saveParametersModifyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseEntered
-        saveParametersModifyButton.setBackground(Color.decode("#00BBC4"));      
-    }//GEN-LAST:event_saveParametersModifyButtonMouseEntered
-
-    private void saveParametersModifyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseExited
-        saveParametersModifyButton.setBackground(Color.decode("#00ADB5"));      
-    }//GEN-LAST:event_saveParametersModifyButtonMouseExited
-
-    private void cancelParametersModifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseClicked
-        ParametersDialog.show();      
-    }//GEN-LAST:event_cancelParametersModifyButtonMouseClicked
-
-    private void cancelParametersModifyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseEntered
-        cancelParametersModifyButton.setBackground(Color.decode("#4A515D"));
-    }//GEN-LAST:event_cancelParametersModifyButtonMouseEntered
-
-    private void cancelParametersModifyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseExited
-        cancelParametersModifyButton.setBackground(Color.decode("#3F454F"));
-    }//GEN-LAST:event_cancelParametersModifyButtonMouseExited
-
     private void modifyParamsToggleButtonOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyParamsToggleButtonOnMouseClicked
         modifyParamsToggleButtonOn.setBackground(Color.decode("#EEEEEE"));
         modifyParamsToggleButtonOff.setBackground(Color.decode("#00ADB5"));
@@ -1088,7 +939,6 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog ParametersDialog;
     private javax.swing.JLabel ageText;
     private javax.swing.JTextField ageValueTextField;
     private javax.swing.JLabel bmiText;
@@ -1099,18 +949,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel calcButtonIcon;
     private javax.swing.JLabel calcButtonText;
     private javax.swing.JPanel calcPanel;
-    private javax.swing.JLabel cancelParametersModifyButton;
     private javax.swing.JLabel closeButton;
     private javax.swing.JLabel cmText;
-    private javax.swing.JLabel entryAgeText;
-    private javax.swing.JTextField entryAgeTextField;
-    private javax.swing.JLabel entryAgeYearsText;
-    private javax.swing.JLabel entryHeightCmText;
-    private javax.swing.JLabel entryHeightText;
-    private javax.swing.JTextField entryHeightTextField;
-    private javax.swing.JLabel entryWeightKgText;
-    private javax.swing.JLabel entryWeightText;
-    private javax.swing.JTextField entryWeightTextField;
     private javax.swing.JLabel goalLeftText;
     private javax.swing.JLabel goalLeftValueText;
     private javax.swing.JLabel goalText;
@@ -1166,10 +1006,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel notesPanel;
     private javax.swing.JLabel notesText;
     private javax.swing.JTextArea notesTextArea;
-    private javax.swing.JPanel parametersDialogPanel;
     private javax.swing.JLabel profileNameText;
     private javax.swing.JLabel saveNotesButton;
-    private javax.swing.JLabel saveParametersModifyButton;
     private javax.swing.JLabel statsBanner;
     private javax.swing.JPanel statsButton;
     private javax.swing.JLabel statsButtonBar;
