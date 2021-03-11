@@ -7,6 +7,9 @@ import javax.swing.JLabel;
 
 public class GUI extends javax.swing.JFrame {
 
+    private boolean buttonActive=false;
+    private boolean modifyParametersActive=false;
+    
     /**
      * Creates new form GUI
      */
@@ -24,6 +27,19 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ParametersDialog = new javax.swing.JDialog();
+        parametersDialogPanel = new javax.swing.JPanel();
+        entryWeightText = new javax.swing.JLabel();
+        entryHeightText = new javax.swing.JLabel();
+        entryAgeText = new javax.swing.JLabel();
+        entryWeightTextField = new javax.swing.JTextField();
+        entryWeightKgText = new javax.swing.JLabel();
+        entryHeightTextField = new javax.swing.JTextField();
+        entryHeightCmText = new javax.swing.JLabel();
+        entryAgeTextField = new javax.swing.JTextField();
+        entryAgeYearsText = new javax.swing.JLabel();
+        saveParametersModifyButton = new javax.swing.JLabel();
+        cancelParametersModifyButton = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         myProfileButton = new javax.swing.JPanel();
@@ -58,7 +74,7 @@ public class GUI extends javax.swing.JFrame {
         namePanel = new javax.swing.JPanel();
         nameText = new javax.swing.JLabel();
         profileNameText = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        nameLowerBar = new javax.swing.JLabel();
         kcalPanel = new javax.swing.JPanel();
         todayKcalText = new javax.swing.JLabel();
         kcalValueText = new javax.swing.JLabel();
@@ -75,20 +91,30 @@ public class GUI extends javax.swing.JFrame {
         maleIcon = new javax.swing.JLabel();
         weightValuePanel = new javax.swing.JPanel();
         weightText = new javax.swing.JLabel();
-        weightValueText = new javax.swing.JLabel();
+        weightValueTextField = new javax.swing.JTextField();
+        kgText = new javax.swing.JLabel();
         heightText = new javax.swing.JLabel();
-        heightValueText = new javax.swing.JLabel();
-        paramChangeButton = new javax.swing.JLabel();
+        heightValueTextField = new javax.swing.JTextField();
         cmText = new javax.swing.JLabel();
         ageText = new javax.swing.JLabel();
-        ageValueText = new javax.swing.JLabel();
-        kgText = new javax.swing.JLabel();
+        ageValueTextField = new javax.swing.JTextField();
+        modifyParamsToggleButton = new javax.swing.JPanel();
+        modifyParamsToggleButtonOn = new javax.swing.JLabel();
+        modifyParamsToggleButtonOff = new javax.swing.JLabel();
         notesPanel = new javax.swing.JPanel();
         notesText = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         notesTextArea = new javax.swing.JTextArea();
         saveNotesButton = new javax.swing.JLabel();
         modifyNotesButton = new javax.swing.JLabel();
+        lastActivitiesPanel = new javax.swing.JPanel();
+        lastActivitiesText = new javax.swing.JLabel();
+        lastActivity1Panel = new javax.swing.JPanel();
+        lastActivity1ValueText = new javax.swing.JLabel();
+        lastActivity2Panel = new javax.swing.JPanel();
+        lastActivity2ValueText = new javax.swing.JLabel();
+        lastActivity3Panel = new javax.swing.JPanel();
+        lastActivity3ValueText = new javax.swing.JLabel();
         mealDiaryPanel = new javax.swing.JPanel();
         mealDiaryBanner = new javax.swing.JLabel();
         workoutDiaryPanel = new javax.swing.JPanel();
@@ -97,8 +123,119 @@ public class GUI extends javax.swing.JFrame {
         statsBanner = new javax.swing.JLabel();
         calcPanel = new javax.swing.JPanel();
         calcBanner = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         infoPanel = new javax.swing.JPanel();
         infoBanner = new javax.swing.JLabel();
+
+        ParametersDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        ParametersDialog.setUndecorated(true);
+        ParametersDialog.setResizable(false);
+
+        parametersDialogPanel.setBackground(new java.awt.Color(50, 54, 61));
+        parametersDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        entryWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        entryWeightText.setForeground(new java.awt.Color(138, 152, 173));
+        entryWeightText.setText("Podaj wagę:");
+        parametersDialogPanel.add(entryWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        entryHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        entryHeightText.setForeground(new java.awt.Color(138, 152, 173));
+        entryHeightText.setText("Podaj wzrost:");
+        parametersDialogPanel.add(entryHeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        entryAgeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        entryAgeText.setForeground(new java.awt.Color(138, 152, 173));
+        entryAgeText.setText("Podaj wiek:");
+        parametersDialogPanel.add(entryAgeText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
+
+        entryWeightTextField.setBackground(new java.awt.Color(55, 59, 66));
+        entryWeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryWeightTextField.setForeground(new java.awt.Color(238, 238, 238));
+        entryWeightTextField.setBorder(null);
+        parametersDialogPanel.add(entryWeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 160, 50));
+
+        entryWeightKgText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryWeightKgText.setForeground(new java.awt.Color(138, 152, 173));
+        entryWeightKgText.setText("kg");
+        parametersDialogPanel.add(entryWeightKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 50, -1, -1));
+
+        entryHeightTextField.setBackground(new java.awt.Color(55, 59, 66));
+        entryHeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryHeightTextField.setForeground(new java.awt.Color(238, 238, 238));
+        entryHeightTextField.setBorder(null);
+        parametersDialogPanel.add(entryHeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 160, 50));
+
+        entryHeightCmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryHeightCmText.setForeground(new java.awt.Color(138, 152, 173));
+        entryHeightCmText.setText("cm");
+        parametersDialogPanel.add(entryHeightCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 140, -1, -1));
+
+        entryAgeTextField.setBackground(new java.awt.Color(55, 59, 66));
+        entryAgeTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryAgeTextField.setForeground(new java.awt.Color(238, 238, 238));
+        entryAgeTextField.setBorder(null);
+        parametersDialogPanel.add(entryAgeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 160, 50));
+
+        entryAgeYearsText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        entryAgeYearsText.setForeground(new java.awt.Color(138, 152, 173));
+        entryAgeYearsText.setText("lat");
+        parametersDialogPanel.add(entryAgeYearsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 230, -1, -1));
+
+        saveParametersModifyButton.setBackground(new java.awt.Color(0, 173, 181));
+        saveParametersModifyButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        saveParametersModifyButton.setForeground(new java.awt.Color(238, 238, 238));
+        saveParametersModifyButton.setText("     Zapisz");
+        saveParametersModifyButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveParametersModifyButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveParametersModifyButton.setOpaque(true);
+        saveParametersModifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveParametersModifyButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                saveParametersModifyButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                saveParametersModifyButtonMouseExited(evt);
+            }
+        });
+        parametersDialogPanel.add(saveParametersModifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 279, 55, 15));
+
+        cancelParametersModifyButton.setBackground(new java.awt.Color(63, 69, 79));
+        cancelParametersModifyButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        cancelParametersModifyButton.setForeground(new java.awt.Color(238, 238, 238));
+        cancelParametersModifyButton.setText("     Anuluj");
+        cancelParametersModifyButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cancelParametersModifyButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cancelParametersModifyButton.setOpaque(true);
+        cancelParametersModifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelParametersModifyButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cancelParametersModifyButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cancelParametersModifyButtonMouseExited(evt);
+            }
+        });
+        parametersDialogPanel.add(cancelParametersModifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(275, 279, 55, 15));
+
+        javax.swing.GroupLayout ParametersDialogLayout = new javax.swing.GroupLayout(ParametersDialog.getContentPane());
+        ParametersDialog.getContentPane().setLayout(ParametersDialogLayout);
+        ParametersDialogLayout.setHorizontalGroup(
+            ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(parametersDialogPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ParametersDialogLayout.setVerticalGroup(
+            ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(ParametersDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(parametersDialogPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DailyMe");
@@ -349,9 +486,9 @@ public class GUI extends javax.swing.JFrame {
         profileNameText.setText("Profil:");
         namePanel.add(profileNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 7, -1, -1));
 
-        jLabel1.setBackground(new java.awt.Color(0, 173, 181));
-        jLabel1.setOpaque(true);
-        namePanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
+        nameLowerBar.setBackground(new java.awt.Color(0, 173, 181));
+        nameLowerBar.setOpaque(true);
+        namePanel.add(nameLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
 
         myProfilePanel.add(namePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 165, 605, 120));
 
@@ -437,10 +574,19 @@ public class GUI extends javax.swing.JFrame {
         weightText.setText("Waga:");
         weightValuePanel.add(weightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
 
-        weightValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
-        weightValueText.setForeground(new java.awt.Color(238, 238, 238));
-        weightValueText.setText("63,0");
-        weightValuePanel.add(weightValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 80));
+        weightValueTextField.setEditable(false);
+        weightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        weightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
+        weightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        weightValueTextField.setText("63,0");
+        weightValueTextField.setBorder(null);
+        weightValuePanel.add(weightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 130, 75));
+
+        kgText.setBackground(new java.awt.Color(0, 173, 181));
+        kgText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        kgText.setForeground(new java.awt.Color(238, 238, 238));
+        kgText.setText("kg");
+        weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
 
         heightText.setBackground(new java.awt.Color(238, 238, 238));
         heightText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -448,27 +594,13 @@ public class GUI extends javax.swing.JFrame {
         heightText.setText("Wzrost:");
         weightValuePanel.add(heightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 95, -1, -1));
 
-        heightValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        heightValueText.setForeground(new java.awt.Color(238, 238, 238));
-        heightValueText.setText("172");
-        weightValuePanel.add(heightValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 110, -1, 40));
-
-        paramChangeButton.setBackground(new java.awt.Color(238, 238, 238));
-        paramChangeButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
-        paramChangeButton.setForeground(new java.awt.Color(0, 173, 181));
-        paramChangeButton.setText("   Zmień");
-        paramChangeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        paramChangeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        paramChangeButton.setOpaque(true);
-        paramChangeButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                paramChangeButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                paramChangeButtonMouseExited(evt);
-            }
-        });
-        weightValuePanel.add(paramChangeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 215, 45, 15));
+        heightValueTextField.setEditable(false);
+        heightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        heightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        heightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        heightValueTextField.setText("172");
+        heightValueTextField.setBorder(null);
+        weightValuePanel.add(heightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 105, 70, 50));
 
         cmText.setBackground(new java.awt.Color(0, 173, 181));
         cmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
@@ -482,16 +614,45 @@ public class GUI extends javax.swing.JFrame {
         ageText.setText("Wiek:");
         weightValuePanel.add(ageText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 165, -1, -1));
 
-        ageValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        ageValueText.setForeground(new java.awt.Color(238, 238, 238));
-        ageValueText.setText("20");
-        weightValuePanel.add(ageValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 180, -1, 40));
+        ageValueTextField.setEditable(false);
+        ageValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        ageValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        ageValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        ageValueTextField.setText("20");
+        ageValueTextField.setBorder(null);
+        weightValuePanel.add(ageValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 175, 60, 50));
 
-        kgText.setBackground(new java.awt.Color(0, 173, 181));
-        kgText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        kgText.setForeground(new java.awt.Color(238, 238, 238));
-        kgText.setText("kg");
-        weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
+        modifyParamsToggleButton.setBackground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButton.setForeground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        modifyParamsToggleButtonOn.setBackground(new java.awt.Color(207, 207, 207));
+        modifyParamsToggleButtonOn.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        modifyParamsToggleButtonOn.setForeground(new java.awt.Color(172, 172, 172));
+        modifyParamsToggleButtonOn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyParamsToggleButtonOn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        modifyParamsToggleButtonOn.setOpaque(true);
+        modifyParamsToggleButtonOn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyParamsToggleButtonOnMouseClicked(evt);
+            }
+        });
+        modifyParamsToggleButton.add(modifyParamsToggleButtonOn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 23, 13));
+
+        modifyParamsToggleButtonOff.setBackground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButtonOff.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        modifyParamsToggleButtonOff.setForeground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButtonOff.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyParamsToggleButtonOff.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        modifyParamsToggleButtonOff.setOpaque(true);
+        modifyParamsToggleButtonOff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyParamsToggleButtonOffMouseClicked(evt);
+            }
+        });
+        modifyParamsToggleButton.add(modifyParamsToggleButtonOff, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 1, 23, 13));
+
+        weightValuePanel.add(modifyParamsToggleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 215, 50, 15));
 
         userParamPanel.add(weightValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 235));
 
@@ -546,7 +707,7 @@ public class GUI extends javax.swing.JFrame {
         modifyNotesButton.setBackground(new java.awt.Color(63, 69, 79));
         modifyNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
         modifyNotesButton.setForeground(new java.awt.Color(238, 238, 238));
-        modifyNotesButton.setText("     Dodaj");
+        modifyNotesButton.setText("     Edytuj");
         modifyNotesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         modifyNotesButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modifyNotesButton.setOpaque(true);
@@ -563,7 +724,48 @@ public class GUI extends javax.swing.JFrame {
         });
         notesPanel.add(modifyNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 248, 55, 15));
 
-        myProfilePanel.add(notesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 415, 400, 270));
+        myProfilePanel.add(notesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(635, 415, 400, 270));
+
+        lastActivitiesPanel.setBackground(new java.awt.Color(50, 54, 61));
+        lastActivitiesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivitiesText.setBackground(new java.awt.Color(238, 238, 238));
+        lastActivitiesText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        lastActivitiesText.setForeground(new java.awt.Color(138, 152, 173));
+        lastActivitiesText.setText("Ostatnie aktywności:");
+        lastActivitiesPanel.add(lastActivitiesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
+
+        lastActivity1Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity1ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        lastActivity1ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity1ValueText.setText("Bieganie, średnia intensywność, 30 minut");
+        lastActivity1Panel.add(lastActivity1ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 585, 70));
+
+        lastActivity2Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity2Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity2ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        lastActivity2ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity2ValueText.setText("Trening siłowy, wysoka intensywność, 40 minut");
+        lastActivity2Panel.add(lastActivity2ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 585, 70));
+
+        lastActivity3Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity3Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity3ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        lastActivity3ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity3ValueText.setText("Skakanie na skakance, 20 minut");
+        lastActivity3Panel.add(lastActivity3ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 585, 70));
+
+        myProfilePanel.add(lastActivitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 415, 605, 270));
 
         jDesktopPane1.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -597,6 +799,21 @@ public class GUI extends javax.swing.JFrame {
         calcBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calc_banner.png"))); // NOI18N
         calcPanel.add(calcBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jPanel1.setBackground(new java.awt.Color(50, 54, 61));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 585, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+
+        calcPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 585, 525));
+
         jDesktopPane1.add(calcPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         infoPanel.setBackground(new java.awt.Color(57, 62, 70));
@@ -627,213 +844,195 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void myProfileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseClicked
-        
-        bar(myProfileButtonBar);
+         bar(myProfileButtonBar);
         myProfilePanel.setVisible(true);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);   
     }//GEN-LAST:event_myProfileButtonMouseClicked
 
     private void myProfileButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseEntered
-        
-        myProfileButton.setBackground(Color.decode("#20242c"));
-        
+         myProfileButton.setBackground(Color.decode("#20242c"));   
     }//GEN-LAST:event_myProfileButtonMouseEntered
 
     private void myProfileButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseExited
-        
-        myProfileButton.setBackground(Color.decode("#222831"));
-        
+        myProfileButton.setBackground(Color.decode("#222831"));       
     }//GEN-LAST:event_myProfileButtonMouseExited
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        
         System.exit(0);
-
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void mealDiaryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseClicked
-       
         bar(mealDiaryButtonBar);
         mealDiaryPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);    
     }//GEN-LAST:event_mealDiaryButtonMouseClicked
 
     private void mealDiaryButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseEntered
-        
-        mealDiaryButton.setBackground(Color.decode("#20242c"));
-        
+        mealDiaryButton.setBackground(Color.decode("#20242c"));     
     }//GEN-LAST:event_mealDiaryButtonMouseEntered
 
     private void mealDiaryButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseExited
-        
         mealDiaryButton.setBackground(Color.decode("#222831"));
-        
     }//GEN-LAST:event_mealDiaryButtonMouseExited
 
     private void workoutDiaryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseClicked
-        
         bar(workoutDiaryButtonBar);
         workoutDiaryPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);   
     }//GEN-LAST:event_workoutDiaryButtonMouseClicked
 
     private void workoutDiaryButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseEntered
-        
-        workoutDiaryButton.setBackground(Color.decode("#20242c"));
-        
+        workoutDiaryButton.setBackground(Color.decode("#20242c"));      
     }//GEN-LAST:event_workoutDiaryButtonMouseEntered
 
     private void workoutDiaryButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseExited
-        
-        workoutDiaryButton.setBackground(Color.decode("#222831"));
-        
+        workoutDiaryButton.setBackground(Color.decode("#222831"));   
     }//GEN-LAST:event_workoutDiaryButtonMouseExited
 
     private void statsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseClicked
-        
         bar(statsButtonBar);
         statsPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false); 
     }//GEN-LAST:event_statsButtonMouseClicked
 
     private void statsButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseEntered
-        
-        statsButton.setBackground(Color.decode("#20242c"));
-        
+        statsButton.setBackground(Color.decode("#20242c"));       
     }//GEN-LAST:event_statsButtonMouseEntered
 
     private void statsButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseExited
-        
-        statsButton.setBackground(Color.decode("#222831"));
-        
+        statsButton.setBackground(Color.decode("#222831"));  
     }//GEN-LAST:event_statsButtonMouseExited
 
     private void calcButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseClicked
-        
         bar(calcButtonBar);
         calcPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
-        infoPanel.setVisible(false);
-                
+        infoPanel.setVisible(false);            
     }//GEN-LAST:event_calcButtonMouseClicked
 
     private void calcButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseEntered
-        
-        calcButton.setBackground(Color.decode("#20242c"));
-        
+        calcButton.setBackground(Color.decode("#20242c"));   
     }//GEN-LAST:event_calcButtonMouseEntered
 
     private void calcButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseExited
-        
-        calcButton.setBackground(Color.decode("#222831"));
-        
+        calcButton.setBackground(Color.decode("#222831"));      
     }//GEN-LAST:event_calcButtonMouseExited
 
     private void infoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseClicked
-        
         bar(infoButtonBar);
         infoPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
-        calcPanel.setVisible(false);
-        
+        calcPanel.setVisible(false);   
     }//GEN-LAST:event_infoButtonMouseClicked
 
     private void infoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseEntered
-        
-        infoButton.setBackground(Color.decode("#20242c"));
-        
+        infoButton.setBackground(Color.decode("#20242c"));    
     }//GEN-LAST:event_infoButtonMouseEntered
 
     private void infoButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseExited
-        
         infoButton.setBackground(Color.decode("#222831"));
-        
     }//GEN-LAST:event_infoButtonMouseExited
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        
-        setExtendedState(Frame.ICONIFIED);
-        
+        setExtendedState(Frame.ICONIFIED);       
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
-         
         notesTextArea.setEditable(true);
-       
+        buttonActive=true;
+        if(buttonActive==true)
+            modifyNotesButton.setBackground(Color.decode("#00ADB5"));      
     }//GEN-LAST:event_modifyNotesButtonMouseClicked
 
     private void saveNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseClicked
-        
         notesTextArea.setEditable(false);
-        
+        buttonActive=false;
+        modifyNotesButton.setBackground(Color.decode("#3F454F"));   
     }//GEN-LAST:event_saveNotesButtonMouseClicked
 
     private void saveNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseEntered
-        
-        saveNotesButton.setBackground(Color.decode("#4A515D"));
-        
+        saveNotesButton.setBackground(Color.decode("#4A515D"));     
     }//GEN-LAST:event_saveNotesButtonMouseEntered
 
     private void saveNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseExited
-        
-        saveNotesButton.setBackground(Color.decode("#3F454F"));
-        
+        saveNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_saveNotesButtonMouseExited
 
     private void modifyNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseEntered
-        
-        modifyNotesButton.setBackground(Color.decode("#4A515D"));
-        
+        if(buttonActive==false)
+            modifyNotesButton.setBackground(Color.decode("#4A515D"));      
     }//GEN-LAST:event_modifyNotesButtonMouseEntered
 
     private void modifyNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseExited
-        
-        modifyNotesButton.setBackground(Color.decode("#3F454F"));
-        
+        if(buttonActive==false)
+            modifyNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_modifyNotesButtonMouseExited
 
-    private void paramChangeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseEntered
+    private void saveParametersModifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseClicked
         
-        paramChangeButton.setBackground(Color.decode("#E2E2E2"));
         
-    }//GEN-LAST:event_paramChangeButtonMouseEntered
+        
+    }//GEN-LAST:event_saveParametersModifyButtonMouseClicked
 
-    private void paramChangeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseExited
-        
-        paramChangeButton.setBackground(Color.decode("#EEEEEE"));
-        
-    }//GEN-LAST:event_paramChangeButtonMouseExited
-    
-    
-        
+    private void saveParametersModifyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseEntered
+        saveParametersModifyButton.setBackground(Color.decode("#00BBC4"));      
+    }//GEN-LAST:event_saveParametersModifyButtonMouseEntered
+
+    private void saveParametersModifyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveParametersModifyButtonMouseExited
+        saveParametersModifyButton.setBackground(Color.decode("#00ADB5"));      
+    }//GEN-LAST:event_saveParametersModifyButtonMouseExited
+
+    private void cancelParametersModifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseClicked
+        ParametersDialog.show();      
+    }//GEN-LAST:event_cancelParametersModifyButtonMouseClicked
+
+    private void cancelParametersModifyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseEntered
+        cancelParametersModifyButton.setBackground(Color.decode("#4A515D"));
+    }//GEN-LAST:event_cancelParametersModifyButtonMouseEntered
+
+    private void cancelParametersModifyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelParametersModifyButtonMouseExited
+        cancelParametersModifyButton.setBackground(Color.decode("#3F454F"));
+    }//GEN-LAST:event_cancelParametersModifyButtonMouseExited
+
+    private void modifyParamsToggleButtonOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyParamsToggleButtonOnMouseClicked
+        modifyParamsToggleButtonOn.setBackground(Color.decode("#EEEEEE"));
+        modifyParamsToggleButtonOff.setBackground(Color.decode("#00ADB5"));
+        weightValueTextField.setEditable(true);
+        heightValueTextField.setEditable(true);
+        ageValueTextField.setEditable(true);
+    }//GEN-LAST:event_modifyParamsToggleButtonOnMouseClicked
+
+    private void modifyParamsToggleButtonOffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyParamsToggleButtonOffMouseClicked
+        modifyParamsToggleButtonOn.setBackground(Color.decode("#CFCFCF"));
+        modifyParamsToggleButtonOff.setBackground(Color.decode("#EEEEEE"));
+        weightValueTextField.setEditable(false);
+        heightValueTextField.setEditable(false);
+        ageValueTextField.setEditable(false);
+    }//GEN-LAST:event_modifyParamsToggleButtonOffMouseClicked
+         
     public void bar(JLabel lab1) {
-        
         myProfileButtonBar.setOpaque(false);
         mealDiaryButtonBar.setOpaque(false);
         workoutDiaryButtonBar.setOpaque(false);
@@ -849,7 +1048,6 @@ public class GUI extends javax.swing.JFrame {
         statsButtonBar.repaint();
         calcButtonBar.repaint();
         infoButtonBar.repaint();
-        
     }
     /**
      * @param args the command line arguments
@@ -890,8 +1088,9 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog ParametersDialog;
     private javax.swing.JLabel ageText;
-    private javax.swing.JLabel ageValueText;
+    private javax.swing.JTextField ageValueTextField;
     private javax.swing.JLabel bmiText;
     private javax.swing.JLabel bmiValueText;
     private javax.swing.JLabel calcBanner;
@@ -900,14 +1099,24 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel calcButtonIcon;
     private javax.swing.JLabel calcButtonText;
     private javax.swing.JPanel calcPanel;
+    private javax.swing.JLabel cancelParametersModifyButton;
     private javax.swing.JLabel closeButton;
     private javax.swing.JLabel cmText;
+    private javax.swing.JLabel entryAgeText;
+    private javax.swing.JTextField entryAgeTextField;
+    private javax.swing.JLabel entryAgeYearsText;
+    private javax.swing.JLabel entryHeightCmText;
+    private javax.swing.JLabel entryHeightText;
+    private javax.swing.JTextField entryHeightTextField;
+    private javax.swing.JLabel entryWeightKgText;
+    private javax.swing.JLabel entryWeightText;
+    private javax.swing.JTextField entryWeightTextField;
     private javax.swing.JLabel goalLeftText;
     private javax.swing.JLabel goalLeftValueText;
     private javax.swing.JLabel goalText;
     private javax.swing.JLabel goalValueText;
     private javax.swing.JLabel heightText;
-    private javax.swing.JLabel heightValueText;
+    private javax.swing.JTextField heightValueTextField;
     private javax.swing.JLabel infoBanner;
     private javax.swing.JPanel infoButton;
     private javax.swing.JLabel infoButtonBar;
@@ -915,12 +1124,20 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel infoButtonText;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kcalIcon;
     private javax.swing.JPanel kcalPanel;
     private javax.swing.JLabel kcalValueText;
     private javax.swing.JLabel kgText;
+    private javax.swing.JPanel lastActivitiesPanel;
+    private javax.swing.JLabel lastActivitiesText;
+    private javax.swing.JPanel lastActivity1Panel;
+    private javax.swing.JLabel lastActivity1ValueText;
+    private javax.swing.JPanel lastActivity2Panel;
+    private javax.swing.JLabel lastActivity2ValueText;
+    private javax.swing.JPanel lastActivity3Panel;
+    private javax.swing.JLabel lastActivity3ValueText;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel maleIcon;
     private javax.swing.JLabel mealDiaryBanner;
@@ -932,12 +1149,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel menuPanel;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JLabel modifyNotesButton;
+    private javax.swing.JPanel modifyParamsToggleButton;
+    private javax.swing.JLabel modifyParamsToggleButtonOff;
+    private javax.swing.JLabel modifyParamsToggleButtonOn;
     private javax.swing.JLabel myProfileBanner;
     private javax.swing.JPanel myProfileButton;
     private javax.swing.JLabel myProfileButtonBar;
     private javax.swing.JLabel myProfileButtonIcon;
     private javax.swing.JLabel myProfileButtonText;
     private javax.swing.JPanel myProfilePanel;
+    private javax.swing.JLabel nameLowerBar;
     private javax.swing.JPanel namePanel;
     private javax.swing.JLabel nameText;
     private javax.swing.JLabel noteText;
@@ -945,9 +1166,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel notesPanel;
     private javax.swing.JLabel notesText;
     private javax.swing.JTextArea notesTextArea;
-    private javax.swing.JLabel paramChangeButton;
+    private javax.swing.JPanel parametersDialogPanel;
     private javax.swing.JLabel profileNameText;
     private javax.swing.JLabel saveNotesButton;
+    private javax.swing.JLabel saveParametersModifyButton;
     private javax.swing.JLabel statsBanner;
     private javax.swing.JPanel statsButton;
     private javax.swing.JLabel statsButtonBar;
@@ -958,7 +1180,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel userParamPanel;
     private javax.swing.JLabel weightText;
     private javax.swing.JPanel weightValuePanel;
-    private javax.swing.JLabel weightValueText;
+    private javax.swing.JTextField weightValueTextField;
     private javax.swing.JLabel workoutDiaryBanner;
     private javax.swing.JPanel workoutDiaryButton;
     private javax.swing.JLabel workoutDiaryButtonBar;
