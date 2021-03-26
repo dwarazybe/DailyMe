@@ -2,17 +2,31 @@ package com.mycompany.dailyme;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.RenderingHints.Key;
+import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class GUI extends javax.swing.JFrame {
 
+    private boolean buttonActive=false;
+    private final Calculators calc;
+    protected int weight;
+    protected int height;
+    protected int age;
+    protected int waist;
+    protected int gender=0;
+    protected double activityLevel=1.2;
+    DecimalFormat df = new DecimalFormat("##.#");
     /**
      * Creates new form GUI
      */
     public GUI() {
-        initComponents();
+        this.calc = new Calculators();
         
+        initComponents();
     }
 
     /**
@@ -52,13 +66,12 @@ public class GUI extends javax.swing.JFrame {
         infoButtonBar = new javax.swing.JLabel();
         closeButton = new javax.swing.JLabel();
         minimizeButton = new javax.swing.JLabel();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
         myProfilePanel = new javax.swing.JPanel();
         myProfileBanner = new javax.swing.JLabel();
         namePanel = new javax.swing.JPanel();
         nameText = new javax.swing.JLabel();
         profileNameText = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        nameLowerBar = new javax.swing.JLabel();
         kcalPanel = new javax.swing.JPanel();
         todayKcalText = new javax.swing.JLabel();
         kcalValueText = new javax.swing.JLabel();
@@ -75,20 +88,30 @@ public class GUI extends javax.swing.JFrame {
         maleIcon = new javax.swing.JLabel();
         weightValuePanel = new javax.swing.JPanel();
         weightText = new javax.swing.JLabel();
-        weightValueText = new javax.swing.JLabel();
+        weightValueTextField = new javax.swing.JTextField();
+        kgText = new javax.swing.JLabel();
         heightText = new javax.swing.JLabel();
-        heightValueText = new javax.swing.JLabel();
-        paramChangeButton = new javax.swing.JLabel();
+        heightValueTextField = new javax.swing.JTextField();
         cmText = new javax.swing.JLabel();
         ageText = new javax.swing.JLabel();
-        ageValueText = new javax.swing.JLabel();
-        kgText = new javax.swing.JLabel();
+        ageValueTextField = new javax.swing.JTextField();
+        modifyParamsToggleButton = new javax.swing.JPanel();
+        modifyParamsToggleButtonOn = new javax.swing.JLabel();
+        modifyParamsToggleButtonOff = new javax.swing.JLabel();
         notesPanel = new javax.swing.JPanel();
         notesText = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         notesTextArea = new javax.swing.JTextArea();
         saveNotesButton = new javax.swing.JLabel();
         modifyNotesButton = new javax.swing.JLabel();
+        lastActivitiesPanel = new javax.swing.JPanel();
+        lastActivitiesText = new javax.swing.JLabel();
+        lastActivity1Panel = new javax.swing.JPanel();
+        lastActivity1ValueText = new javax.swing.JLabel();
+        lastActivity2Panel = new javax.swing.JPanel();
+        lastActivity2ValueText = new javax.swing.JLabel();
+        lastActivity3Panel = new javax.swing.JPanel();
+        lastActivity3ValueText = new javax.swing.JLabel();
         mealDiaryPanel = new javax.swing.JPanel();
         mealDiaryBanner = new javax.swing.JLabel();
         workoutDiaryPanel = new javax.swing.JPanel();
@@ -97,6 +120,103 @@ public class GUI extends javax.swing.JFrame {
         statsBanner = new javax.swing.JLabel();
         calcPanel = new javax.swing.JPanel();
         calcBanner = new javax.swing.JLabel();
+        calcMenu = new javax.swing.JPanel();
+        calcBmrButton = new javax.swing.JPanel();
+        bmrButtonText = new javax.swing.JLabel();
+        calcBmiButton = new javax.swing.JPanel();
+        bmiButtonText = new javax.swing.JLabel();
+        calcBfiButton = new javax.swing.JPanel();
+        bfiButtonText = new javax.swing.JLabel();
+        calcBmrPanel = new javax.swing.JPanel();
+        calcBmrTitleText = new javax.swing.JLabel();
+        calcBmrWeightText = new javax.swing.JLabel();
+        calcBmrWeightValueTextField = new javax.swing.JTextField();
+        calcBmrKgText = new javax.swing.JLabel();
+        calcBmrHeightText = new javax.swing.JLabel();
+        calcBmrHeightValueTextField = new javax.swing.JTextField();
+        calcBmrCmText = new javax.swing.JLabel();
+        calcBmrAgeText = new javax.swing.JLabel();
+        calcBmrAgeValueTextField = new javax.swing.JTextField();
+        calcBmrYearsText = new javax.swing.JLabel();
+        calcBmrGenderText = new javax.swing.JLabel();
+        calcBmrSelectGenderButton = new javax.swing.JPanel();
+        calcBmrSelectGenderFemaleButton = new javax.swing.JPanel();
+        calcBmrSelectGenderFemaleButtonText = new javax.swing.JLabel();
+        calcBmrSelectGenderMaleButton = new javax.swing.JPanel();
+        calcBmrSelectGenderMaleButtonText = new javax.swing.JLabel();
+        physicalActivityTypeText = new javax.swing.JLabel();
+        physicalActivityTypePanel = new javax.swing.JPanel();
+        physicalActivityLevel1Button = new javax.swing.JPanel();
+        physicalActivityLevel1Text = new javax.swing.JLabel();
+        physicalActivityLevel2Button = new javax.swing.JPanel();
+        physicalActivityLevel2Text1 = new javax.swing.JLabel();
+        physicalActivityLevel2Text2 = new javax.swing.JLabel();
+        physicalActivityLevel3Button = new javax.swing.JPanel();
+        physicalActivityLevel3Text1 = new javax.swing.JLabel();
+        physicalActivityLevel3Text2 = new javax.swing.JLabel();
+        physicalActivityLevel4Button = new javax.swing.JPanel();
+        physicalActivityLevel4Text1 = new javax.swing.JLabel();
+        physicalActivityLevel4Text2 = new javax.swing.JLabel();
+        physicalActivityLevel5Button = new javax.swing.JPanel();
+        physicalActivityLevel5Text1 = new javax.swing.JLabel();
+        physicalActivityLevel5Text2 = new javax.swing.JLabel();
+        calculateBmrButton = new javax.swing.JPanel();
+        calculateBmrButtonText = new javax.swing.JLabel();
+        calcBmrResultPanel = new javax.swing.JPanel();
+        calcBmrResultText1 = new javax.swing.JLabel();
+        bmrResultKcalValueTextField = new javax.swing.JTextField();
+        bmrResultMacrosText1 = new javax.swing.JLabel();
+        bmrResultProteinsValueTextField = new javax.swing.JTextField();
+        bmrResultFatsValueTextField = new javax.swing.JTextField();
+        bmrResultCarbsValueTextField = new javax.swing.JTextField();
+        calcBmrResultText2 = new javax.swing.JLabel();
+        bmrResultKcalCutValueTextField = new javax.swing.JTextField();
+        bmrResultMacrosText2 = new javax.swing.JLabel();
+        bmrResultProteinsCutValueTextField = new javax.swing.JTextField();
+        bmrResultFatsCutValueTextField = new javax.swing.JTextField();
+        bmrResultCarbsCutValueTextField = new javax.swing.JTextField();
+        calcBmrResultText3 = new javax.swing.JLabel();
+        bmrResultKcalOverValueTextField = new javax.swing.JTextField();
+        bmrResultMacrosText3 = new javax.swing.JLabel();
+        bmrResultProteinsOverValueTextField = new javax.swing.JTextField();
+        bmrResultFatsOverValueTextField = new javax.swing.JTextField();
+        bmrResultCarbsOverValueTextField = new javax.swing.JTextField();
+        calcBmiPanel = new javax.swing.JPanel();
+        calcBmiTitleText = new javax.swing.JLabel();
+        calcBmiWeightText = new javax.swing.JLabel();
+        calcBmiWeightValueTextField = new javax.swing.JTextField();
+        calcBmiKgText = new javax.swing.JLabel();
+        calcBmiHeightText = new javax.swing.JLabel();
+        calcBmiHeightValueTextField = new javax.swing.JTextField();
+        calcBmiCmText = new javax.swing.JLabel();
+        calculateBmiButton = new javax.swing.JPanel();
+        calculateBmiButtonText = new javax.swing.JLabel();
+        calcBmiResultPanel = new javax.swing.JPanel();
+        calcBmiResultText = new javax.swing.JLabel();
+        bmiResultValueTextField = new javax.swing.JTextField();
+        calcBmiResultRateText = new javax.swing.JLabel();
+        bmiResultRateTextField = new javax.swing.JTextField();
+        calcBfiPanel = new javax.swing.JPanel();
+        calcBfiTitleText = new javax.swing.JLabel();
+        calcBfiWeightText = new javax.swing.JLabel();
+        calcBfiWeightValueTextField = new javax.swing.JTextField();
+        calcBfiKgText = new javax.swing.JLabel();
+        calcBfiWaistText = new javax.swing.JLabel();
+        calcBfiWaistValueTextField = new javax.swing.JTextField();
+        calcBfiCmText = new javax.swing.JLabel();
+        calculateBfiButton = new javax.swing.JPanel();
+        calculateBfiButtonText = new javax.swing.JLabel();
+        calcBfiGenderText = new javax.swing.JLabel();
+        calcBfiSelectGenderButton = new javax.swing.JPanel();
+        calcBfiSelectGenderFemaleButton = new javax.swing.JPanel();
+        calcBfiSelectGenderFemaleButtonText = new javax.swing.JLabel();
+        calcBfiSelectGenderMaleButton = new javax.swing.JPanel();
+        calcBfiSelectGenderMaleButtonText = new javax.swing.JLabel();
+        calcBfiResultPanel = new javax.swing.JPanel();
+        calcBfiResultText = new javax.swing.JLabel();
+        bfiResultValueTextField = new javax.swing.JTextField();
+        calcBfiResultRateText = new javax.swing.JLabel();
+        bfiResultRateTextField = new javax.swing.JTextField();
         infoPanel = new javax.swing.JPanel();
         infoBanner = new javax.swing.JLabel();
 
@@ -323,10 +443,8 @@ public class GUI extends javax.swing.JFrame {
 
         mainPanel.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 0, 230, 720));
 
-        jDesktopPane1.setBackground(new java.awt.Color(246, 246, 246));
-        jDesktopPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         myProfilePanel.setBackground(new java.awt.Color(57, 62, 70));
+        myProfilePanel.setMinimumSize(new java.awt.Dimension(1050, 720));
         myProfilePanel.setPreferredSize(new java.awt.Dimension(1050, 720));
         myProfilePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -349,9 +467,9 @@ public class GUI extends javax.swing.JFrame {
         profileNameText.setText("Profil:");
         namePanel.add(profileNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 7, -1, -1));
 
-        jLabel1.setBackground(new java.awt.Color(0, 173, 181));
-        jLabel1.setOpaque(true);
-        namePanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
+        nameLowerBar.setBackground(new java.awt.Color(0, 173, 181));
+        nameLowerBar.setOpaque(true);
+        namePanel.add(nameLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
 
         myProfilePanel.add(namePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 165, 605, 120));
 
@@ -437,10 +555,19 @@ public class GUI extends javax.swing.JFrame {
         weightText.setText("Waga:");
         weightValuePanel.add(weightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
 
-        weightValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
-        weightValueText.setForeground(new java.awt.Color(238, 238, 238));
-        weightValueText.setText("63,0");
-        weightValuePanel.add(weightValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 80));
+        weightValueTextField.setEditable(false);
+        weightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        weightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
+        weightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        weightValueTextField.setText("63,0");
+        weightValueTextField.setBorder(null);
+        weightValuePanel.add(weightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 130, 75));
+
+        kgText.setBackground(new java.awt.Color(0, 173, 181));
+        kgText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        kgText.setForeground(new java.awt.Color(238, 238, 238));
+        kgText.setText("kg");
+        weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
 
         heightText.setBackground(new java.awt.Color(238, 238, 238));
         heightText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -448,27 +575,13 @@ public class GUI extends javax.swing.JFrame {
         heightText.setText("Wzrost:");
         weightValuePanel.add(heightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 95, -1, -1));
 
-        heightValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        heightValueText.setForeground(new java.awt.Color(238, 238, 238));
-        heightValueText.setText("172");
-        weightValuePanel.add(heightValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 110, -1, 40));
-
-        paramChangeButton.setBackground(new java.awt.Color(238, 238, 238));
-        paramChangeButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
-        paramChangeButton.setForeground(new java.awt.Color(0, 173, 181));
-        paramChangeButton.setText("   Zmień");
-        paramChangeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        paramChangeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        paramChangeButton.setOpaque(true);
-        paramChangeButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                paramChangeButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                paramChangeButtonMouseExited(evt);
-            }
-        });
-        weightValuePanel.add(paramChangeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 215, 45, 15));
+        heightValueTextField.setEditable(false);
+        heightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        heightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        heightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        heightValueTextField.setText("172");
+        heightValueTextField.setBorder(null);
+        weightValuePanel.add(heightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 105, 70, 50));
 
         cmText.setBackground(new java.awt.Color(0, 173, 181));
         cmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
@@ -482,16 +595,45 @@ public class GUI extends javax.swing.JFrame {
         ageText.setText("Wiek:");
         weightValuePanel.add(ageText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 165, -1, -1));
 
-        ageValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        ageValueText.setForeground(new java.awt.Color(238, 238, 238));
-        ageValueText.setText("20");
-        weightValuePanel.add(ageValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 180, -1, 40));
+        ageValueTextField.setEditable(false);
+        ageValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        ageValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
+        ageValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        ageValueTextField.setText("20");
+        ageValueTextField.setBorder(null);
+        weightValuePanel.add(ageValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 175, 60, 50));
 
-        kgText.setBackground(new java.awt.Color(0, 173, 181));
-        kgText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        kgText.setForeground(new java.awt.Color(238, 238, 238));
-        kgText.setText("kg");
-        weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
+        modifyParamsToggleButton.setBackground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButton.setForeground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        modifyParamsToggleButtonOn.setBackground(new java.awt.Color(207, 207, 207));
+        modifyParamsToggleButtonOn.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        modifyParamsToggleButtonOn.setForeground(new java.awt.Color(172, 172, 172));
+        modifyParamsToggleButtonOn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyParamsToggleButtonOn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        modifyParamsToggleButtonOn.setOpaque(true);
+        modifyParamsToggleButtonOn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyParamsToggleButtonOnMouseClicked(evt);
+            }
+        });
+        modifyParamsToggleButton.add(modifyParamsToggleButtonOn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 23, 13));
+
+        modifyParamsToggleButtonOff.setBackground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButtonOff.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        modifyParamsToggleButtonOff.setForeground(new java.awt.Color(238, 238, 238));
+        modifyParamsToggleButtonOff.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyParamsToggleButtonOff.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        modifyParamsToggleButtonOff.setOpaque(true);
+        modifyParamsToggleButtonOff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyParamsToggleButtonOffMouseClicked(evt);
+            }
+        });
+        modifyParamsToggleButton.add(modifyParamsToggleButtonOff, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 1, 23, 13));
+
+        weightValuePanel.add(modifyParamsToggleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 215, 50, 15));
 
         userParamPanel.add(weightValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 235));
 
@@ -521,7 +663,7 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(notesTextArea);
         jScrollPane1.setBorder(null);
 
-        notesPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 25, 370, 210));
+        notesPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 25, 370, 230));
 
         saveNotesButton.setBackground(new java.awt.Color(63, 69, 79));
         saveNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -541,12 +683,12 @@ public class GUI extends javax.swing.JFrame {
                 saveNotesButtonMouseExited(evt);
             }
         });
-        notesPanel.add(saveNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 248, 55, 15));
+        notesPanel.add(saveNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(337, 268, 55, 15));
 
         modifyNotesButton.setBackground(new java.awt.Color(63, 69, 79));
         modifyNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
         modifyNotesButton.setForeground(new java.awt.Color(238, 238, 238));
-        modifyNotesButton.setText("     Dodaj");
+        modifyNotesButton.setText("     Edytuj");
         modifyNotesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         modifyNotesButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modifyNotesButton.setOpaque(true);
@@ -561,53 +703,978 @@ public class GUI extends javax.swing.JFrame {
                 modifyNotesButtonMouseExited(evt);
             }
         });
-        notesPanel.add(modifyNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 248, 55, 15));
+        notesPanel.add(modifyNotesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(274, 268, 55, 15));
 
-        myProfilePanel.add(notesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 415, 400, 270));
+        myProfilePanel.add(notesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 415, 400, 290));
 
-        jDesktopPane1.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        lastActivitiesPanel.setBackground(new java.awt.Color(50, 54, 61));
+        lastActivitiesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivitiesText.setBackground(new java.awt.Color(238, 238, 238));
+        lastActivitiesText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        lastActivitiesText.setForeground(new java.awt.Color(138, 152, 173));
+        lastActivitiesText.setText("Ostatnie aktywności:");
+        lastActivitiesPanel.add(lastActivitiesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
+
+        lastActivity1Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity1ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lastActivity1ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity1ValueText.setText("Bieganie, średnia intensywność, 30 minut");
+        lastActivity1Panel.add(lastActivity1ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 585, 40));
+
+        lastActivity2Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity2Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity2ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lastActivity2ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity2ValueText.setText("Trening siłowy, wysoka intensywność, 40 minut");
+        lastActivity2Panel.add(lastActivity2ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 585, 40));
+
+        lastActivity3Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity3Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity3ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lastActivity3ValueText.setForeground(new java.awt.Color(168, 168, 168));
+        lastActivity3ValueText.setText("Skakanie na skakance, 20 minut");
+        lastActivity3Panel.add(lastActivity3ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+
+        lastActivitiesPanel.add(lastActivity3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 585, 40));
+
+        myProfilePanel.add(lastActivitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 415, 605, 290));
+
+        mainPanel.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         mealDiaryPanel.setBackground(new java.awt.Color(57, 62, 70));
+        mealDiaryPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
+        mealDiaryPanel.setPreferredSize(new java.awt.Dimension(1050, 720));
         mealDiaryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         mealDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mealdiary_banner_1.png"))); // NOI18N
         mealDiaryPanel.add(mealDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jDesktopPane1.add(mealDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        mainPanel.add(mealDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         workoutDiaryPanel.setBackground(new java.awt.Color(57, 62, 70));
+        workoutDiaryPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
+        workoutDiaryPanel.setPreferredSize(new java.awt.Dimension(1050, 720));
         workoutDiaryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         workoutDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/workoutdiary_banner.png"))); // NOI18N
         workoutDiaryPanel.add(workoutDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jDesktopPane1.add(workoutDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        mainPanel.add(workoutDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         statsPanel.setBackground(new java.awt.Color(57, 62, 70));
+        statsPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
+        statsPanel.setPreferredSize(new java.awt.Dimension(1050, 720));
         statsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         statsBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stats_banner_1.png"))); // NOI18N
         statsPanel.add(statsBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jDesktopPane1.add(statsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        mainPanel.add(statsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         calcPanel.setBackground(new java.awt.Color(57, 62, 70));
+        calcPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
+        calcPanel.setPreferredSize(new java.awt.Dimension(1050, 720));
         calcPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         calcBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calc_banner.png"))); // NOI18N
         calcPanel.add(calcBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jDesktopPane1.add(calcPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        calcMenu.setBackground(new java.awt.Color(50, 54, 61));
+        calcMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrButton.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmrButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBmrButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBmrButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBmrButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBmrButtonMouseExited(evt);
+            }
+        });
+        calcBmrButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        bmrButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        bmrButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        bmrButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        bmrButtonText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bmrButtonText.setText("   BMR (Zapotrzebowanie kalorycze)");
+        bmrButtonText.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bmrButtonText.setOpaque(true);
+        calcBmrButton.add(bmrButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 410, 60));
+
+        calcMenu.add(calcBmrButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 70));
+
+        calcBmiButton.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBmiButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBmiButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBmiButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBmiButtonMouseExited(evt);
+            }
+        });
+        calcBmiButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        bmiButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        bmiButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        bmiButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        bmiButtonText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bmiButtonText.setText("   BMI (Wskaźnik masy ciała)");
+        bmiButtonText.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBmiButton.add(bmiButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 410, 60));
+
+        calcMenu.add(calcBmiButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 420, 70));
+
+        calcBfiButton.setBackground(new java.awt.Color(50, 54, 61));
+        calcBfiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBfiButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBfiButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBfiButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBfiButtonMouseExited(evt);
+            }
+        });
+        calcBfiButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        bfiButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        bfiButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        bfiButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        bfiButtonText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bfiButtonText.setText("   BFI (Poziom tkanki tłuszczowej)");
+        bfiButtonText.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBfiButton.add(bfiButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 410, 60));
+
+        calcMenu.add(calcBfiButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 420, 70));
+
+        calcPanel.add(calcMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 165, 420, 210));
+
+        calcBmrPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmrPanel.setMinimumSize(new java.awt.Dimension(585, 540));
+        calcBmrPanel.setPreferredSize(new java.awt.Dimension(585, 540));
+        calcBmrPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 26)); // NOI18N
+        calcBmrTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrTitleText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        calcBmrTitleText.setText("Oblicz swoje zapotrzebowanie kaloryczne");
+        calcBmrPanel.add(calcBmrTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 3, 570, 40));
+
+        calcBmrWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrWeightText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrWeightText.setText("Waga:");
+        calcBmrPanel.add(calcBmrWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 60, -1, -1));
+
+        calcBmrWeightValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrWeightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBmrWeightValueTextField.setBorder(null);
+        calcBmrWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBmrWeightValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBmrPanel.add(calcBmrWeightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, 170, 50));
+
+        calcBmrKgText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrKgText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrKgText.setText("kg");
+        calcBmrKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrPanel.add(calcBmrKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+
+        calcBmrHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrHeightText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrHeightText.setText("Wzrost:");
+        calcBmrPanel.add(calcBmrHeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 155, -1, -1));
+
+        calcBmrHeightValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrHeightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrHeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrHeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBmrHeightValueTextField.setBorder(null);
+        calcBmrHeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBmrHeightValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBmrPanel.add(calcBmrHeightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 185, 170, 50));
+
+        calcBmrCmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrCmText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrCmText.setText("cm");
+        calcBmrCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrPanel.add(calcBmrCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+
+        calcBmrAgeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrAgeText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrAgeText.setText("Wiek:");
+        calcBmrPanel.add(calcBmrAgeText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 250, -1, -1));
+
+        calcBmrAgeValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrAgeValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrAgeValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrAgeValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBmrAgeValueTextField.setBorder(null);
+        calcBmrAgeValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBmrAgeValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBmrPanel.add(calcBmrAgeValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 280, 170, 50));
+
+        calcBmrYearsText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmrYearsText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrYearsText.setText("lat");
+        calcBmrYearsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrPanel.add(calcBmrYearsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 289, -1, 50));
+
+        calcBmrGenderText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrGenderText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrGenderText.setText("Płeć:");
+        calcBmrPanel.add(calcBmrGenderText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 345, -1, -1));
+
+        calcBmrSelectGenderButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrSelectGenderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBmrSelectGenderButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrSelectGenderFemaleButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrSelectGenderFemaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderFemaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderFemaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderFemaleButtonMouseExited(evt);
+            }
+        });
+        calcBmrSelectGenderFemaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrSelectGenderFemaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        calcBmrSelectGenderFemaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrSelectGenderFemaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrSelectGenderFemaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calcBmrSelectGenderFemaleButtonText.setText("Kobieta");
+        calcBmrSelectGenderFemaleButtonText.setOpaque(true);
+        calcBmrSelectGenderFemaleButton.add(calcBmrSelectGenderFemaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 132, 40));
+
+        calcBmrSelectGenderButton.add(calcBmrSelectGenderFemaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 50));
+
+        calcBmrSelectGenderMaleButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmrSelectGenderMaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderMaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderMaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBmrSelectGenderMaleButtonMouseExited(evt);
+            }
+        });
+        calcBmrSelectGenderMaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrSelectGenderMaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        calcBmrSelectGenderMaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmrSelectGenderMaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmrSelectGenderMaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calcBmrSelectGenderMaleButtonText.setText("Mężczyzna");
+        calcBmrSelectGenderMaleButton.add(calcBmrSelectGenderMaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 5, 133, 40));
+
+        calcBmrSelectGenderButton.add(calcBmrSelectGenderMaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, 140, 50));
+
+        calcBmrPanel.add(calcBmrSelectGenderButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 375, 280, 50));
+
+        physicalActivityTypeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        physicalActivityTypeText.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityTypeText.setText("Rodzaj aktywności fizycznej:");
+        calcBmrPanel.add(physicalActivityTypeText, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, -1, -1));
+
+        physicalActivityTypePanel.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityTypePanel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        physicalActivityTypePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel1Button.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityLevel1Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel1ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel1ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel1ButtonMouseExited(evt);
+            }
+        });
+        physicalActivityLevel1Button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel1Text.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel1Text.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel1Text.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel1Text.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel1Text.setText("Brak aktywności, praca siedząca");
+        physicalActivityLevel1Text.setOpaque(true);
+        physicalActivityLevel1Button.add(physicalActivityLevel1Text, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 240, 38));
+
+        physicalActivityTypePanel.add(physicalActivityLevel1Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 48));
+
+        physicalActivityLevel2Button.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityLevel2Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel2ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel2ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel2ButtonMouseExited(evt);
+            }
+        });
+        physicalActivityLevel2Button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel2Text1.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel2Text1.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel2Text1.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel2Text1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel2Text1.setText("Niska aktywność (praca siedząca");
+        physicalActivityLevel2Text1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel2Text1.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel2Button.add(physicalActivityLevel2Text1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 240, 19));
+
+        physicalActivityLevel2Text2.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel2Text2.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel2Text2.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel2Text2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel2Text2.setText(" i 1-2 treningi w tygodniu)");
+        physicalActivityLevel2Text2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel2Text2.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel2Button.add(physicalActivityLevel2Text2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 22, 240, 21));
+
+        physicalActivityTypePanel.add(physicalActivityLevel2Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 48, 250, 48));
+
+        physicalActivityLevel3Button.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityLevel3Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel3ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel3ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel3ButtonMouseExited(evt);
+            }
+        });
+        physicalActivityLevel3Button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel3Text1.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel3Text1.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel3Text1.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel3Text1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel3Text1.setText("Średnia aktywność (praca siedząca");
+        physicalActivityLevel3Text1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel3Text1.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel3Button.add(physicalActivityLevel3Text1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 240, 19));
+
+        physicalActivityLevel3Text2.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel3Text2.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel3Text2.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel3Text2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel3Text2.setText(" i 3-4 treningi w tygodniu)");
+        physicalActivityLevel3Text2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel3Text2.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel3Button.add(physicalActivityLevel3Text2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 22, 240, 21));
+
+        physicalActivityTypePanel.add(physicalActivityLevel3Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 96, 250, 48));
+
+        physicalActivityLevel4Button.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityLevel4Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel4ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel4ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel4ButtonMouseExited(evt);
+            }
+        });
+        physicalActivityLevel4Button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel4Text1.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel4Text1.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel4Text1.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel4Text1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel4Text1.setText("Wysoka aktywność (praca fizyczna");
+        physicalActivityLevel4Text1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel4Text1.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel4Button.add(physicalActivityLevel4Text1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 240, 19));
+
+        physicalActivityLevel4Text2.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel4Text2.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel4Text2.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel4Text2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel4Text2.setText("i 3-4 treningi w tygodniu)");
+        physicalActivityLevel4Text2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel4Text2.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel4Button.add(physicalActivityLevel4Text2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 22, 240, 21));
+
+        physicalActivityTypePanel.add(physicalActivityLevel4Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 144, 250, 48));
+
+        physicalActivityLevel5Button.setBackground(new java.awt.Color(59, 63, 70));
+        physicalActivityLevel5Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel5ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel5ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                physicalActivityLevel5ButtonMouseExited(evt);
+            }
+        });
+        physicalActivityLevel5Button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        physicalActivityLevel5Text1.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel5Text1.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel5Text1.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel5Text1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel5Text1.setText("Bardzo wysoka aktywność (zawodowi");
+        physicalActivityLevel5Text1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel5Text1.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel5Button.add(physicalActivityLevel5Text1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 240, 19));
+
+        physicalActivityLevel5Text2.setBackground(new java.awt.Color(0, 173, 181));
+        physicalActivityLevel5Text2.setFont(new java.awt.Font("Segoe UI Light", 0, 13)); // NOI18N
+        physicalActivityLevel5Text2.setForeground(new java.awt.Color(238, 238, 238));
+        physicalActivityLevel5Text2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        physicalActivityLevel5Text2.setText("sportowcy, osoby codziennie trenujące)");
+        physicalActivityLevel5Text2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        physicalActivityLevel5Text2.setVerifyInputWhenFocusTarget(false);
+        physicalActivityLevel5Button.add(physicalActivityLevel5Text2, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 22, 240, 21));
+
+        physicalActivityTypePanel.add(physicalActivityLevel5Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 192, 250, 48));
+
+        calcBmrPanel.add(physicalActivityTypePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, 250, 240));
+
+        calculateBmrButton.setBackground(new java.awt.Color(0, 173, 181));
+        calculateBmrButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calculateBmrButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calculateBmrButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calculateBmrButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calculateBmrButtonMouseExited(evt);
+            }
+        });
+        calculateBmrButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calculateBmrButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        calculateBmrButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calculateBmrButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calculateBmrButtonText.setText("Oblicz");
+        calculateBmrButton.add(calculateBmrButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 555, 50));
+
+        calcBmrPanel.add(calculateBmrButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 475, 555, 50));
+
+        calcPanel.add(calcBmrPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 585, 540));
+
+        calcBmrResultPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmrResultPanel.setMinimumSize(new java.awt.Dimension(420, 315));
+        calcBmrResultPanel.setPreferredSize(new java.awt.Dimension(420, 315));
+        calcBmrResultPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmrResultText1.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        calcBmrResultText1.setForeground(new java.awt.Color(138, 152, 173));
+        calcBmrResultText1.setText("Twoje podstawowe zapotrzebowanie\n kaloryczne wynosi:");
+        calcBmrResultText1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(calcBmrResultText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 435, 30));
+
+        bmrResultKcalValueTextField.setEditable(false);
+        bmrResultKcalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultKcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
+        bmrResultKcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultKcalValueTextField.setText("-");
+        bmrResultKcalValueTextField.setToolTipText("");
+        bmrResultKcalValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultKcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
+
+        bmrResultMacrosText1.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        bmrResultMacrosText1.setForeground(new java.awt.Color(138, 152, 173));
+        bmrResultMacrosText1.setText("Białko:                  Tłuszcz:                  Węglowodany:");
+        bmrResultMacrosText1.setToolTipText("");
+        bmrResultMacrosText1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(bmrResultMacrosText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 435, 30));
+        bmrResultMacrosText1.getAccessibleContext().setAccessibleName("Białko:");
+
+        bmrResultProteinsValueTextField.setEditable(false);
+        bmrResultProteinsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        bmrResultProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultProteinsValueTextField.setText("-");
+        bmrResultProteinsValueTextField.setToolTipText("");
+        bmrResultProteinsValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 110, 50));
+
+        bmrResultFatsValueTextField.setEditable(false);
+        bmrResultFatsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultFatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        bmrResultFatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultFatsValueTextField.setText("-");
+        bmrResultFatsValueTextField.setToolTipText("");
+        bmrResultFatsValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultFatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 110, 50));
+
+        bmrResultCarbsValueTextField.setEditable(false);
+        bmrResultCarbsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultCarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        bmrResultCarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultCarbsValueTextField.setText("-");
+        bmrResultCarbsValueTextField.setToolTipText("");
+        bmrResultCarbsValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultCarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 110, 50));
+
+        calcBmrResultText2.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        calcBmrResultText2.setForeground(new java.awt.Color(138, 152, 173));
+        calcBmrResultText2.setText("Redukcja wagi:");
+        calcBmrResultText2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(calcBmrResultText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 175, 110, 30));
+
+        bmrResultKcalCutValueTextField.setEditable(false);
+        bmrResultKcalCutValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultKcalCutValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultKcalCutValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultKcalCutValueTextField.setText("-");
+        bmrResultKcalCutValueTextField.setToolTipText("");
+        bmrResultKcalCutValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultKcalCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 195, 110, 30));
+
+        bmrResultMacrosText2.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        bmrResultMacrosText2.setForeground(new java.awt.Color(138, 152, 173));
+        bmrResultMacrosText2.setText("B:                      T:                       W:");
+        bmrResultMacrosText2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(bmrResultMacrosText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 175, 230, 30));
+        bmrResultMacrosText2.getAccessibleContext().setAccessibleName("Białko:               Tłuszcz             Węglowodany:");
+        bmrResultMacrosText2.getAccessibleContext().setAccessibleDescription("");
+
+        bmrResultProteinsCutValueTextField.setEditable(false);
+        bmrResultProteinsCutValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultProteinsCutValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultProteinsCutValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultProteinsCutValueTextField.setText("-");
+        bmrResultProteinsCutValueTextField.setToolTipText("");
+        bmrResultProteinsCutValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultProteinsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(139, 195, 60, 30));
+
+        bmrResultFatsCutValueTextField.setEditable(false);
+        bmrResultFatsCutValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultFatsCutValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultFatsCutValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultFatsCutValueTextField.setText("-");
+        bmrResultFatsCutValueTextField.setToolTipText("");
+        bmrResultFatsCutValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultFatsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 195, 60, 30));
+
+        bmrResultCarbsCutValueTextField.setEditable(false);
+        bmrResultCarbsCutValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultCarbsCutValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultCarbsCutValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultCarbsCutValueTextField.setText("-");
+        bmrResultCarbsCutValueTextField.setToolTipText("");
+        bmrResultCarbsCutValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultCarbsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 195, 60, 30));
+
+        calcBmrResultText3.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        calcBmrResultText3.setForeground(new java.awt.Color(138, 152, 173));
+        calcBmrResultText3.setText("Budowanie masy:");
+        calcBmrResultText3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(calcBmrResultText3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 110, 30));
+
+        bmrResultKcalOverValueTextField.setEditable(false);
+        bmrResultKcalOverValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultKcalOverValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultKcalOverValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultKcalOverValueTextField.setText("-");
+        bmrResultKcalOverValueTextField.setToolTipText("");
+        bmrResultKcalOverValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultKcalOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 255, 110, 30));
+
+        bmrResultMacrosText3.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        bmrResultMacrosText3.setForeground(new java.awt.Color(138, 152, 173));
+        bmrResultMacrosText3.setText("B:                      T:                       W:");
+        bmrResultMacrosText3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmrResultPanel.add(bmrResultMacrosText3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 230, 30));
+
+        bmrResultProteinsOverValueTextField.setEditable(false);
+        bmrResultProteinsOverValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultProteinsOverValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultProteinsOverValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultProteinsOverValueTextField.setText("-");
+        bmrResultProteinsOverValueTextField.setToolTipText("");
+        bmrResultProteinsOverValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultProteinsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 255, 60, 30));
+
+        bmrResultFatsOverValueTextField.setEditable(false);
+        bmrResultFatsOverValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultFatsOverValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultFatsOverValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultFatsOverValueTextField.setText("-");
+        bmrResultFatsOverValueTextField.setToolTipText("");
+        bmrResultFatsOverValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultFatsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 255, 60, 30));
+
+        bmrResultCarbsOverValueTextField.setEditable(false);
+        bmrResultCarbsOverValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmrResultCarbsOverValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        bmrResultCarbsOverValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmrResultCarbsOverValueTextField.setText("-");
+        bmrResultCarbsOverValueTextField.setToolTipText("");
+        bmrResultCarbsOverValueTextField.setBorder(null);
+        calcBmrResultPanel.add(bmrResultCarbsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 255, 60, 30));
+
+        calcPanel.add(calcBmrResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
+
+        calcBmiPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmiPanel.setMinimumSize(new java.awt.Dimension(585, 540));
+        calcBmiPanel.setPreferredSize(new java.awt.Dimension(585, 540));
+        calcBmiPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmiTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 26)); // NOI18N
+        calcBmiTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiTitleText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        calcBmiTitleText.setText("Oblicz swój wskaźnik masy ciała");
+        calcBmiPanel.add(calcBmiTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 3, 570, 40));
+
+        calcBmiWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmiWeightText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiWeightText.setText("Waga:");
+        calcBmiPanel.add(calcBmiWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 60, -1, -1));
+
+        calcBmiWeightValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmiWeightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmiWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBmiWeightValueTextField.setBorder(null);
+        calcBmiWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBmiWeightValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBmiPanel.add(calcBmiWeightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, 170, 50));
+
+        calcBmiKgText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmiKgText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiKgText.setText("kg");
+        calcBmiKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmiPanel.add(calcBmiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+
+        calcBmiHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBmiHeightText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiHeightText.setText("Wzrost:");
+        calcBmiPanel.add(calcBmiHeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 155, -1, -1));
+
+        calcBmiHeightValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBmiHeightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmiHeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiHeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBmiHeightValueTextField.setBorder(null);
+        calcBmiHeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBmiHeightValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBmiPanel.add(calcBmiHeightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 185, 170, 50));
+
+        calcBmiCmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBmiCmText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBmiCmText.setText("cm");
+        calcBmiCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmiPanel.add(calcBmiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+
+        calculateBmiButton.setBackground(new java.awt.Color(0, 173, 181));
+        calculateBmiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calculateBmiButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calculateBmiButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calculateBmiButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calculateBmiButtonMouseExited(evt);
+            }
+        });
+        calculateBmiButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calculateBmiButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        calculateBmiButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calculateBmiButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calculateBmiButtonText.setText("Oblicz");
+        calculateBmiButton.add(calculateBmiButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 555, 50));
+
+        calcBmiPanel.add(calculateBmiButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 475, 555, 50));
+
+        calcPanel.add(calcBmiPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 585, 540));
+
+        calcBmiResultPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBmiResultPanel.setMinimumSize(new java.awt.Dimension(420, 315));
+        calcBmiResultPanel.setPreferredSize(new java.awt.Dimension(420, 315));
+        calcBmiResultPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBmiResultText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        calcBmiResultText.setForeground(new java.awt.Color(138, 152, 173));
+        calcBmiResultText.setText("Twój indeks masy ciała wynosi:");
+        calcBmiResultText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmiResultPanel.add(calcBmiResultText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 435, 30));
+
+        bmiResultValueTextField.setEditable(false);
+        bmiResultValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmiResultValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
+        bmiResultValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmiResultValueTextField.setText("-");
+        bmiResultValueTextField.setToolTipText("");
+        bmiResultValueTextField.setBorder(null);
+        calcBmiResultPanel.add(bmiResultValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
+
+        calcBmiResultRateText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        calcBmiResultRateText.setForeground(new java.awt.Color(138, 152, 173));
+        calcBmiResultRateText.setText("Ocena:");
+        calcBmiResultRateText.setToolTipText("");
+        calcBmiResultRateText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBmiResultPanel.add(calcBmiResultRateText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 390, 30));
+
+        bmiResultRateTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmiResultRateTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        bmiResultRateTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmiResultRateTextField.setText("-");
+        bmiResultRateTextField.setBorder(null);
+        calcBmiResultPanel.add(bmiResultRateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 400, -1));
+
+        calcPanel.add(calcBmiResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
+
+        calcBfiPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBfiPanel.setMinimumSize(new java.awt.Dimension(585, 540));
+        calcBfiPanel.setPreferredSize(new java.awt.Dimension(585, 540));
+        calcBmrPanel.setVisible(true);
+        calcBmrResultPanel.setVisible(true);
+        calcBmiPanel.setVisible(false);  
+        calcBmiResultPanel.setVisible(false);
+        calcBfiPanel.setVisible(false);
+        calcBfiResultPanel.setVisible(false);
+        calcBfiPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBfiTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 26)); // NOI18N
+        calcBfiTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiTitleText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        calcBfiTitleText.setText("Oblicz swój poziom tkanki tłuszczowej");
+        calcBfiPanel.add(calcBfiTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 3, 570, 40));
+
+        calcBfiWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBfiWeightText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiWeightText.setText("Waga:");
+        calcBfiPanel.add(calcBfiWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 60, -1, -1));
+
+        calcBfiWeightValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBfiWeightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBfiWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBfiWeightValueTextField.setBorder(null);
+        calcBfiWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBfiWeightValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBfiPanel.add(calcBfiWeightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, 170, 50));
+
+        calcBfiKgText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBfiKgText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiKgText.setText("kg");
+        calcBfiKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBfiPanel.add(calcBfiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+
+        calcBfiWaistText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBfiWaistText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiWaistText.setText("Obwód pasa (talii):");
+        calcBfiPanel.add(calcBfiWaistText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 155, -1, -1));
+
+        calcBfiWaistValueTextField.setBackground(new java.awt.Color(59, 63, 70));
+        calcBfiWaistValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBfiWaistValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiWaistValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        calcBfiWaistValueTextField.setBorder(null);
+        calcBfiWaistValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcBfiWaistValueTextFieldKeyPressed(evt);
+            }
+        });
+        calcBfiPanel.add(calcBfiWaistValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 185, 170, 50));
+
+        calcBfiCmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        calcBfiCmText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiCmText.setText("cm");
+        calcBfiCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBfiPanel.add(calcBfiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+
+        calculateBfiButton.setBackground(new java.awt.Color(0, 173, 181));
+        calculateBfiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calculateBfiButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calculateBfiButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calculateBfiButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calculateBfiButtonMouseExited(evt);
+            }
+        });
+        calculateBfiButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calculateBfiButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        calculateBfiButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calculateBfiButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calculateBfiButtonText.setText("Oblicz");
+        calculateBfiButton.add(calculateBfiButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 555, 50));
+
+        calcBfiPanel.add(calculateBfiButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 475, 555, 50));
+
+        calcBfiGenderText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBfiGenderText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiGenderText.setText("Płeć:");
+        calcBfiPanel.add(calcBfiGenderText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 250, -1, -1));
+
+        calcBfiSelectGenderButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBfiSelectGenderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calcBfiSelectGenderButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBfiSelectGenderFemaleButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBfiSelectGenderFemaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderFemaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderFemaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderFemaleButtonMouseExited(evt);
+            }
+        });
+        calcBfiSelectGenderFemaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBfiSelectGenderFemaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        calcBfiSelectGenderFemaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBfiSelectGenderFemaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiSelectGenderFemaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calcBfiSelectGenderFemaleButtonText.setText("Kobieta");
+        calcBfiSelectGenderFemaleButtonText.setOpaque(true);
+        calcBfiSelectGenderFemaleButton.add(calcBfiSelectGenderFemaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 132, 40));
+
+        calcBfiSelectGenderButton.add(calcBfiSelectGenderFemaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 50));
+
+        calcBfiSelectGenderMaleButton.setBackground(new java.awt.Color(59, 63, 70));
+        calcBfiSelectGenderMaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderMaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderMaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                calcBfiSelectGenderMaleButtonMouseExited(evt);
+            }
+        });
+        calcBfiSelectGenderMaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBfiSelectGenderMaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        calcBfiSelectGenderMaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        calcBfiSelectGenderMaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        calcBfiSelectGenderMaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        calcBfiSelectGenderMaleButtonText.setText("Mężczyzna");
+        calcBfiSelectGenderMaleButton.add(calcBfiSelectGenderMaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 5, 133, 40));
+
+        calcBfiSelectGenderButton.add(calcBfiSelectGenderMaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, 140, 50));
+
+        calcBfiPanel.add(calcBfiSelectGenderButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 280, 280, 50));
+
+        calcPanel.add(calcBfiPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 585, 540));
+
+        calcBfiResultPanel.setBackground(new java.awt.Color(50, 54, 61));
+        calcBfiResultPanel.setMinimumSize(new java.awt.Dimension(420, 315));
+        calcBfiResultPanel.setPreferredSize(new java.awt.Dimension(420, 315));
+        calcBfiResultPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calcBfiResultText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        calcBfiResultText.setForeground(new java.awt.Color(138, 152, 173));
+        calcBfiResultText.setText("Twój przybliżony poziom tkanki tłuszczowej wynosi:");
+        calcBfiResultText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBfiResultPanel.add(calcBfiResultText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 400, 30));
+
+        bfiResultValueTextField.setEditable(false);
+        bfiResultValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bfiResultValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
+        bfiResultValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bfiResultValueTextField.setText("-");
+        bfiResultValueTextField.setToolTipText("");
+        bfiResultValueTextField.setBorder(null);
+        calcBfiResultPanel.add(bfiResultValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
+
+        calcBfiResultRateText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        calcBfiResultRateText.setForeground(new java.awt.Color(138, 152, 173));
+        calcBfiResultRateText.setText("Klasyfikacja:");
+        calcBfiResultRateText.setToolTipText("");
+        calcBfiResultRateText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        calcBfiResultPanel.add(calcBfiResultRateText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 390, 30));
+
+        bfiResultRateTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bfiResultRateTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        bfiResultRateTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bfiResultRateTextField.setText("-");
+        bfiResultRateTextField.setBorder(null);
+        calcBfiResultPanel.add(bfiResultRateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 400, -1));
+
+        calcPanel.add(calcBfiResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
+
+        mainPanel.add(calcPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         infoPanel.setBackground(new java.awt.Color(57, 62, 70));
+        infoPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
+        infoPanel.setPreferredSize(new java.awt.Dimension(1050, 720));
+        myProfilePanel.setVisible(true);
+        mealDiaryPanel.setVisible(false);
+        workoutDiaryPanel.setVisible(false);
+        statsPanel.setVisible(false);
+        calcPanel.setVisible(false);
+        infoPanel.setVisible(false);
         infoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         infoBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/info_banner.png"))); // NOI18N
         infoPanel.add(infoBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jDesktopPane1.add(infoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
-
-        mainPanel.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        mainPanel.add(infoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -626,214 +1693,517 @@ public class GUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void myProfileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseClicked
-        
-        bar(myProfileButtonBar);
+        menuBar(myProfileButtonBar);
         myProfilePanel.setVisible(true);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);   
     }//GEN-LAST:event_myProfileButtonMouseClicked
 
     private void myProfileButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseEntered
-        
-        myProfileButton.setBackground(Color.decode("#20242c"));
-        
+         myProfileButton.setBackground(Color.decode("#20242c"));   
     }//GEN-LAST:event_myProfileButtonMouseEntered
 
     private void myProfileButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseExited
-        
-        myProfileButton.setBackground(Color.decode("#222831"));
-        
+        myProfileButton.setBackground(Color.decode("#222831"));       
     }//GEN-LAST:event_myProfileButtonMouseExited
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        
         System.exit(0);
-
     }//GEN-LAST:event_closeButtonMouseClicked
 
     private void mealDiaryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseClicked
-       
-        bar(mealDiaryButtonBar);
+        menuBar(mealDiaryButtonBar);
         mealDiaryPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);    
     }//GEN-LAST:event_mealDiaryButtonMouseClicked
 
     private void mealDiaryButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseEntered
-        
-        mealDiaryButton.setBackground(Color.decode("#20242c"));
-        
+        mealDiaryButton.setBackground(Color.decode("#20242c"));     
     }//GEN-LAST:event_mealDiaryButtonMouseEntered
 
     private void mealDiaryButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseExited
-        
         mealDiaryButton.setBackground(Color.decode("#222831"));
-        
     }//GEN-LAST:event_mealDiaryButtonMouseExited
 
     private void workoutDiaryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseClicked
-        
-        bar(workoutDiaryButtonBar);
+        menuBar(workoutDiaryButtonBar);
         workoutDiaryPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false);   
     }//GEN-LAST:event_workoutDiaryButtonMouseClicked
 
     private void workoutDiaryButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseEntered
-        
-        workoutDiaryButton.setBackground(Color.decode("#20242c"));
-        
+        workoutDiaryButton.setBackground(Color.decode("#20242c"));      
     }//GEN-LAST:event_workoutDiaryButtonMouseEntered
 
     private void workoutDiaryButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryButtonMouseExited
-        
-        workoutDiaryButton.setBackground(Color.decode("#222831"));
-        
+        workoutDiaryButton.setBackground(Color.decode("#222831"));   
     }//GEN-LAST:event_workoutDiaryButtonMouseExited
 
     private void statsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseClicked
-        
-        bar(statsButtonBar);
+        menuBar(statsButtonBar);
         statsPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         calcPanel.setVisible(false);
-        infoPanel.setVisible(false);
-        
+        infoPanel.setVisible(false); 
     }//GEN-LAST:event_statsButtonMouseClicked
 
     private void statsButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseEntered
-        
-        statsButton.setBackground(Color.decode("#20242c"));
-        
+        statsButton.setBackground(Color.decode("#20242c"));       
     }//GEN-LAST:event_statsButtonMouseEntered
 
     private void statsButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsButtonMouseExited
-        
-        statsButton.setBackground(Color.decode("#222831"));
-        
+        statsButton.setBackground(Color.decode("#222831"));  
     }//GEN-LAST:event_statsButtonMouseExited
 
     private void calcButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseClicked
-        
-        bar(calcButtonBar);
+        menuBar(calcButtonBar);
         calcPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
-        infoPanel.setVisible(false);
-                
+        infoPanel.setVisible(false);            
     }//GEN-LAST:event_calcButtonMouseClicked
 
     private void calcButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseEntered
-        
-        calcButton.setBackground(Color.decode("#20242c"));
-        
+        calcButton.setBackground(Color.decode("#20242c"));   
     }//GEN-LAST:event_calcButtonMouseEntered
 
     private void calcButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcButtonMouseExited
-        
-        calcButton.setBackground(Color.decode("#222831"));
-        
+        calcButton.setBackground(Color.decode("#222831"));      
     }//GEN-LAST:event_calcButtonMouseExited
 
     private void infoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseClicked
-        
-        bar(infoButtonBar);
+        menuBar(infoButtonBar);
         infoPanel.setVisible(true);
         myProfilePanel.setVisible(false);
         mealDiaryPanel.setVisible(false);
         workoutDiaryPanel.setVisible(false);
         statsPanel.setVisible(false);
-        calcPanel.setVisible(false);
-        
+        calcPanel.setVisible(false);   
     }//GEN-LAST:event_infoButtonMouseClicked
 
     private void infoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseEntered
-        
-        infoButton.setBackground(Color.decode("#20242c"));
-        
+        infoButton.setBackground(Color.decode("#20242c"));    
     }//GEN-LAST:event_infoButtonMouseEntered
 
     private void infoButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoButtonMouseExited
-        
         infoButton.setBackground(Color.decode("#222831"));
-        
     }//GEN-LAST:event_infoButtonMouseExited
 
     private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        
-        setExtendedState(Frame.ICONIFIED);
-        
+        setExtendedState(Frame.ICONIFIED);       
     }//GEN-LAST:event_minimizeButtonMouseClicked
 
     private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
-         
         notesTextArea.setEditable(true);
-       
+        buttonActive=true;
+        if(buttonActive==true)
+            modifyNotesButton.setBackground(Color.decode("#00ADB5"));      
     }//GEN-LAST:event_modifyNotesButtonMouseClicked
 
     private void saveNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseClicked
-        
         notesTextArea.setEditable(false);
-        
+        buttonActive=false;
+        modifyNotesButton.setBackground(Color.decode("#3F454F"));   
     }//GEN-LAST:event_saveNotesButtonMouseClicked
 
     private void saveNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseEntered
-        
-        saveNotesButton.setBackground(Color.decode("#4A515D"));
-        
+        saveNotesButton.setBackground(Color.decode("#4A515D"));     
     }//GEN-LAST:event_saveNotesButtonMouseEntered
 
     private void saveNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseExited
-        
-        saveNotesButton.setBackground(Color.decode("#3F454F"));
-        
+        saveNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_saveNotesButtonMouseExited
 
     private void modifyNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseEntered
-        
-        modifyNotesButton.setBackground(Color.decode("#4A515D"));
-        
+        if(buttonActive==false)
+            modifyNotesButton.setBackground(Color.decode("#4A515D"));      
     }//GEN-LAST:event_modifyNotesButtonMouseEntered
 
     private void modifyNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseExited
-        
-        modifyNotesButton.setBackground(Color.decode("#3F454F"));
-        
+        if(buttonActive==false)
+            modifyNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_modifyNotesButtonMouseExited
 
-    private void paramChangeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseEntered
-        
-        paramChangeButton.setBackground(Color.decode("#E2E2E2"));
-        
-    }//GEN-LAST:event_paramChangeButtonMouseEntered
+    private void modifyParamsToggleButtonOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyParamsToggleButtonOnMouseClicked
+        modifyParamsToggleButtonOn.setBackground(Color.decode("#EEEEEE"));
+        modifyParamsToggleButtonOff.setBackground(Color.decode("#00ADB5"));
+        weightValueTextField.setEditable(true);
+        heightValueTextField.setEditable(true);
+        ageValueTextField.setEditable(true);
+    }//GEN-LAST:event_modifyParamsToggleButtonOnMouseClicked
 
-    private void paramChangeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paramChangeButtonMouseExited
+    private void modifyParamsToggleButtonOffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyParamsToggleButtonOffMouseClicked
+        modifyParamsToggleButtonOn.setBackground(Color.decode("#CFCFCF"));
+        modifyParamsToggleButtonOff.setBackground(Color.decode("#EEEEEE"));
+        weightValueTextField.setEditable(false);
+        heightValueTextField.setEditable(false);
+        ageValueTextField.setEditable(false);
+    }//GEN-LAST:event_modifyParamsToggleButtonOffMouseClicked
+
+    private void calcBfiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiButtonMouseExited
+        calcBfiButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_calcBfiButtonMouseExited
+
+    private void calcBfiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiButtonMouseEntered
+        calcBfiButton.setBackground(Color.decode("#3E4248"));
+    }//GEN-LAST:event_calcBfiButtonMouseEntered
+
+    private void calcBfiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiButtonMouseClicked
+        bfiButtonText.setOpaque(true);
+        bmrButtonText.setOpaque(false);
+        bmiButtonText.setOpaque(false);
         
-        paramChangeButton.setBackground(Color.decode("#EEEEEE"));
+        repaintCalcButtons();
         
-    }//GEN-LAST:event_paramChangeButtonMouseExited
+        calcBfiPanel.setVisible(true);
+        calcBfiResultPanel.setVisible(true);
+        calcBmrPanel.setVisible(false);
+        calcBmrResultPanel.setVisible(false);
+        calcBmiPanel.setVisible(false);
+        calcBmiResultPanel.setVisible(false);
+    }//GEN-LAST:event_calcBfiButtonMouseClicked
+
+    private void calcBmiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmiButtonMouseExited
+        calcBmiButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_calcBmiButtonMouseExited
+
+    private void calcBmiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmiButtonMouseEntered
+        calcBmiButton.setBackground(Color.decode("#3E4248"));
+    }//GEN-LAST:event_calcBmiButtonMouseEntered
+
+    private void calcBmiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmiButtonMouseClicked
+        bmiButtonText.setOpaque(true);
+        bmrButtonText.setOpaque(false);
+        bfiButtonText.setOpaque(false);
+        
+        repaintCalcButtons();
+        
+        calcBmiPanel.setVisible(true);
+        calcBmiResultPanel.setVisible(true);
+        calcBmrPanel.setVisible(false);
+        calcBmrResultPanel.setVisible(false);
+        calcBfiPanel.setVisible(false);
+        calcBfiResultPanel.setVisible(false);
+    }//GEN-LAST:event_calcBmiButtonMouseClicked
+
+    private void calcBmrButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseExited
+        calcBmrButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_calcBmrButtonMouseExited
+
+    private void calcBmrButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseEntered
+        calcBmrButton.setBackground(Color.decode("#3E4248"));
+
+    }//GEN-LAST:event_calcBmrButtonMouseEntered
+
+    private void calcBmrButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseClicked
+        bmrButtonText.setOpaque(true);
+        bmiButtonText.setOpaque(false);
+        bfiButtonText.setOpaque(false);
+        
+        repaintCalcButtons();
+        
+        calcBmrPanel.setVisible(true);
+        calcBmrResultPanel.setVisible(true);
+        calcBmiPanel.setVisible(false);
+        calcBmiResultPanel.setVisible(false);
+        calcBfiPanel.setVisible(false);
+        calcBfiResultPanel.setVisible(false);
+    }//GEN-LAST:event_calcBmrButtonMouseClicked
+
+    private void calcBmrSelectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseClicked
+        calcBmrSelectGenderFemaleButtonText.setOpaque(true);
+        calcBmrSelectGenderMaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        gender=0;
+    }//GEN-LAST:event_calcBmrSelectGenderFemaleButtonMouseClicked
+
+    private void calcBmrSelectGenderMaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderMaleButtonMouseClicked
+        calcBmrSelectGenderMaleButtonText.setOpaque(true);
+        calcBmrSelectGenderFemaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        gender=1;
+    }//GEN-LAST:event_calcBmrSelectGenderMaleButtonMouseClicked
+
+    private void calcBmrSelectGenderFemaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseEntered
+        calcBmrSelectGenderFemaleButton.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_calcBmrSelectGenderFemaleButtonMouseEntered
+
+    private void calcBmrSelectGenderFemaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseExited
+        calcBmrSelectGenderFemaleButton.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_calcBmrSelectGenderFemaleButtonMouseExited
+
+    private void calcBmrSelectGenderMaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderMaleButtonMouseEntered
+        calcBmrSelectGenderMaleButton.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_calcBmrSelectGenderMaleButtonMouseEntered
+
+    private void calcBmrSelectGenderMaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderMaleButtonMouseExited
+        calcBmrSelectGenderMaleButton.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_calcBmrSelectGenderMaleButtonMouseExited
+
+    private void calculateBmrButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseEntered
+        calculateBmrButton.setBackground(Color.decode("#00C7D1"));
+    }//GEN-LAST:event_calculateBmrButtonMouseEntered
+
+    private void calculateBmrButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseExited
+        calculateBmrButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_calculateBmrButtonMouseExited
+
+    private void calculateBmrButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseClicked
+        if(!(calcBmrWeightValueTextField.getText().equals("") || calcBmrHeightValueTextField.getText().equals("") || calcBmrAgeValueTextField.getText().equals(""))) {
+            weight = Integer.parseInt(calcBmrWeightValueTextField.getText());
+            height = Integer.parseInt(calcBmrHeightValueTextField.getText());
+            age = Integer.parseInt(calcBmrAgeValueTextField.getText());
+
+            bmrResultKcalValueTextField.setText(String.valueOf(calc.calculateBmrKcalAmount(weight, height, age, activityLevel, gender)) + " kcal");
+            bmrResultKcalCutValueTextField.setText(String.valueOf(calc.calculateBmrKcalCutAmount()) + " kcal");
+            bmrResultKcalOverValueTextField.setText(String.valueOf(calc.calculateBmrKcalOverAmount()) + " kcal");
+
+            bmrResultProteinsValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
+            bmrResultFatsValueTextField.setText(String.valueOf(calc.calculateBmrFatsAmount()) + "g");
+            bmrResultCarbsValueTextField.setText(String.valueOf(calc.calculateBmrCarbsAmount()) + "g");
+
+            bmrResultProteinsCutValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
+            bmrResultFatsCutValueTextField.setText(String.valueOf(calc.calculateBmrFatsCutAmount()) + "g");
+            bmrResultCarbsCutValueTextField.setText(String.valueOf(calc.calculateBmrCarbsCutAmount()) + "g");
+
+            bmrResultProteinsOverValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
+            bmrResultFatsOverValueTextField.setText(String.valueOf(calc.calculateBmrFatsOverAmount()) + "g");
+            bmrResultCarbsOverValueTextField.setText(String.valueOf(calc.calculateBmrCarbsOverAmount()) + "g");
+        }
+    }//GEN-LAST:event_calculateBmrButtonMouseClicked
+
+    private void physicalActivityLevel1ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel1ButtonMouseClicked
+        activityBar(physicalActivityLevel1Text, physicalActivityLevel1Text);
+        activityLevel=1.2;
+    }//GEN-LAST:event_physicalActivityLevel1ButtonMouseClicked
+
+    private void physicalActivityLevel1ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel1ButtonMouseEntered
+        physicalActivityLevel1Button.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_physicalActivityLevel1ButtonMouseEntered
+
+    private void physicalActivityLevel1ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel1ButtonMouseExited
+        physicalActivityLevel1Button.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_physicalActivityLevel1ButtonMouseExited
+
+    private void physicalActivityLevel2ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel2ButtonMouseClicked
+        activityBar(physicalActivityLevel2Text1, physicalActivityLevel2Text2);
+        activityLevel=1.35;
+    }//GEN-LAST:event_physicalActivityLevel2ButtonMouseClicked
+
+    private void physicalActivityLevel2ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel2ButtonMouseEntered
+        physicalActivityLevel2Button.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_physicalActivityLevel2ButtonMouseEntered
+
+    private void physicalActivityLevel2ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel2ButtonMouseExited
+        physicalActivityLevel2Button.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_physicalActivityLevel2ButtonMouseExited
+
+    private void physicalActivityLevel3ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel3ButtonMouseClicked
+        activityBar(physicalActivityLevel3Text1, physicalActivityLevel3Text2);
+        activityLevel=1.55;
+    }//GEN-LAST:event_physicalActivityLevel3ButtonMouseClicked
+
+    private void physicalActivityLevel3ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel3ButtonMouseEntered
+        physicalActivityLevel3Button.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_physicalActivityLevel3ButtonMouseEntered
+
+    private void physicalActivityLevel3ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel3ButtonMouseExited
+        physicalActivityLevel3Button.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_physicalActivityLevel3ButtonMouseExited
+
+    private void physicalActivityLevel4ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel4ButtonMouseClicked
+        activityBar(physicalActivityLevel4Text1, physicalActivityLevel4Text2);
+        activityLevel=1.75;
+    }//GEN-LAST:event_physicalActivityLevel4ButtonMouseClicked
+
+    private void physicalActivityLevel4ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel4ButtonMouseEntered
+        physicalActivityLevel4Button.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_physicalActivityLevel4ButtonMouseEntered
+
+    private void physicalActivityLevel4ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel4ButtonMouseExited
+        physicalActivityLevel4Button.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_physicalActivityLevel4ButtonMouseExited
+
+    private void physicalActivityLevel5ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel5ButtonMouseClicked
+        activityBar(physicalActivityLevel5Text1, physicalActivityLevel5Text2);
+        activityLevel=2.15;
+    }//GEN-LAST:event_physicalActivityLevel5ButtonMouseClicked
+
+    private void physicalActivityLevel5ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel5ButtonMouseEntered
+        physicalActivityLevel5Button.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_physicalActivityLevel5ButtonMouseEntered
+
+    private void physicalActivityLevel5ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_physicalActivityLevel5ButtonMouseExited
+        physicalActivityLevel5Button.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_physicalActivityLevel5ButtonMouseExited
     
+    private void onlyNumbersVal(java.awt.event.KeyEvent evt, JTextField field) {
+        String fieldString = field.getText();
+        int fieldStringLength = fieldString.length();
+        if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') {
+            if(fieldStringLength < 3) {
+                field.setEditable(true);
+            }
+            else {
+                field.setEditable(false);
+            }
+        }
+        else {
+            if(evt.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getExtendedKeyCode() == KeyEvent.VK_DELETE) {
+                field.setEditable(true);
+            }
+            else {
+                field.setEditable(false);
+            }
+        }
+    }
     
+    private void calcBmrWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrWeightValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBmrWeightValueTextField);
+    }//GEN-LAST:event_calcBmrWeightValueTextFieldKeyPressed
+
+    private void calcBmrHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrHeightValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBmrHeightValueTextField);
+    }//GEN-LAST:event_calcBmrHeightValueTextFieldKeyPressed
+
+    private void calcBmrAgeValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrAgeValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBmrAgeValueTextField);
+    }//GEN-LAST:event_calcBmrAgeValueTextFieldKeyPressed
+
+    private void calcBmiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiWeightValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBmiWeightValueTextField);
+    }//GEN-LAST:event_calcBmiWeightValueTextFieldKeyPressed
+
+    private void calcBmiHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiHeightValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBmiHeightValueTextField);
+    }//GEN-LAST:event_calcBmiHeightValueTextFieldKeyPressed
+
+    private void calculateBmiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseClicked
+        if(!(calcBmiWeightValueTextField.getText().equals("") || calcBmiHeightValueTextField.getText().equals(""))) {
+            weight = Integer.parseInt(calcBmiWeightValueTextField.getText());
+            height = Integer.parseInt(calcBmiHeightValueTextField.getText());
+
+            bmiResultValueTextField.setText(String.valueOf(df.format(calc.calculateBmi((float)weight, (float)height))));
+            bmiResultRateTextField.setText(calc.rateBmi());
+        }
+    }//GEN-LAST:event_calculateBmiButtonMouseClicked
+
+    private void calculateBmiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseEntered
+        calculateBmiButton.setBackground(Color.decode("#00C7D1"));
+    }//GEN-LAST:event_calculateBmiButtonMouseEntered
+
+    private void calculateBmiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseExited
+        calculateBmiButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_calculateBmiButtonMouseExited
+
+    private void calcBfiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWeightValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBfiWeightValueTextField);
+    }//GEN-LAST:event_calcBfiWeightValueTextFieldKeyPressed
+
+    private void calcBfiWaistValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWaistValueTextFieldKeyPressed
+        onlyNumbersVal(evt, calcBfiWaistValueTextField);
+    }//GEN-LAST:event_calcBfiWaistValueTextFieldKeyPressed
+
+    private void calculateBfiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseClicked
+        if(!(calcBfiWeightValueTextField.getText().equals("") || calcBfiWaistValueTextField.getText().equals(""))) {
+            weight = Integer.parseInt(calcBfiWeightValueTextField.getText());
+            waist = Integer.parseInt(calcBfiWaistValueTextField.getText());
+
+            bfiResultValueTextField.setText(String.valueOf(df.format(calc.calculateBfi((float)weight, (float)waist, gender))) + "%");
+            bfiResultRateTextField.setText(calc.rateBfi(gender));
+        }
+    }//GEN-LAST:event_calculateBfiButtonMouseClicked
+
+    private void calculateBfiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseEntered
+        calculateBfiButton.setBackground(Color.decode("#00C7D1"));
+    }//GEN-LAST:event_calculateBfiButtonMouseEntered
+
+    private void calculateBfiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseExited
+        calculateBfiButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_calculateBfiButtonMouseExited
+
+    private void calcBfiSelectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderFemaleButtonMouseClicked
+        calcBfiSelectGenderFemaleButtonText.setOpaque(true);
+        calcBfiSelectGenderMaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        gender=0;
+    }//GEN-LAST:event_calcBfiSelectGenderFemaleButtonMouseClicked
+
+    private void calcBfiSelectGenderFemaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderFemaleButtonMouseEntered
+        calcBfiSelectGenderFemaleButton.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_calcBfiSelectGenderFemaleButtonMouseEntered
+
+    private void calcBfiSelectGenderFemaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderFemaleButtonMouseExited
+        calcBfiSelectGenderFemaleButton.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_calcBfiSelectGenderFemaleButtonMouseExited
+
+    private void calcBfiSelectGenderMaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderMaleButtonMouseClicked
+        calcBfiSelectGenderMaleButtonText.setOpaque(true);
+        calcBfiSelectGenderFemaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        gender=1;
+    }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseClicked
+
+    private void calcBfiSelectGenderMaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderMaleButtonMouseEntered
+        calcBfiSelectGenderFemaleButton.setBackground(Color.decode("#444952"));
+    }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseEntered
+
+    private void calcBfiSelectGenderMaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderMaleButtonMouseExited
+        calcBfiSelectGenderFemaleButton.setBackground(Color.decode("#3B3F46"));
+    }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseExited
+    
+    private void repaintSelectGenderButtons() {
+        calcBmrSelectGenderFemaleButton.repaint();
+        calcBmrSelectGenderMaleButton.repaint();
+        calcBfiSelectGenderFemaleButton.repaint();
+        calcBfiSelectGenderMaleButton.repaint();
+    }
+    
+    private void repaintCalcButtons() {
+        calcBmrButton.repaint();
+        calcBmiButton.repaint();
+        calcBfiButton.repaint();
+    }
+    
+    public void activityBar(JLabel label1, JLabel label2) {
+        physicalActivityLevel1Text.setOpaque(false);
+        physicalActivityLevel2Text1.setOpaque(false);
+        physicalActivityLevel2Text2.setOpaque(false);
+        physicalActivityLevel3Text1.setOpaque(false);
+        physicalActivityLevel3Text2.setOpaque(false);
+        physicalActivityLevel4Text1.setOpaque(false);
+        physicalActivityLevel4Text2.setOpaque(false);
+        physicalActivityLevel5Text1.setOpaque(false);
+        physicalActivityLevel5Text2.setOpaque(false);
         
-    public void bar(JLabel lab1) {
+        label1.setOpaque(true);
+        label2.setOpaque(true);
         
+        physicalActivityLevel1Button.repaint();
+        physicalActivityLevel2Button.repaint();
+        physicalActivityLevel3Button.repaint();
+        physicalActivityLevel4Button.repaint();
+        physicalActivityLevel5Button.repaint();
+    }
+    
+    public void menuBar(JLabel label) {
         myProfileButtonBar.setOpaque(false);
         mealDiaryButtonBar.setOpaque(false);
         workoutDiaryButtonBar.setOpaque(false);
@@ -841,7 +2211,7 @@ public class GUI extends javax.swing.JFrame {
         calcButtonBar.setOpaque(false);
         infoButtonBar.setOpaque(false);
         
-        lab1.setOpaque(true);
+        label.setOpaque(true);
         
         myProfileButtonBar.repaint();
         mealDiaryButtonBar.repaint();
@@ -849,7 +2219,6 @@ public class GUI extends javax.swing.JFrame {
         statsButtonBar.repaint();
         calcButtonBar.repaint();
         infoButtonBar.repaint();
-        
     }
     /**
      * @param args the command line arguments
@@ -891,15 +2260,96 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ageText;
-    private javax.swing.JLabel ageValueText;
+    private javax.swing.JTextField ageValueTextField;
+    private javax.swing.JLabel bfiButtonText;
+    private javax.swing.JTextField bfiResultRateTextField;
+    private javax.swing.JTextField bfiResultValueTextField;
+    private javax.swing.JLabel bmiButtonText;
+    private javax.swing.JTextField bmiResultRateTextField;
+    private javax.swing.JTextField bmiResultValueTextField;
     private javax.swing.JLabel bmiText;
     private javax.swing.JLabel bmiValueText;
+    private javax.swing.JLabel bmrButtonText;
+    private javax.swing.JTextField bmrResultCarbsCutValueTextField;
+    private javax.swing.JTextField bmrResultCarbsOverValueTextField;
+    private javax.swing.JTextField bmrResultCarbsValueTextField;
+    private javax.swing.JTextField bmrResultFatsCutValueTextField;
+    private javax.swing.JTextField bmrResultFatsOverValueTextField;
+    private javax.swing.JTextField bmrResultFatsValueTextField;
+    private javax.swing.JTextField bmrResultKcalCutValueTextField;
+    private javax.swing.JTextField bmrResultKcalOverValueTextField;
+    private javax.swing.JTextField bmrResultKcalValueTextField;
+    private javax.swing.JLabel bmrResultMacrosText1;
+    private javax.swing.JLabel bmrResultMacrosText2;
+    private javax.swing.JLabel bmrResultMacrosText3;
+    private javax.swing.JTextField bmrResultProteinsCutValueTextField;
+    private javax.swing.JTextField bmrResultProteinsOverValueTextField;
+    private javax.swing.JTextField bmrResultProteinsValueTextField;
     private javax.swing.JLabel calcBanner;
+    private javax.swing.JPanel calcBfiButton;
+    private javax.swing.JLabel calcBfiCmText;
+    private javax.swing.JLabel calcBfiGenderText;
+    private javax.swing.JLabel calcBfiKgText;
+    private javax.swing.JPanel calcBfiPanel;
+    private javax.swing.JPanel calcBfiResultPanel;
+    private javax.swing.JLabel calcBfiResultRateText;
+    private javax.swing.JLabel calcBfiResultText;
+    private javax.swing.JPanel calcBfiSelectGenderButton;
+    private javax.swing.JPanel calcBfiSelectGenderFemaleButton;
+    private javax.swing.JLabel calcBfiSelectGenderFemaleButtonText;
+    private javax.swing.JPanel calcBfiSelectGenderMaleButton;
+    private javax.swing.JLabel calcBfiSelectGenderMaleButtonText;
+    private javax.swing.JLabel calcBfiTitleText;
+    private javax.swing.JLabel calcBfiWaistText;
+    private javax.swing.JTextField calcBfiWaistValueTextField;
+    private javax.swing.JLabel calcBfiWeightText;
+    private javax.swing.JTextField calcBfiWeightValueTextField;
+    private javax.swing.JPanel calcBmiButton;
+    private javax.swing.JLabel calcBmiCmText;
+    private javax.swing.JLabel calcBmiHeightText;
+    private javax.swing.JTextField calcBmiHeightValueTextField;
+    private javax.swing.JLabel calcBmiKgText;
+    private javax.swing.JPanel calcBmiPanel;
+    private javax.swing.JPanel calcBmiResultPanel;
+    private javax.swing.JLabel calcBmiResultRateText;
+    private javax.swing.JLabel calcBmiResultText;
+    private javax.swing.JLabel calcBmiTitleText;
+    private javax.swing.JLabel calcBmiWeightText;
+    private javax.swing.JTextField calcBmiWeightValueTextField;
+    private javax.swing.JLabel calcBmrAgeText;
+    private javax.swing.JTextField calcBmrAgeValueTextField;
+    private javax.swing.JPanel calcBmrButton;
+    private javax.swing.JLabel calcBmrCmText;
+    private javax.swing.JLabel calcBmrGenderText;
+    private javax.swing.JLabel calcBmrHeightText;
+    private javax.swing.JTextField calcBmrHeightValueTextField;
+    private javax.swing.JLabel calcBmrKgText;
+    private javax.swing.JPanel calcBmrPanel;
+    private javax.swing.JPanel calcBmrResultPanel;
+    private javax.swing.JLabel calcBmrResultText1;
+    private javax.swing.JLabel calcBmrResultText2;
+    private javax.swing.JLabel calcBmrResultText3;
+    private javax.swing.JPanel calcBmrSelectGenderButton;
+    private javax.swing.JPanel calcBmrSelectGenderFemaleButton;
+    private javax.swing.JLabel calcBmrSelectGenderFemaleButtonText;
+    private javax.swing.JPanel calcBmrSelectGenderMaleButton;
+    private javax.swing.JLabel calcBmrSelectGenderMaleButtonText;
+    private javax.swing.JLabel calcBmrTitleText;
+    private javax.swing.JLabel calcBmrWeightText;
+    private javax.swing.JTextField calcBmrWeightValueTextField;
+    private javax.swing.JLabel calcBmrYearsText;
     private javax.swing.JPanel calcButton;
     private javax.swing.JLabel calcButtonBar;
     private javax.swing.JLabel calcButtonIcon;
     private javax.swing.JLabel calcButtonText;
+    private javax.swing.JPanel calcMenu;
     private javax.swing.JPanel calcPanel;
+    private javax.swing.JPanel calculateBfiButton;
+    private javax.swing.JLabel calculateBfiButtonText;
+    private javax.swing.JPanel calculateBmiButton;
+    private javax.swing.JLabel calculateBmiButtonText;
+    private javax.swing.JPanel calculateBmrButton;
+    private javax.swing.JLabel calculateBmrButtonText;
     private javax.swing.JLabel closeButton;
     private javax.swing.JLabel cmText;
     private javax.swing.JLabel goalLeftText;
@@ -907,20 +2357,26 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel goalText;
     private javax.swing.JLabel goalValueText;
     private javax.swing.JLabel heightText;
-    private javax.swing.JLabel heightValueText;
+    private javax.swing.JTextField heightValueTextField;
     private javax.swing.JLabel infoBanner;
     private javax.swing.JPanel infoButton;
     private javax.swing.JLabel infoButtonBar;
     private javax.swing.JLabel infoButtonIcon;
     private javax.swing.JLabel infoButtonText;
     private javax.swing.JPanel infoPanel;
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kcalIcon;
     private javax.swing.JPanel kcalPanel;
     private javax.swing.JLabel kcalValueText;
     private javax.swing.JLabel kgText;
+    private javax.swing.JPanel lastActivitiesPanel;
+    private javax.swing.JLabel lastActivitiesText;
+    private javax.swing.JPanel lastActivity1Panel;
+    private javax.swing.JLabel lastActivity1ValueText;
+    private javax.swing.JPanel lastActivity2Panel;
+    private javax.swing.JLabel lastActivity2ValueText;
+    private javax.swing.JPanel lastActivity3Panel;
+    private javax.swing.JLabel lastActivity3ValueText;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel maleIcon;
     private javax.swing.JLabel mealDiaryBanner;
@@ -932,12 +2388,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel menuPanel;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JLabel modifyNotesButton;
+    private javax.swing.JPanel modifyParamsToggleButton;
+    private javax.swing.JLabel modifyParamsToggleButtonOff;
+    private javax.swing.JLabel modifyParamsToggleButtonOn;
     private javax.swing.JLabel myProfileBanner;
     private javax.swing.JPanel myProfileButton;
     private javax.swing.JLabel myProfileButtonBar;
     private javax.swing.JLabel myProfileButtonIcon;
     private javax.swing.JLabel myProfileButtonText;
     private javax.swing.JPanel myProfilePanel;
+    private javax.swing.JLabel nameLowerBar;
     private javax.swing.JPanel namePanel;
     private javax.swing.JLabel nameText;
     private javax.swing.JLabel noteText;
@@ -945,7 +2405,22 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel notesPanel;
     private javax.swing.JLabel notesText;
     private javax.swing.JTextArea notesTextArea;
-    private javax.swing.JLabel paramChangeButton;
+    private javax.swing.JPanel physicalActivityLevel1Button;
+    private javax.swing.JLabel physicalActivityLevel1Text;
+    private javax.swing.JPanel physicalActivityLevel2Button;
+    private javax.swing.JLabel physicalActivityLevel2Text1;
+    private javax.swing.JLabel physicalActivityLevel2Text2;
+    private javax.swing.JPanel physicalActivityLevel3Button;
+    private javax.swing.JLabel physicalActivityLevel3Text1;
+    private javax.swing.JLabel physicalActivityLevel3Text2;
+    private javax.swing.JPanel physicalActivityLevel4Button;
+    private javax.swing.JLabel physicalActivityLevel4Text1;
+    private javax.swing.JLabel physicalActivityLevel4Text2;
+    private javax.swing.JPanel physicalActivityLevel5Button;
+    private javax.swing.JLabel physicalActivityLevel5Text1;
+    private javax.swing.JLabel physicalActivityLevel5Text2;
+    private javax.swing.JPanel physicalActivityTypePanel;
+    private javax.swing.JLabel physicalActivityTypeText;
     private javax.swing.JLabel profileNameText;
     private javax.swing.JLabel saveNotesButton;
     private javax.swing.JLabel statsBanner;
@@ -958,7 +2433,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel userParamPanel;
     private javax.swing.JLabel weightText;
     private javax.swing.JPanel weightValuePanel;
-    private javax.swing.JLabel weightValueText;
+    private javax.swing.JTextField weightValueTextField;
     private javax.swing.JLabel workoutDiaryBanner;
     private javax.swing.JPanel workoutDiaryButton;
     private javax.swing.JLabel workoutDiaryButtonBar;
