@@ -12,20 +12,25 @@ import javax.swing.JTextField;
 public class GUI extends javax.swing.JFrame {
 
     private boolean buttonActive=false;
-    private final Calculators calc;
-    protected int weight;
+    private final BmrCalculator bmrCalc;
+    private final BmiCalculator bmiCalc;
+    private final BfiCalculator bfiCalc;
+    protected float weight;
     protected int height;
     protected int age;
     protected int waist;
-    protected int gender=0;
-    protected double activityLevel=1.2;
+    protected int gender = 0;
+    private int sportSelected = 0;
+    protected double activityLevel = 1.2;
     DecimalFormat df = new DecimalFormat("##.#");
     /**
      * Creates new form GUI
      */
     public GUI() {
-        this.calc = new Calculators();
-        
+        this.bmrCalc = new BmrCalculator();
+        this.bmiCalc = new BmiCalculator();
+        this.bfiCalc = new BfiCalculator();
+   
         initComponents();
     }
 
@@ -78,21 +83,20 @@ public class GUI extends javax.swing.JFrame {
         kcalIcon = new javax.swing.JLabel();
         userParamPanel = new javax.swing.JPanel();
         bmiText = new javax.swing.JLabel();
-        bmiValueText = new javax.swing.JLabel();
-        noteText = new javax.swing.JLabel();
-        noteValueText = new javax.swing.JLabel();
+        bmiValueTextField = new javax.swing.JTextField();
+        bmiRateText = new javax.swing.JLabel();
+        bmiRateValueTextField = new javax.swing.JTextField();
         goalText = new javax.swing.JLabel();
         goalValueText = new javax.swing.JLabel();
         goalLeftText = new javax.swing.JLabel();
+        bmiValueTextField2 = new javax.swing.JTextField();
         goalLeftValueText = new javax.swing.JLabel();
         maleIcon = new javax.swing.JLabel();
         weightValuePanel = new javax.swing.JPanel();
         weightText = new javax.swing.JLabel();
         weightValueTextField = new javax.swing.JTextField();
-        kgText = new javax.swing.JLabel();
         heightText = new javax.swing.JLabel();
         heightValueTextField = new javax.swing.JTextField();
-        cmText = new javax.swing.JLabel();
         ageText = new javax.swing.JLabel();
         ageValueTextField = new javax.swing.JTextField();
         modifyParamsToggleButton = new javax.swing.JPanel();
@@ -116,6 +120,41 @@ public class GUI extends javax.swing.JFrame {
         mealDiaryBanner = new javax.swing.JLabel();
         workoutDiaryPanel = new javax.swing.JPanel();
         workoutDiaryBanner = new javax.swing.JLabel();
+        selectSportBar = new javax.swing.JPanel();
+        selectRunningBar = new javax.swing.JLabel();
+        selectLiftingBar = new javax.swing.JLabel();
+        selectBikeRidingBar = new javax.swing.JLabel();
+        selectFootballBar = new javax.swing.JLabel();
+        selectSwimmingBar = new javax.swing.JLabel();
+        selectSkatingBar = new javax.swing.JLabel();
+        selectYogaBar = new javax.swing.JLabel();
+        selectJumpingRopeBar = new javax.swing.JLabel();
+        selectSportPanel = new javax.swing.JPanel();
+        selectRunningButton = new javax.swing.JPanel();
+        selectRunningBannerBw = new javax.swing.JLabel();
+        selectRunningBannerColor = new javax.swing.JLabel();
+        selectLiftingButton = new javax.swing.JPanel();
+        selectLiftingBannerBw = new javax.swing.JLabel();
+        selectLiftingBannerColor = new javax.swing.JLabel();
+        selectBikeRidingButton = new javax.swing.JPanel();
+        selectBikeRidingBannerBw = new javax.swing.JLabel();
+        selectBikeRidingBannerColor = new javax.swing.JLabel();
+        selectFootballButton = new javax.swing.JPanel();
+        selectFootballBannerBw = new javax.swing.JLabel();
+        selectFootballBannerColor = new javax.swing.JLabel();
+        selectSwimmingButton = new javax.swing.JPanel();
+        selectSwimmingBannerBw = new javax.swing.JLabel();
+        selectSwimmingBannerColor = new javax.swing.JLabel();
+        selectSkatingButton = new javax.swing.JPanel();
+        selectSkatingBannerBw = new javax.swing.JLabel();
+        selectSkatingBannerColor = new javax.swing.JLabel();
+        selectYogaButton = new javax.swing.JPanel();
+        selectYogaBannerBw = new javax.swing.JLabel();
+        selectYogaBannerColor = new javax.swing.JLabel();
+        selectJumpingRopeButton = new javax.swing.JPanel();
+        selectJumpingRopeBannerBw = new javax.swing.JLabel();
+        selectJumpingRopeBannerColor = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         statsPanel = new javax.swing.JPanel();
         statsBanner = new javax.swing.JLabel();
         calcPanel = new javax.swing.JPanel();
@@ -500,23 +539,28 @@ public class GUI extends javax.swing.JFrame {
         bmiText.setText("BMI:");
         userParamPanel.add(bmiText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 5, -1, -1));
 
-        bmiValueText.setBackground(new java.awt.Color(238, 238, 238));
-        bmiValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        bmiValueText.setForeground(new java.awt.Color(238, 238, 238));
-        bmiValueText.setText("21,3");
-        userParamPanel.add(bmiValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 15, -1, 40));
+        bmiValueTextField.setEditable(false);
+        bmiValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmiValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        bmiValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmiValueTextField.setText("-");
+        bmiValueTextField.setBorder(null);
+        userParamPanel.add(bmiValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 18, 100, 40));
 
-        noteText.setBackground(new java.awt.Color(238, 238, 238));
-        noteText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
-        noteText.setForeground(new java.awt.Color(138, 152, 173));
-        noteText.setText("Ocena:");
-        userParamPanel.add(noteText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 60, -1, -1));
+        bmiRateText.setBackground(new java.awt.Color(238, 238, 238));
+        bmiRateText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        bmiRateText.setForeground(new java.awt.Color(138, 152, 173));
+        bmiRateText.setText("Ocena:");
+        userParamPanel.add(bmiRateText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 60, -1, -1));
 
-        noteValueText.setBackground(new java.awt.Color(238, 238, 238));
-        noteValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        noteValueText.setForeground(new java.awt.Color(238, 238, 238));
-        noteValueText.setText("PRAWIDŁOWA");
-        userParamPanel.add(noteValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 65, -1, 40));
+        bmiRateValueTextField.setEditable(false);
+        bmiRateValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        bmiRateValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        bmiRateValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        bmiRateValueTextField.setText("-");
+        bmiRateValueTextField.setToolTipText("");
+        bmiRateValueTextField.setBorder(null);
+        userParamPanel.add(bmiRateValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 72, 180, 30));
 
         goalText.setBackground(new java.awt.Color(238, 238, 238));
         goalText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -536,6 +580,14 @@ public class GUI extends javax.swing.JFrame {
         goalLeftText.setText("Do celu pozostało:");
         userParamPanel.add(goalLeftText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 150, -1, -1));
 
+        bmiValueTextField2.setEditable(false);
+        bmiValueTextField2.setBackground(new java.awt.Color(50, 54, 61));
+        bmiValueTextField2.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
+        bmiValueTextField2.setForeground(new java.awt.Color(238, 238, 238));
+        bmiValueTextField2.setText("65,2");
+        bmiValueTextField2.setBorder(null);
+        userParamPanel.add(bmiValueTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 18, 100, 40));
+
         goalLeftValueText.setBackground(new java.awt.Color(238, 238, 238));
         goalLeftValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         goalLeftValueText.setForeground(new java.awt.Color(238, 238, 238));
@@ -552,27 +604,26 @@ public class GUI extends javax.swing.JFrame {
         weightText.setBackground(new java.awt.Color(238, 238, 238));
         weightText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         weightText.setForeground(new java.awt.Color(238, 238, 238));
-        weightText.setText("Waga:");
+        weightText.setText("Waga (kg):");
         weightValuePanel.add(weightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
 
         weightValueTextField.setEditable(false);
         weightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
         weightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
         weightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
-        weightValueTextField.setText("63,0");
+        weightValueTextField.setText("63.0");
         weightValueTextField.setBorder(null);
-        weightValuePanel.add(weightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 130, 75));
-
-        kgText.setBackground(new java.awt.Color(0, 173, 181));
-        kgText.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
-        kgText.setForeground(new java.awt.Color(238, 238, 238));
-        kgText.setText("kg");
-        weightValuePanel.add(kgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 25, -1, 70));
+        weightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                weightValueTextFieldKeyPressed(evt);
+            }
+        });
+        weightValuePanel.add(weightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 180, 75));
 
         heightText.setBackground(new java.awt.Color(238, 238, 238));
         heightText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         heightText.setForeground(new java.awt.Color(238, 238, 238));
-        heightText.setText("Wzrost:");
+        heightText.setText("Wzrost (cm):");
         weightValuePanel.add(heightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 95, -1, -1));
 
         heightValueTextField.setEditable(false);
@@ -581,13 +632,12 @@ public class GUI extends javax.swing.JFrame {
         heightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         heightValueTextField.setText("172");
         heightValueTextField.setBorder(null);
-        weightValuePanel.add(heightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 105, 70, 50));
-
-        cmText.setBackground(new java.awt.Color(0, 173, 181));
-        cmText.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
-        cmText.setForeground(new java.awt.Color(238, 238, 238));
-        cmText.setText("cm");
-        weightValuePanel.add(cmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(78, 120, -1, 30));
+        heightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                heightValueTextFieldKeyPressed(evt);
+            }
+        });
+        weightValuePanel.add(heightValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 105, 80, 50));
 
         ageText.setBackground(new java.awt.Color(238, 238, 238));
         ageText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -601,7 +651,12 @@ public class GUI extends javax.swing.JFrame {
         ageValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         ageValueTextField.setText("20");
         ageValueTextField.setBorder(null);
-        weightValuePanel.add(ageValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 175, 60, 50));
+        ageValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ageValueTextFieldKeyPressed(evt);
+            }
+        });
+        weightValuePanel.add(ageValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 175, 90, 50));
 
         modifyParamsToggleButton.setBackground(new java.awt.Color(238, 238, 238));
         modifyParamsToggleButton.setForeground(new java.awt.Color(238, 238, 238));
@@ -749,6 +804,7 @@ public class GUI extends javax.swing.JFrame {
         myProfilePanel.add(lastActivitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 415, 605, 290));
 
         mainPanel.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        initValues();
 
         mealDiaryPanel.setBackground(new java.awt.Color(57, 62, 70));
         mealDiaryPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
@@ -768,7 +824,296 @@ public class GUI extends javax.swing.JFrame {
         workoutDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/workoutdiary_banner.png"))); // NOI18N
         workoutDiaryPanel.add(workoutDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        selectSportBar.setBackground(new java.awt.Color(57, 62, 70));
+        selectSportBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectRunningBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectRunningBar.setLabelFor(selectSportBar);
+        selectRunningBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectRunningBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectRunningBar.setOpaque(true);
+        selectRunningBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectRunningBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 131, 5));
+
+        selectLiftingBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectLiftingBar.setLabelFor(selectSportBar);
+        selectLiftingBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectLiftingBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectLiftingBar.setOpaque(true);
+        selectLiftingBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectLiftingBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 0, 131, 5));
+
+        selectBikeRidingBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectBikeRidingBar.setLabelFor(selectSportBar);
+        selectBikeRidingBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectBikeRidingBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectBikeRidingBar.setOpaque(true);
+        selectBikeRidingBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectBikeRidingBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 0, 131, 5));
+
+        selectFootballBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectFootballBar.setLabelFor(selectSportBar);
+        selectFootballBar.setMaximumSize(new java.awt.Dimension(132, 5));
+        selectFootballBar.setMinimumSize(new java.awt.Dimension(132, 5));
+        selectFootballBar.setOpaque(true);
+        selectFootballBar.setPreferredSize(new java.awt.Dimension(132, 5));
+        selectSportBar.add(selectFootballBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 0, 132, 5));
+
+        selectSwimmingBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectSwimmingBar.setLabelFor(selectSportBar);
+        selectSwimmingBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectSwimmingBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectSwimmingBar.setOpaque(true);
+        selectSwimmingBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectSwimmingBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 0, 131, 5));
+
+        selectSkatingBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectSkatingBar.setLabelFor(selectSportBar);
+        selectSkatingBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectSkatingBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectSkatingBar.setOpaque(true);
+        selectSkatingBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectSkatingBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 0, 131, 5));
+
+        selectYogaBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectYogaBar.setLabelFor(selectSportBar);
+        selectYogaBar.setMaximumSize(new java.awt.Dimension(131, 5));
+        selectYogaBar.setMinimumSize(new java.awt.Dimension(131, 5));
+        selectYogaBar.setOpaque(true);
+        selectYogaBar.setPreferredSize(new java.awt.Dimension(131, 5));
+        selectSportBar.add(selectYogaBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(787, 0, 131, 5));
+
+        selectJumpingRopeBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectJumpingRopeBar.setLabelFor(selectSportBar);
+        selectJumpingRopeBar.setMaximumSize(new java.awt.Dimension(132, 5));
+        selectJumpingRopeBar.setMinimumSize(new java.awt.Dimension(132, 5));
+        selectJumpingRopeBar.setOpaque(true);
+        selectJumpingRopeBar.setPreferredSize(new java.awt.Dimension(132, 5));
+        selectSportBar.add(selectJumpingRopeBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(918, 0, 132, 5));
+
+        workoutDiaryPanel.add(selectSportBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 1050, 5));
+
+        selectSportPanel.setBackground(new java.awt.Color(50, 54, 61));
+        selectSportPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectRunningButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectRunningButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectRunningButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectRunningButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectRunningButtonMouseExited(evt);
+            }
+        });
+        selectRunningButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectRunningBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/running_bw.png"))); // NOI18N
+        selectRunningButton.add(selectRunningBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectRunningBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/running_color.png"))); // NOI18N
+        selectRunningButton.add(selectRunningBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectRunningButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 131, 320));
+
+        selectLiftingButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectLiftingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectLiftingButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectLiftingButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectLiftingButtonMouseExited(evt);
+            }
+        });
+        selectLiftingButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectLiftingBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lifting_bw.png"))); // NOI18N
+        selectLiftingButton.add(selectLiftingBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectLiftingBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lifting_color.png"))); // NOI18N
+        selectLiftingButton.add(selectLiftingBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectLiftingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 0, 131, 320));
+
+        selectBikeRidingButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectBikeRidingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectBikeRidingButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectBikeRidingButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectBikeRidingButtonMouseExited(evt);
+            }
+        });
+        selectBikeRidingButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectBikeRidingBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bikeriding_bw.png"))); // NOI18N
+        selectBikeRidingButton.add(selectBikeRidingBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectBikeRidingBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bikeriding_color.png"))); // NOI18N
+        selectBikeRidingButton.add(selectBikeRidingBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectBikeRidingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 0, 131, 320));
+
+        selectFootballButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectFootballButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectFootballButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectFootballButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectFootballButtonMouseExited(evt);
+            }
+        });
+        selectFootballButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectFootballBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/football_bw.png"))); // NOI18N
+        selectFootballButton.add(selectFootballBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectFootballBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/football_color.png"))); // NOI18N
+        selectFootballButton.add(selectFootballBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectFootballButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 0, 132, 320));
+
+        selectSwimmingButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectSwimmingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectSwimmingButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectSwimmingButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectSwimmingButtonMouseExited(evt);
+            }
+        });
+        selectSwimmingButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectSwimmingBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swimming_bw.png"))); // NOI18N
+        selectSwimmingButton.add(selectSwimmingBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSwimmingBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/swimming_color.png"))); // NOI18N
+        selectSwimmingButton.add(selectSwimmingBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectSwimmingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 0, 131, 320));
+
+        selectSkatingButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectSkatingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectSkatingButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectSkatingButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectSkatingButtonMouseExited(evt);
+            }
+        });
+        selectSkatingButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectSkatingBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/skating_bw.png"))); // NOI18N
+        selectSkatingButton.add(selectSkatingBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSkatingBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/skating_color.png"))); // NOI18N
+        selectSkatingButton.add(selectSkatingBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectSkatingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 0, 131, 320));
+
+        selectYogaButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectYogaButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectYogaButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectYogaButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectYogaButtonMouseExited(evt);
+            }
+        });
+        selectYogaButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectYogaBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yoga_bw.png"))); // NOI18N
+        selectYogaButton.add(selectYogaBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectYogaBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yoga_color.png"))); // NOI18N
+        selectYogaButton.add(selectYogaBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectYogaButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(787, 0, 131, 320));
+
+        selectJumpingRopeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectJumpingRopeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectJumpingRopeButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectJumpingRopeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectJumpingRopeButtonMouseExited(evt);
+            }
+        });
+        selectJumpingRopeButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectJumpingRopeBannerBw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jumpingrope_bw.png"))); // NOI18N
+        selectJumpingRopeButton.add(selectJumpingRopeBannerBw, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectJumpingRopeBannerColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jumpingrope_color.png"))); // NOI18N
+        selectJumpingRopeButton.add(selectJumpingRopeBannerColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        selectSportPanel.add(selectJumpingRopeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(918, 0, 132, 320));
+
+        workoutDiaryPanel.add(selectSportPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 155, 1050, 320));
+
+        jPanel1.setBackground(new java.awt.Color(50, 54, 61));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1020, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 215, Short.MAX_VALUE)
+        );
+
+        workoutDiaryPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 490, 1020, 215));
+
         mainPanel.add(workoutDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
+        selectRunningBannerColor.setVisible(true);
+        selectRunningBannerColor.setVisible(false);
+        selectRunningBar.setVisible(false);
+        selectLiftingBannerColor.setVisible(true);
+        selectLiftingBannerColor.setVisible(false);
+        selectLiftingBar.setVisible(false);
+        selectBikeRidingBannerColor.setVisible(true);
+        selectBikeRidingBannerColor.setVisible(false);
+        selectBikeRidingBar.setVisible(false);
+        selectFootballBannerColor.setVisible(true);
+        selectFootballBannerColor.setVisible(false);
+        selectFootballBar.setVisible(false);
+        selectSwimmingBannerColor.setVisible(true);
+        selectSwimmingBannerColor.setVisible(false);
+        selectSwimmingBar.setVisible(false);
+        selectSkatingBannerColor.setVisible(true);
+        selectSkatingBannerColor.setVisible(false);
+        selectSkatingBar.setVisible(false);
+        selectYogaBannerColor.setVisible(true);
+        selectYogaBannerColor.setVisible(false);
+        selectYogaBar.setVisible(false);
+        selectJumpingRopeBannerColor.setVisible(true);
+        selectJumpingRopeBannerColor.setVisible(false);
+        selectJumpingRopeBar.setVisible(false);
 
         statsPanel.setBackground(new java.awt.Color(57, 62, 70));
         statsPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
@@ -1692,7 +2037,16 @@ public class GUI extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void initValues() {
+        if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
+            weight = Float.parseFloat(weightValueTextField.getText());
+            height = Integer.parseInt(heightValueTextField.getText());
+            age = Integer.parseInt(ageValueTextField.getText());
+            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiRateValueTextField.setText(bmiCalc.rateBmi());
+        }
+    }
     
     private void myProfileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseClicked
         menuBar(myProfileButtonBar);
@@ -1855,6 +2209,14 @@ public class GUI extends javax.swing.JFrame {
         weightValueTextField.setEditable(false);
         heightValueTextField.setEditable(false);
         ageValueTextField.setEditable(false);
+        
+        if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
+            weight = Float.parseFloat(weightValueTextField.getText());
+            height = Integer.parseInt(heightValueTextField.getText());
+            age = Integer.parseInt(ageValueTextField.getText());
+            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiRateValueTextField.setText(bmiCalc.rateBmi());
+        }
     }//GEN-LAST:event_modifyParamsToggleButtonOffMouseClicked
 
     private void calcBfiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiButtonMouseExited
@@ -1878,6 +2240,8 @@ public class GUI extends javax.swing.JFrame {
         calcBmrResultPanel.setVisible(false);
         calcBmiPanel.setVisible(false);
         calcBmiResultPanel.setVisible(false);
+        
+        gender = 0;
     }//GEN-LAST:event_calcBfiButtonMouseClicked
 
     private void calcBmiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmiButtonMouseExited
@@ -1901,6 +2265,8 @@ public class GUI extends javax.swing.JFrame {
         calcBmrResultPanel.setVisible(false);
         calcBfiPanel.setVisible(false);
         calcBfiResultPanel.setVisible(false);
+        
+        gender = 0;
     }//GEN-LAST:event_calcBmiButtonMouseClicked
 
     private void calcBmrButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseExited
@@ -1925,6 +2291,8 @@ public class GUI extends javax.swing.JFrame {
         calcBmiResultPanel.setVisible(false);
         calcBfiPanel.setVisible(false);
         calcBfiResultPanel.setVisible(false);
+        
+        gender = 0;
     }//GEN-LAST:event_calcBmrButtonMouseClicked
 
     private void calcBmrSelectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseClicked
@@ -1967,25 +2335,25 @@ public class GUI extends javax.swing.JFrame {
 
     private void calculateBmrButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseClicked
         if(!(calcBmrWeightValueTextField.getText().equals("") || calcBmrHeightValueTextField.getText().equals("") || calcBmrAgeValueTextField.getText().equals(""))) {
-            weight = Integer.parseInt(calcBmrWeightValueTextField.getText());
+            weight = Float.parseFloat(calcBmrWeightValueTextField.getText());
             height = Integer.parseInt(calcBmrHeightValueTextField.getText());
             age = Integer.parseInt(calcBmrAgeValueTextField.getText());
 
-            bmrResultKcalValueTextField.setText(String.valueOf(calc.calculateBmrKcalAmount(weight, height, age, activityLevel, gender)) + " kcal");
-            bmrResultKcalCutValueTextField.setText(String.valueOf(calc.calculateBmrKcalCutAmount()) + " kcal");
-            bmrResultKcalOverValueTextField.setText(String.valueOf(calc.calculateBmrKcalOverAmount()) + " kcal");
+            bmrResultKcalValueTextField.setText(String.valueOf(bmrCalc.calculateKcalAmount(weight, height, age, activityLevel, gender)) + " kcal");
+            bmrResultKcalCutValueTextField.setText(String.valueOf(bmrCalc.calculateKcalCutAmount()) + " kcal");
+            bmrResultKcalOverValueTextField.setText(String.valueOf(bmrCalc.calculateKcalOverAmount()) + " kcal");
 
-            bmrResultProteinsValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
-            bmrResultFatsValueTextField.setText(String.valueOf(calc.calculateBmrFatsAmount()) + "g");
-            bmrResultCarbsValueTextField.setText(String.valueOf(calc.calculateBmrCarbsAmount()) + "g");
+            bmrResultProteinsValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
+            bmrResultFatsValueTextField.setText(String.valueOf(bmrCalc.calculateFatsAmount()) + "g");
+            bmrResultCarbsValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsAmount()) + "g");
 
-            bmrResultProteinsCutValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
-            bmrResultFatsCutValueTextField.setText(String.valueOf(calc.calculateBmrFatsCutAmount()) + "g");
-            bmrResultCarbsCutValueTextField.setText(String.valueOf(calc.calculateBmrCarbsCutAmount()) + "g");
+            bmrResultProteinsCutValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
+            bmrResultFatsCutValueTextField.setText(String.valueOf(bmrCalc.calculateFatsCutAmount()) + "g");
+            bmrResultCarbsCutValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsCutAmount()) + "g");
 
-            bmrResultProteinsOverValueTextField.setText(String.valueOf(calc.calculateBmrProteinsAmount(weight)) + "g");
-            bmrResultFatsOverValueTextField.setText(String.valueOf(calc.calculateBmrFatsOverAmount()) + "g");
-            bmrResultCarbsOverValueTextField.setText(String.valueOf(calc.calculateBmrCarbsOverAmount()) + "g");
+            bmrResultProteinsOverValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
+            bmrResultFatsOverValueTextField.setText(String.valueOf(bmrCalc.calculateFatsOverAmount()) + "g");
+            bmrResultCarbsOverValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsOverAmount()) + "g");
         }
     }//GEN-LAST:event_calculateBmrButtonMouseClicked
 
@@ -2054,7 +2422,7 @@ public class GUI extends javax.swing.JFrame {
         physicalActivityLevel5Button.setBackground(Color.decode("#3B3F46"));
     }//GEN-LAST:event_physicalActivityLevel5ButtonMouseExited
     
-    private void onlyNumbersVal(java.awt.event.KeyEvent evt, JTextField field) {
+    private void intNumberVal(java.awt.event.KeyEvent evt, JTextField field) {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') {
@@ -2075,33 +2443,54 @@ public class GUI extends javax.swing.JFrame {
         }
     }
     
+    private void floatNumberVal(java.awt.event.KeyEvent evt, JTextField field) {
+        String fieldString = field.getText();
+        int fieldStringLength = fieldString.length();
+        if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || evt.getKeyChar() == '.') {
+            if(fieldStringLength < 5) {
+                field.setEditable(true);
+            }
+            else {
+                field.setEditable(false);
+            }
+        }
+        else {
+            if(evt.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getExtendedKeyCode() == KeyEvent.VK_DELETE) {
+                field.setEditable(true);
+            }
+            else {
+                field.setEditable(false);
+            }
+        }
+    }
+    
     private void calcBmrWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrWeightValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBmrWeightValueTextField);
+        floatNumberVal(evt, calcBmrWeightValueTextField);
     }//GEN-LAST:event_calcBmrWeightValueTextFieldKeyPressed
 
     private void calcBmrHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrHeightValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBmrHeightValueTextField);
+        intNumberVal(evt, calcBmrHeightValueTextField);
     }//GEN-LAST:event_calcBmrHeightValueTextFieldKeyPressed
 
     private void calcBmrAgeValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrAgeValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBmrAgeValueTextField);
+        intNumberVal(evt, calcBmrAgeValueTextField);
     }//GEN-LAST:event_calcBmrAgeValueTextFieldKeyPressed
 
     private void calcBmiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiWeightValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBmiWeightValueTextField);
+        floatNumberVal(evt, calcBmiWeightValueTextField);
     }//GEN-LAST:event_calcBmiWeightValueTextFieldKeyPressed
 
     private void calcBmiHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiHeightValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBmiHeightValueTextField);
+        intNumberVal(evt, calcBmiHeightValueTextField);
     }//GEN-LAST:event_calcBmiHeightValueTextFieldKeyPressed
 
     private void calculateBmiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseClicked
         if(!(calcBmiWeightValueTextField.getText().equals("") || calcBmiHeightValueTextField.getText().equals(""))) {
-            weight = Integer.parseInt(calcBmiWeightValueTextField.getText());
+            weight = Float.parseFloat(calcBmiWeightValueTextField.getText());
             height = Integer.parseInt(calcBmiHeightValueTextField.getText());
 
-            bmiResultValueTextField.setText(String.valueOf(df.format(calc.calculateBmi((float)weight, (float)height))));
-            bmiResultRateTextField.setText(calc.rateBmi());
+            bmiResultValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiResultRateTextField.setText(bmiCalc.rateBmi());
         }
     }//GEN-LAST:event_calculateBmiButtonMouseClicked
 
@@ -2114,20 +2503,20 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_calculateBmiButtonMouseExited
 
     private void calcBfiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWeightValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBfiWeightValueTextField);
+        floatNumberVal(evt, calcBfiWeightValueTextField);
     }//GEN-LAST:event_calcBfiWeightValueTextFieldKeyPressed
 
     private void calcBfiWaistValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWaistValueTextFieldKeyPressed
-        onlyNumbersVal(evt, calcBfiWaistValueTextField);
+        intNumberVal(evt, calcBfiWaistValueTextField);
     }//GEN-LAST:event_calcBfiWaistValueTextFieldKeyPressed
 
     private void calculateBfiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseClicked
         if(!(calcBfiWeightValueTextField.getText().equals("") || calcBfiWaistValueTextField.getText().equals(""))) {
-            weight = Integer.parseInt(calcBfiWeightValueTextField.getText());
+            weight = Float.parseFloat(calcBfiWeightValueTextField.getText());
             waist = Integer.parseInt(calcBfiWaistValueTextField.getText());
 
-            bfiResultValueTextField.setText(String.valueOf(df.format(calc.calculateBfi((float)weight, (float)waist, gender))) + "%");
-            bfiResultRateTextField.setText(calc.rateBfi(gender));
+            bfiResultValueTextField.setText(String.valueOf(df.format(bfiCalc.calculateBfi(weight, (float)waist, gender))) + "%");
+            bfiResultRateTextField.setText(bfiCalc.rateBfi(gender));
         }
     }//GEN-LAST:event_calculateBfiButtonMouseClicked
 
@@ -2168,6 +2557,209 @@ public class GUI extends javax.swing.JFrame {
     private void calcBfiSelectGenderMaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderMaleButtonMouseExited
         calcBfiSelectGenderFemaleButton.setBackground(Color.decode("#3B3F46"));
     }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseExited
+
+    private void weightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_weightValueTextFieldKeyPressed
+        floatNumberVal(evt, weightValueTextField);
+    }//GEN-LAST:event_weightValueTextFieldKeyPressed
+
+    private void heightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_heightValueTextFieldKeyPressed
+        intNumberVal(evt, heightValueTextField);
+    }//GEN-LAST:event_heightValueTextFieldKeyPressed
+
+    private void ageValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ageValueTextFieldKeyPressed
+        intNumberVal(evt, heightValueTextField); 
+    }//GEN-LAST:event_ageValueTextFieldKeyPressed
+
+    private void selectRunningButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectRunningButtonMouseEntered
+        if(sportSelected != 1) {
+            selectRunningBannerColor.setVisible(true);
+            selectRunningBannerBw.setVisible(false);
+            selectRunningBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectRunningButtonMouseEntered
+
+    private void selectRunningButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectRunningButtonMouseExited
+        if(sportSelected != 1) {
+            selectRunningBannerBw.setVisible(true);
+            selectRunningBannerColor.setVisible(false);
+            selectRunningBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectRunningButtonMouseExited
+
+    private void selectLiftingButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLiftingButtonMouseEntered
+        if(sportSelected != 2) {
+            selectLiftingBannerColor.setVisible(true);
+            selectLiftingBannerBw.setVisible(false);
+            selectLiftingBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectLiftingButtonMouseEntered
+
+    private void selectLiftingButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLiftingButtonMouseExited
+        if(sportSelected != 2) {
+            selectLiftingBannerBw.setVisible(true);
+            selectLiftingBannerColor.setVisible(false);
+            selectLiftingBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectLiftingButtonMouseExited
+
+    private void selectBikeRidingButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectBikeRidingButtonMouseEntered
+        if(sportSelected != 3) {
+            selectBikeRidingBannerColor.setVisible(true);
+            selectBikeRidingBannerBw.setVisible(false);
+            selectBikeRidingBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectBikeRidingButtonMouseEntered
+
+    private void selectBikeRidingButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectBikeRidingButtonMouseExited
+        if(sportSelected != 3) {
+            selectBikeRidingBannerBw.setVisible(true);
+            selectBikeRidingBannerColor.setVisible(false);
+            selectBikeRidingBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectBikeRidingButtonMouseExited
+
+    private void selectFootballButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectFootballButtonMouseEntered
+        if(sportSelected != 4) {
+            selectFootballBannerColor.setVisible(true);
+            selectFootballBannerBw.setVisible(false);
+            selectFootballBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectFootballButtonMouseEntered
+
+    private void selectFootballButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectFootballButtonMouseExited
+        if(sportSelected != 4) {
+            selectFootballBannerBw.setVisible(true);
+            selectFootballBannerColor.setVisible(false);
+            selectFootballBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectFootballButtonMouseExited
+
+    private void selectSwimmingButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSwimmingButtonMouseEntered
+        if(sportSelected != 5) {
+            selectSwimmingBannerColor.setVisible(true);
+            selectSwimmingBannerBw.setVisible(false);
+            selectSwimmingBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectSwimmingButtonMouseEntered
+
+    private void selectSwimmingButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSwimmingButtonMouseExited
+        if(sportSelected != 5) {
+            selectSwimmingBannerBw.setVisible(true);
+            selectSwimmingBannerColor.setVisible(false);
+            selectSwimmingBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectSwimmingButtonMouseExited
+
+    private void selectSkatingButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSkatingButtonMouseEntered
+        if(sportSelected != 6) {
+            selectSkatingBannerColor.setVisible(true);
+            selectSkatingBannerBw.setVisible(false);
+            selectSkatingBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectSkatingButtonMouseEntered
+
+    private void selectSkatingButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSkatingButtonMouseExited
+        if(sportSelected != 6) {
+            selectSkatingBannerBw.setVisible(true);
+            selectSkatingBannerColor.setVisible(false);
+            selectSkatingBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectSkatingButtonMouseExited
+
+    private void selectYogaButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectYogaButtonMouseEntered
+        if(sportSelected != 7) {
+            selectYogaBannerColor.setVisible(true);
+            selectYogaBannerBw.setVisible(false);
+            selectYogaBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectYogaButtonMouseEntered
+
+    private void selectYogaButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectYogaButtonMouseExited
+        if(sportSelected != 7) {
+            selectYogaBannerBw.setVisible(true);
+            selectYogaBannerColor.setVisible(false);
+            selectYogaBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectYogaButtonMouseExited
+
+    private void selectJumpingRopeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectJumpingRopeButtonMouseEntered
+        if(sportSelected != 8) {
+            selectJumpingRopeBannerColor.setVisible(true);
+            selectJumpingRopeBannerBw.setVisible(false);
+            selectJumpingRopeBar.setVisible(true);
+        }
+    }//GEN-LAST:event_selectJumpingRopeButtonMouseEntered
+
+    private void selectJumpingRopeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectJumpingRopeButtonMouseExited
+        if(sportSelected != 8) {
+            selectJumpingRopeBannerBw.setVisible(true);
+            selectJumpingRopeBannerColor.setVisible(false);
+            selectJumpingRopeBar.setVisible(false);
+        }
+    }//GEN-LAST:event_selectJumpingRopeButtonMouseExited
+    
+    private void selectSportButtonClicked(JLabel bannerColor, JLabel bannerBw, JLabel bar, int sportId) {
+        sportSelected = sportId;
+        selectRunningBannerColor.setVisible(false);
+        selectRunningBannerBw.setVisible(true);
+        selectRunningBar.setVisible(false);
+        selectLiftingBannerColor.setVisible(false);
+        selectLiftingBannerBw.setVisible(true);
+        selectLiftingBar.setVisible(false);
+        selectBikeRidingBannerColor.setVisible(false);
+        selectBikeRidingBannerBw.setVisible(true);
+        selectBikeRidingBar.setVisible(false);
+        selectFootballBannerColor.setVisible(false);
+        selectFootballBannerBw.setVisible(true);
+        selectFootballBar.setVisible(false);
+        selectSwimmingBannerColor.setVisible(false);
+        selectSwimmingBannerBw.setVisible(true);
+        selectSwimmingBar.setVisible(false);
+        selectSkatingBannerColor.setVisible(false);
+        selectSkatingBannerBw.setVisible(true);
+        selectSkatingBar.setVisible(false);
+        selectYogaBannerColor.setVisible(false);
+        selectYogaBannerBw.setVisible(true);
+        selectYogaBar.setVisible(false);
+        selectJumpingRopeBannerColor.setVisible(false);
+        selectJumpingRopeBannerBw.setVisible(true);
+        selectJumpingRopeBar.setVisible(false);
+        bannerColor.setVisible(true);
+        bannerBw.setVisible(false);
+        bar.setVisible(true);
+    }
+    
+    private void selectRunningButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectRunningButtonMouseClicked
+        selectSportButtonClicked(selectRunningBannerColor, selectRunningBannerBw, selectRunningBar, 1);
+    }//GEN-LAST:event_selectRunningButtonMouseClicked
+
+    private void selectLiftingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectLiftingButtonMouseClicked
+        selectSportButtonClicked(selectLiftingBannerColor, selectLiftingBannerBw, selectLiftingBar, 2);
+    }//GEN-LAST:event_selectLiftingButtonMouseClicked
+
+    private void selectBikeRidingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectBikeRidingButtonMouseClicked
+        selectSportButtonClicked(selectBikeRidingBannerColor, selectBikeRidingBannerBw, selectBikeRidingBar, 3);
+    }//GEN-LAST:event_selectBikeRidingButtonMouseClicked
+
+    private void selectFootballButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectFootballButtonMouseClicked
+        selectSportButtonClicked(selectFootballBannerColor, selectFootballBannerBw, selectFootballBar, 4);
+    }//GEN-LAST:event_selectFootballButtonMouseClicked
+
+    private void selectSwimmingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSwimmingButtonMouseClicked
+        selectSportButtonClicked(selectSwimmingBannerColor, selectSwimmingBannerBw, selectSwimmingBar, 5);
+    }//GEN-LAST:event_selectSwimmingButtonMouseClicked
+
+    private void selectSkatingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectSkatingButtonMouseClicked
+        selectSportButtonClicked(selectSkatingBannerColor, selectSkatingBannerBw, selectSkatingBar, 6);
+    }//GEN-LAST:event_selectSkatingButtonMouseClicked
+
+    private void selectYogaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectYogaButtonMouseClicked
+        selectSportButtonClicked(selectYogaBannerColor, selectYogaBannerBw, selectYogaBar, 7);
+    }//GEN-LAST:event_selectYogaButtonMouseClicked
+
+    private void selectJumpingRopeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectJumpingRopeButtonMouseClicked
+        selectSportButtonClicked(selectJumpingRopeBannerColor, selectJumpingRopeBannerBw, selectJumpingRopeBar, 8);
+    }//GEN-LAST:event_selectJumpingRopeButtonMouseClicked
     
     private void repaintSelectGenderButtons() {
         calcBmrSelectGenderFemaleButton.repaint();
@@ -2265,10 +2857,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField bfiResultRateTextField;
     private javax.swing.JTextField bfiResultValueTextField;
     private javax.swing.JLabel bmiButtonText;
+    private javax.swing.JLabel bmiRateText;
+    private javax.swing.JTextField bmiRateValueTextField;
     private javax.swing.JTextField bmiResultRateTextField;
     private javax.swing.JTextField bmiResultValueTextField;
     private javax.swing.JLabel bmiText;
-    private javax.swing.JLabel bmiValueText;
+    private javax.swing.JTextField bmiValueTextField;
+    private javax.swing.JTextField bmiValueTextField2;
     private javax.swing.JLabel bmrButtonText;
     private javax.swing.JTextField bmrResultCarbsCutValueTextField;
     private javax.swing.JTextField bmrResultCarbsOverValueTextField;
@@ -2351,7 +2946,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel calculateBmrButton;
     private javax.swing.JLabel calculateBmrButtonText;
     private javax.swing.JLabel closeButton;
-    private javax.swing.JLabel cmText;
     private javax.swing.JLabel goalLeftText;
     private javax.swing.JLabel goalLeftValueText;
     private javax.swing.JLabel goalText;
@@ -2364,11 +2958,11 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel infoButtonIcon;
     private javax.swing.JLabel infoButtonText;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kcalIcon;
     private javax.swing.JPanel kcalPanel;
     private javax.swing.JLabel kcalValueText;
-    private javax.swing.JLabel kgText;
     private javax.swing.JPanel lastActivitiesPanel;
     private javax.swing.JLabel lastActivitiesText;
     private javax.swing.JPanel lastActivity1Panel;
@@ -2400,8 +2994,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel nameLowerBar;
     private javax.swing.JPanel namePanel;
     private javax.swing.JLabel nameText;
-    private javax.swing.JLabel noteText;
-    private javax.swing.JLabel noteValueText;
     private javax.swing.JPanel notesPanel;
     private javax.swing.JLabel notesText;
     private javax.swing.JTextArea notesTextArea;
@@ -2423,6 +3015,40 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel physicalActivityTypeText;
     private javax.swing.JLabel profileNameText;
     private javax.swing.JLabel saveNotesButton;
+    private javax.swing.JLabel selectBikeRidingBannerBw;
+    private javax.swing.JLabel selectBikeRidingBannerColor;
+    private javax.swing.JLabel selectBikeRidingBar;
+    private javax.swing.JPanel selectBikeRidingButton;
+    private javax.swing.JLabel selectFootballBannerBw;
+    private javax.swing.JLabel selectFootballBannerColor;
+    private javax.swing.JLabel selectFootballBar;
+    private javax.swing.JPanel selectFootballButton;
+    private javax.swing.JLabel selectJumpingRopeBannerBw;
+    private javax.swing.JLabel selectJumpingRopeBannerColor;
+    private javax.swing.JLabel selectJumpingRopeBar;
+    private javax.swing.JPanel selectJumpingRopeButton;
+    private javax.swing.JLabel selectLiftingBannerBw;
+    private javax.swing.JLabel selectLiftingBannerColor;
+    private javax.swing.JLabel selectLiftingBar;
+    private javax.swing.JPanel selectLiftingButton;
+    private javax.swing.JLabel selectRunningBannerBw;
+    private javax.swing.JLabel selectRunningBannerColor;
+    private javax.swing.JLabel selectRunningBar;
+    private javax.swing.JPanel selectRunningButton;
+    private javax.swing.JLabel selectSkatingBannerBw;
+    private javax.swing.JLabel selectSkatingBannerColor;
+    private javax.swing.JLabel selectSkatingBar;
+    private javax.swing.JPanel selectSkatingButton;
+    private javax.swing.JPanel selectSportBar;
+    private javax.swing.JPanel selectSportPanel;
+    private javax.swing.JLabel selectSwimmingBannerBw;
+    private javax.swing.JLabel selectSwimmingBannerColor;
+    private javax.swing.JLabel selectSwimmingBar;
+    private javax.swing.JPanel selectSwimmingButton;
+    private javax.swing.JLabel selectYogaBannerBw;
+    private javax.swing.JLabel selectYogaBannerColor;
+    private javax.swing.JLabel selectYogaBar;
+    private javax.swing.JPanel selectYogaButton;
     private javax.swing.JLabel statsBanner;
     private javax.swing.JPanel statsButton;
     private javax.swing.JLabel statsButtonBar;
