@@ -1,13 +1,13 @@
 package com.mycompany.dailyme;
 
 public class BfiCalculator {
-    protected float bfi;
+    protected double bfi;
     
-    protected float calculateBfi(float weight, float waist, int gender) {
+    protected double calculateBfi(double weight, double waist, int gender) {
         if(gender == 0)
-            bfi = (float) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 76.76) / (weight * 2.2)) * 100);
+            bfi = (double) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 76.76) / (weight * 2.2)) * 100);
         if(gender == 1)
-            bfi = (float) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 98.42) / (weight * 2.2)) * 100);
+            bfi = (double) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 98.42) / (weight * 2.2)) * 100);
         return bfi;
     }
     

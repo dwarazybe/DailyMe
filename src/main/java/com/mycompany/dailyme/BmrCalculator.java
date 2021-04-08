@@ -12,7 +12,7 @@ public class BmrCalculator {
     protected int carbsCutAmount;
     protected int carbsOverAmount;
     
-    protected int calculateKcalAmount(float weight, int height, int age, double activityLevel, int gender) {
+    protected int calculateKcalAmount(double weight, int height, int age, double activityLevel, int gender) {
         if(gender == 0)
             kcalAmount = (int) Math.round(activityLevel * ((9.99 * weight) + (6.25 * height) - (4.92 * age) - 161));
         if(gender == 1)
@@ -30,7 +30,7 @@ public class BmrCalculator {
         return kcalOverAmount;
     }
     
-    protected int calculateProteinsAmount(float weight) {
+    protected int calculateProteinsAmount(double weight) {
         proteinsAmount = (int) Math.round(weight * 2.15);
         return proteinsAmount;
     }

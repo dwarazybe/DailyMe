@@ -1,9 +1,9 @@
 package com.mycompany.dailyme;
 
 public class BmiCalculator {
-    protected float bmi;
+    protected double bmi;
     
-    protected float calculateBmi(float weight, float height) {
+    protected double calculateBmi(double weight, double height) {
         bmi = (weight / ((height * height) / 10000));
         return bmi;
     }

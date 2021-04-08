@@ -5,8 +5,10 @@ import java.awt.Frame;
 import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class GUI extends javax.swing.JFrame {
@@ -15,23 +17,34 @@ public class GUI extends javax.swing.JFrame {
     private final BmrCalculator bmrCalc;
     private final BmiCalculator bmiCalc;
     private final BfiCalculator bfiCalc;
-    protected float weight;
+    private final DatabaseOperations database;
+    private final Validators val;
+    protected int mealsNumber = 0;
+    protected double weight;
+    protected String passwordStr = null;
+    protected String passwordConfirmStr = null;
     protected int height;
     protected int age;
     protected int waist;
-    protected int gender = 0;
+    protected int calcGender = 0;
+    protected int registerGender = 0;
     private int sportSelected = 0;
+    private boolean loginCorrect = false;
+    private boolean passwordCorrect = false;
+    private boolean emailCorrect = false;
     protected double activityLevel = 1.2;
-    DecimalFormat df = new DecimalFormat("##.#");
-    /**
-     * Creates new form GUI
-     */
+    DecimalFormat df = new DecimalFormat("##.#"); 
+    DefaultListModel products = new DefaultListModel();
+    DefaultListModel<String> model = new DefaultListModel<String>();
+
     public GUI() {
         this.bmrCalc = new BmrCalculator();
         this.bmiCalc = new BmiCalculator();
         this.bfiCalc = new BfiCalculator();
-   
+        this.database = new DatabaseOperations();
+        this.val = new Validators();
         initComponents();
+        loadProductList();
     }
 
     /**
@@ -43,6 +56,125 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        loginDialog = new javax.swing.JDialog();
+        loginDialogPanel = new javax.swing.JPanel();
+        loginDialogUpperBar = new javax.swing.JLabel();
+        loginDialogLeftBorder = new javax.swing.JLabel();
+        loginDialogRightBorder = new javax.swing.JLabel();
+        loginDialogLowerBorder = new javax.swing.JLabel();
+        loginDialogUpperThickBar = new javax.swing.JPanel();
+        loginDialogTitleText = new javax.swing.JLabel();
+        loginDialogLoginText = new javax.swing.JLabel();
+        loginDialogLoginTextField = new javax.swing.JTextField();
+        loginDialogPasswordText = new javax.swing.JLabel();
+        loginDialogPasswordField = new javax.swing.JPasswordField();
+        loginDialogWarningText = new javax.swing.JLabel();
+        loginDialogRegisterButton = new javax.swing.JPanel();
+        loginDialogRegisterButtonText = new javax.swing.JLabel();
+        loginDialogRegisterButtonLowerBar = new javax.swing.JLabel();
+        loginDialogCancelButton = new javax.swing.JPanel();
+        loginDialogCancelButtonText = new javax.swing.JLabel();
+        loginDialogLoginButton = new javax.swing.JPanel();
+        loginDialogLoginButtonText = new javax.swing.JLabel();
+        registerDialog = new javax.swing.JDialog();
+        registerDialogPanel = new javax.swing.JPanel();
+        registerDialogUpperBar = new javax.swing.JLabel();
+        registerDialogLeftBorder = new javax.swing.JLabel();
+        registerDialogRightBorder = new javax.swing.JLabel();
+        registerDialogLowerBorder = new javax.swing.JLabel();
+        registerDialogUpperThickBar = new javax.swing.JPanel();
+        registerDialogTitleText = new javax.swing.JLabel();
+        registerDialogLoginText = new javax.swing.JLabel();
+        registerDialogLoginTextField = new javax.swing.JTextField();
+        registerDialogLoginWarningText = new javax.swing.JLabel();
+        registerDialogLoginCorrectText = new javax.swing.JLabel();
+        registerDialogPasswordText = new javax.swing.JLabel();
+        registerDialogPasswordField = new javax.swing.JPasswordField();
+        registerDialogConfirmPasswordText = new javax.swing.JLabel();
+        registerDialogConfirmPasswordField = new javax.swing.JPasswordField();
+        registerDialogPasswordWarningText = new javax.swing.JLabel();
+        registerDialogPasswordCorrectText = new javax.swing.JLabel();
+        registerDialogEmailText = new javax.swing.JLabel();
+        registerDialogEmailTextField = new javax.swing.JTextField();
+        registerDialogEmailWarningText = new javax.swing.JLabel();
+        registerDialogEmailCorrectText = new javax.swing.JLabel();
+        registerDialogNameText = new javax.swing.JLabel();
+        registerDialogNameTextField = new javax.swing.JTextField();
+        registerDialogAgeText = new javax.swing.JLabel();
+        registerDialogAgeTextField = new javax.swing.JTextField();
+        registerDialogGenderText = new javax.swing.JLabel();
+        registerDialogWeightText = new javax.swing.JLabel();
+        registerDialogWeightTextField = new javax.swing.JTextField();
+        registerDialogHeightText = new javax.swing.JLabel();
+        registerDialogHeightTextField = new javax.swing.JTextField();
+        registerDialogGoalText = new javax.swing.JLabel();
+        registerDialogGoalTextField = new javax.swing.JTextField();
+        registerDialogSelectGenderButton = new javax.swing.JPanel();
+        registerDialogSelectGenderFemaleButton = new javax.swing.JPanel();
+        registerDialogSelectGenderFemaleButtonText = new javax.swing.JLabel();
+        registerDialogSelectGenderMaleButton = new javax.swing.JPanel();
+        registerDialogSelectGenderMaleButtonText = new javax.swing.JLabel();
+        registerDialogCancelButton = new javax.swing.JPanel();
+        registerDialogCancelButtonText = new javax.swing.JLabel();
+        registerDialogRegisterButton = new javax.swing.JPanel();
+        registerDialogRegisterButtonText = new javax.swing.JLabel();
+        addMealDialog = new javax.swing.JDialog();
+        addMealDialogPanel = new javax.swing.JPanel();
+        addMealDialogUpperBar = new javax.swing.JLabel();
+        addMealDialogUpperThickBar = new javax.swing.JPanel();
+        addMealDialogTitleText = new javax.swing.JLabel();
+        addMealProduct1Panel = new javax.swing.JPanel();
+        addProduct1Button = new javax.swing.JPanel();
+        addProduct1ButtonPlusSign = new javax.swing.JLabel();
+        addProduct1TextField = new javax.swing.JTextField();
+        addMealProduct2Panel = new javax.swing.JPanel();
+        addProduct2Button = new javax.swing.JPanel();
+        addProduct2ButtonPlusSign = new javax.swing.JLabel();
+        addProduct2TextField = new javax.swing.JTextField();
+        addMealProduct3Panel = new javax.swing.JPanel();
+        addProduct3Button = new javax.swing.JPanel();
+        addProduct3ButtonPlusSign = new javax.swing.JLabel();
+        addProduct3TextField = new javax.swing.JTextField();
+        addMealProduct4Panel = new javax.swing.JPanel();
+        addProduct4Button = new javax.swing.JPanel();
+        addProduct4ButtonPlusSign = new javax.swing.JLabel();
+        addProduct4TextField = new javax.swing.JTextField();
+        addMealProduct5Panel = new javax.swing.JPanel();
+        addProduct5Button = new javax.swing.JPanel();
+        addProduct5ButtonPlusSign = new javax.swing.JLabel();
+        addProduct5TextField = new javax.swing.JTextField();
+        addMealProduct6Panel = new javax.swing.JPanel();
+        addProduct6Button = new javax.swing.JPanel();
+        addProduct6ButtonPlusSign = new javax.swing.JLabel();
+        addProduct6TextField = new javax.swing.JTextField();
+        addMealProduct7Panel = new javax.swing.JPanel();
+        addProduct7Button = new javax.swing.JPanel();
+        addProduct7ButtonPlusSign = new javax.swing.JLabel();
+        addProduct7TextField = new javax.swing.JTextField();
+        addMealProduct8Panel = new javax.swing.JPanel();
+        addProduct8Button = new javax.swing.JPanel();
+        addProduct8ButtonPlusSign = new javax.swing.JLabel();
+        addProduct8TextField = new javax.swing.JTextField();
+        addMealProduct9Panel = new javax.swing.JPanel();
+        addProduct9Button = new javax.swing.JPanel();
+        addProduct9ButtonPlusSign = new javax.swing.JLabel();
+        addProduct9TextField = new javax.swing.JTextField();
+        addMealDialogCancelButton = new javax.swing.JPanel();
+        addMealDialogCancelButtonText = new javax.swing.JLabel();
+        addMealDialogConfirmButton = new javax.swing.JPanel();
+        addMealDialogConfirmButtonText = new javax.swing.JLabel();
+        selectProductDialog = new javax.swing.JDialog();
+        selectProductDialogPanel = new javax.swing.JPanel();
+        selectProductDialogUpperBar = new javax.swing.JLabel();
+        selectProductDialogUpperThickBar = new javax.swing.JPanel();
+        selectProductDialogTitleText = new javax.swing.JLabel();
+        selectProductDialogCancelButton = new javax.swing.JPanel();
+        selectProductDialogCancelButtonText = new javax.swing.JLabel();
+        selectProductDialogConfirmButton = new javax.swing.JPanel();
+        selectProductDialogConfirmButtonText = new javax.swing.JLabel();
+        selectProductDialogProductsListScrollPane = new javax.swing.JScrollPane();
+        selectProductDialogProductsList = new javax.swing.JList<>();
+        selectProductDialogProductSearchTextField = new javax.swing.JTextField();
         mainPanel = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         myProfileButton = new javax.swing.JPanel();
@@ -69,14 +201,27 @@ public class GUI extends javax.swing.JFrame {
         infoButtonText = new javax.swing.JLabel();
         infoButtonIcon = new javax.swing.JLabel();
         infoButtonBar = new javax.swing.JLabel();
-        closeButton = new javax.swing.JLabel();
-        minimizeButton = new javax.swing.JLabel();
+        closeButton = new javax.swing.JPanel();
+        closeButtonIcon = new javax.swing.JLabel();
+        closeButtonIconActive = new javax.swing.JLabel();
+        minimizeButton = new javax.swing.JPanel();
+        minimizeButtonIcon = new javax.swing.JLabel();
+        minimizeButtonIconActive = new javax.swing.JLabel();
+        loginInfo = new javax.swing.JPanel();
+        loginInfoLoweBar = new javax.swing.JLabel();
+        loginInfoUsernameTextField = new javax.swing.JTextField();
+        logoutButton = new javax.swing.JPanel();
+        logoutButtonText = new javax.swing.JLabel();
+        logoutButtonLowerBar = new javax.swing.JLabel();
+        loginButton = new javax.swing.JPanel();
+        loginButtonText = new javax.swing.JLabel();
+        loginButtonLowerBar = new javax.swing.JLabel();
         myProfilePanel = new javax.swing.JPanel();
         myProfileBanner = new javax.swing.JLabel();
         namePanel = new javax.swing.JPanel();
-        nameText = new javax.swing.JLabel();
         profileNameText = new javax.swing.JLabel();
-        nameLowerBar = new javax.swing.JLabel();
+        profileNameLowerBar = new javax.swing.JLabel();
+        profileNameTextField = new javax.swing.JTextField();
         kcalPanel = new javax.swing.JPanel();
         todayKcalText = new javax.swing.JLabel();
         kcalValueText = new javax.swing.JLabel();
@@ -87,11 +232,12 @@ public class GUI extends javax.swing.JFrame {
         bmiRateText = new javax.swing.JLabel();
         bmiRateValueTextField = new javax.swing.JTextField();
         goalText = new javax.swing.JLabel();
-        goalValueText = new javax.swing.JLabel();
+        goalValueTextField = new javax.swing.JTextField();
         goalLeftText = new javax.swing.JLabel();
+        goalLeftTextField = new javax.swing.JTextField();
         bmiValueTextField2 = new javax.swing.JTextField();
-        goalLeftValueText = new javax.swing.JLabel();
         maleIcon = new javax.swing.JLabel();
+        femaleIcon = new javax.swing.JLabel();
         weightValuePanel = new javax.swing.JPanel();
         weightText = new javax.swing.JLabel();
         weightValueTextField = new javax.swing.JTextField();
@@ -118,6 +264,92 @@ public class GUI extends javax.swing.JFrame {
         lastActivity3ValueText = new javax.swing.JLabel();
         mealDiaryPanel = new javax.swing.JPanel();
         mealDiaryBanner = new javax.swing.JLabel();
+        mealListPanel = new javax.swing.JPanel();
+        meal1Panel = new javax.swing.JPanel();
+        meal1Name = new javax.swing.JTextField();
+        meal1KcalText = new javax.swing.JLabel();
+        meal1KcalValueTextField = new javax.swing.JTextField();
+        meal1ProteinsText = new javax.swing.JLabel();
+        meal1ProteinsValueTextField = new javax.swing.JTextField();
+        meal1FatsText = new javax.swing.JLabel();
+        meal1FatsValueTextField = new javax.swing.JTextField();
+        meal1CarbsText = new javax.swing.JLabel();
+        meal1CarbsValueTextField = new javax.swing.JTextField();
+        meal2Panel = new javax.swing.JPanel();
+        meal2Name = new javax.swing.JTextField();
+        meal2KcalText = new javax.swing.JLabel();
+        meal2KcalValueTextField = new javax.swing.JTextField();
+        meal2ProteinsText = new javax.swing.JLabel();
+        meal2ProteinsValueTextField = new javax.swing.JTextField();
+        meal2FatsText = new javax.swing.JLabel();
+        meal2FatsValueTextField = new javax.swing.JTextField();
+        meal2CarbsText = new javax.swing.JLabel();
+        meal2CarbsValueTextField = new javax.swing.JTextField();
+        meal3Panel = new javax.swing.JPanel();
+        meal3Name = new javax.swing.JTextField();
+        meal3KcalText = new javax.swing.JLabel();
+        meal3KcalValueTextField = new javax.swing.JTextField();
+        meal3ProteinsText = new javax.swing.JLabel();
+        meal3ProteinsValueTextField = new javax.swing.JTextField();
+        meal3FatsText = new javax.swing.JLabel();
+        meal3FatsValueTextField = new javax.swing.JTextField();
+        meal3CarbsText = new javax.swing.JLabel();
+        meal3CarbsValueTextField = new javax.swing.JTextField();
+        meal4Panel = new javax.swing.JPanel();
+        meal4Name = new javax.swing.JTextField();
+        meal4KcalText = new javax.swing.JLabel();
+        meal4KcalValueTextField = new javax.swing.JTextField();
+        meal4ProteinsText = new javax.swing.JLabel();
+        meal4ProteinsValueTextField = new javax.swing.JTextField();
+        meal4FatsText = new javax.swing.JLabel();
+        meal4FatsValueTextField = new javax.swing.JTextField();
+        meal4CarbsText = new javax.swing.JLabel();
+        meal4CarbsValueTextField = new javax.swing.JTextField();
+        meal5Panel = new javax.swing.JPanel();
+        meal5Name = new javax.swing.JTextField();
+        meal5KcalText = new javax.swing.JLabel();
+        meal5KcalValueTextField = new javax.swing.JTextField();
+        meal5ProteinsText = new javax.swing.JLabel();
+        meal5ProteinsValueTextField = new javax.swing.JTextField();
+        meal5FatsText = new javax.swing.JLabel();
+        meal5FatsValueTextField = new javax.swing.JTextField();
+        meal5CarbsText = new javax.swing.JLabel();
+        meal5CarbsValueTextField = new javax.swing.JTextField();
+        meal6Panel = new javax.swing.JPanel();
+        meal6Name = new javax.swing.JTextField();
+        meal6KcalText = new javax.swing.JLabel();
+        meal6KcalValueTextField = new javax.swing.JTextField();
+        meal6ProteinsText = new javax.swing.JLabel();
+        meal6ProteinsValueTextField = new javax.swing.JTextField();
+        meal6FatsText = new javax.swing.JLabel();
+        meal6FatsValueTextField = new javax.swing.JTextField();
+        meal6CarbsText = new javax.swing.JLabel();
+        meal6CarbsValueTextField = new javax.swing.JTextField();
+        meal7Panel = new javax.swing.JPanel();
+        meal7Name = new javax.swing.JTextField();
+        meal7KcalText = new javax.swing.JLabel();
+        meal7KcalValueTextField = new javax.swing.JTextField();
+        meal7ProteinsText = new javax.swing.JLabel();
+        meal7ProteinsValueTextField = new javax.swing.JTextField();
+        meal7FatsText = new javax.swing.JLabel();
+        meal7FatsValueTextField = new javax.swing.JTextField();
+        meal7CarbsText = new javax.swing.JLabel();
+        meal7CarbsValueTextField = new javax.swing.JTextField();
+        meal8Panel = new javax.swing.JPanel();
+        meal8Name = new javax.swing.JTextField();
+        meal8KcalText = new javax.swing.JLabel();
+        meal8KcalValueTextField = new javax.swing.JTextField();
+        meal8ProteinsText = new javax.swing.JLabel();
+        meal8ProteinsValueTextField = new javax.swing.JTextField();
+        meal8FatsText = new javax.swing.JLabel();
+        meal8FatsValueTextField = new javax.swing.JTextField();
+        meal8CarbsText = new javax.swing.JLabel();
+        meal8CarbsValueTextField = new javax.swing.JTextField();
+        mealInfoPanel = new javax.swing.JPanel();
+        addMealButton = new javax.swing.JPanel();
+        addMealButtonText = new javax.swing.JLabel();
+        closeDayButton = new javax.swing.JPanel();
+        closeDayButtonText = new javax.swing.JLabel();
         workoutDiaryPanel = new javax.swing.JPanel();
         workoutDiaryBanner = new javax.swing.JLabel();
         selectSportBar = new javax.swing.JPanel();
@@ -258,6 +490,1210 @@ public class GUI extends javax.swing.JFrame {
         bfiResultRateTextField = new javax.swing.JTextField();
         infoPanel = new javax.swing.JPanel();
         infoBanner = new javax.swing.JLabel();
+
+        loginDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        loginDialog.setMinimumSize(new java.awt.Dimension(440, 240));
+        loginDialog.setUndecorated(true);
+        loginDialog.setResizable(false);
+        loginDialog.setLocationRelativeTo(null);
+
+        loginDialogPanel.setBackground(new java.awt.Color(57, 62, 70));
+        loginDialogPanel.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogPanel.setMinimumSize(new java.awt.Dimension(440, 240));
+        loginDialogPanel.setPreferredSize(new java.awt.Dimension(440, 240));
+        loginDialogWarningText.setVisible(false);
+        loginDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginDialogUpperBar.setBackground(new java.awt.Color(0, 173, 181));
+        loginDialogUpperBar.setOpaque(true);
+        loginDialogPanel.add(loginDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 5));
+
+        loginDialogLeftBorder.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogLeftBorder.setOpaque(true);
+        loginDialogPanel.add(loginDialogLeftBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2, 260));
+
+        loginDialogRightBorder.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogRightBorder.setOpaque(true);
+        loginDialogPanel.add(loginDialogRightBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(438, 0, 2, 260));
+
+        loginDialogLowerBorder.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogLowerBorder.setOpaque(true);
+        loginDialogPanel.add(loginDialogLowerBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 258, 440, 2));
+
+        loginDialogUpperThickBar.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogUpperThickBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginDialogTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 30)); // NOI18N
+        loginDialogTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogTitleText.setText("Zaloguj się");
+        loginDialogUpperThickBar.add(loginDialogTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
+
+        loginDialogPanel.add(loginDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 60));
+
+        loginDialogLoginText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        loginDialogLoginText.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogLoginText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        loginDialogLoginText.setText("Login:");
+        loginDialogPanel.add(loginDialogLoginText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 81, 80, -1));
+
+        loginDialogLoginTextField.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogLoginTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        loginDialogLoginTextField.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogLoginTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        loginDialogLoginTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        loginDialogLoginTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        loginDialogLoginTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        loginDialogLoginTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        loginDialogLoginTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        loginDialogLoginTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                loginDialogLoginTextFieldKeyPressed(evt);
+            }
+        });
+        loginDialogPanel.add(loginDialogLoginTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 312, 30));
+
+        loginDialogPasswordText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        loginDialogPasswordText.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogPasswordText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        loginDialogPasswordText.setText("Hasło:");
+        loginDialogPanel.add(loginDialogPasswordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 80, -1));
+
+        loginDialogPasswordField.setBackground(new java.awt.Color(50, 54, 61));
+        loginDialogPasswordField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        loginDialogPasswordField.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogPasswordField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        loginDialogPasswordField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        loginDialogPasswordField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        loginDialogPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                loginDialogPasswordFieldKeyPressed(evt);
+            }
+        });
+        loginDialogPanel.add(loginDialogPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 312, 30));
+
+        loginDialogWarningText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        loginDialogWarningText.setForeground(new java.awt.Color(250, 111, 111));
+        loginDialogWarningText.setText("Podany login lub hasło są nieprawidłowe.");
+        loginDialogWarningText.setToolTipText("");
+        loginDialogPanel.add(loginDialogWarningText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 155, -1, -1));
+
+        loginDialogRegisterButton.setBackground(new java.awt.Color(57, 62, 70));
+        loginDialogRegisterButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginDialogRegisterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginDialogRegisterButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                loginDialogRegisterButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                loginDialogRegisterButtonMouseExited(evt);
+            }
+        });
+        loginDialogRegisterButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginDialogRegisterButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        loginDialogRegisterButtonText.setForeground(new java.awt.Color(0, 173, 181));
+        loginDialogRegisterButtonText.setText("Rejestracja");
+        loginDialogRegisterButton.add(loginDialogRegisterButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 63, -1));
+
+        loginDialogRegisterButtonLowerBar.setBackground(new java.awt.Color(0, 173, 181));
+        loginDialogRegisterButtonLowerBar.setOpaque(true);
+        loginDialogRegisterButton.add(loginDialogRegisterButtonLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 21, 61, 1));
+
+        loginDialogPanel.add(loginDialogRegisterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 190, 63, 22));
+
+        loginDialogCancelButton.setBackground(new java.awt.Color(57, 62, 70));
+        loginDialogCancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
+        loginDialogCancelButton.setForeground(new java.awt.Color(50, 54, 61));
+        loginDialogCancelButton.setToolTipText("");
+        loginDialogCancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginDialogCancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginDialogCancelButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                loginDialogCancelButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                loginDialogCancelButtonMouseExited(evt);
+            }
+        });
+        loginDialogCancelButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginDialogCancelButtonText.setBackground(new java.awt.Color(57, 62, 70));
+        loginDialogCancelButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        loginDialogCancelButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogCancelButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loginDialogCancelButtonText.setText("Anuluj");
+        loginDialogCancelButton.add(loginDialogCancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        loginDialogPanel.add(loginDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 190, 90, 25));
+
+        loginDialogLoginButton.setBackground(new java.awt.Color(0, 173, 181));
+        loginDialogLoginButton.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogLoginButton.setToolTipText("");
+        loginDialogLoginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginDialogLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginDialogLoginButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                loginDialogLoginButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                loginDialogLoginButtonMouseExited(evt);
+            }
+        });
+        loginDialogLoginButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginDialogLoginButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        loginDialogLoginButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        loginDialogLoginButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loginDialogLoginButtonText.setText("Zaloguj");
+        loginDialogLoginButton.add(loginDialogLoginButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        loginDialogPanel.add(loginDialogLoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, 90, 25));
+
+        javax.swing.GroupLayout loginDialogLayout = new javax.swing.GroupLayout(loginDialog.getContentPane());
+        loginDialog.getContentPane().setLayout(loginDialogLayout);
+        loginDialogLayout.setHorizontalGroup(
+            loginDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(loginDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        loginDialogLayout.setVerticalGroup(
+            loginDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(loginDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        registerDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        registerDialog.setMinimumSize(new java.awt.Dimension(510, 600));
+        registerDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        registerDialog.setUndecorated(true);
+        registerDialog.setResizable(false);
+        registerDialog.setLocationRelativeTo(null);
+
+        registerDialogPanel.setBackground(new java.awt.Color(57, 62, 70));
+        registerDialogPanel.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogPanel.setMaximumSize(new java.awt.Dimension(510, 600));
+        registerDialogPanel.setMinimumSize(new java.awt.Dimension(510, 600));
+        registerDialogPanel.setPreferredSize(new java.awt.Dimension(510, 600));
+        registerDialogLoginWarningText.setVisible(false);
+        registerDialogPasswordWarningText.setVisible(false);
+        registerDialogEmailWarningText.setVisible(false);
+        registerDialogLoginCorrectText.setVisible(false);
+        registerDialogPasswordCorrectText.setVisible(false);
+        registerDialogEmailCorrectText.setVisible(false);
+        registerDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogUpperBar.setBackground(new java.awt.Color(0, 173, 181));
+        registerDialogUpperBar.setOpaque(true);
+        registerDialogPanel.add(registerDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 5));
+
+        registerDialogLeftBorder.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogLeftBorder.setOpaque(true);
+        registerDialogPanel.add(registerDialogLeftBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2, 600));
+
+        registerDialogRightBorder.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogRightBorder.setOpaque(true);
+        registerDialogPanel.add(registerDialogRightBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(508, 0, 2, 600));
+
+        registerDialogLowerBorder.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogLowerBorder.setOpaque(true);
+        registerDialogPanel.add(registerDialogLowerBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 598, 510, 2));
+
+        registerDialogUpperThickBar.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogUpperThickBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 30)); // NOI18N
+        registerDialogTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogTitleText.setText("Rejestracja");
+        registerDialogUpperThickBar.add(registerDialogTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
+
+        registerDialogPanel.add(registerDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 60));
+
+        registerDialogLoginText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogLoginText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogLoginText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogLoginText.setText("Login:");
+        registerDialogPanel.add(registerDialogLoginText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 160, -1));
+
+        registerDialogLoginTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogLoginTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogLoginTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogLoginTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogLoginTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogLoginTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogLoginTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogLoginTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogLoginTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogLoginTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogLoginTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                registerDialogLoginTextFieldKeyReleased(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogLoginTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 300, 30));
+
+        registerDialogLoginWarningText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogLoginWarningText.setForeground(new java.awt.Color(250, 111, 111));
+        registerDialogLoginWarningText.setText("Podany login jest już zajęty.");
+        registerDialogPanel.add(registerDialogLoginWarningText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 115, -1, -1));
+
+        registerDialogLoginCorrectText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogLoginCorrectText.setForeground(new java.awt.Color(102, 224, 154));
+        registerDialogLoginCorrectText.setText("Podany login jest dostępny.");
+        registerDialogPanel.add(registerDialogLoginCorrectText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 115, -1, -1));
+
+        registerDialogPasswordText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogPasswordText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogPasswordText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogPasswordText.setText("Hasło:");
+        registerDialogPanel.add(registerDialogPasswordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 160, -1));
+
+        registerDialogPasswordField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogPasswordField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogPasswordField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogPasswordField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogPasswordField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogPasswordField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogPasswordFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                registerDialogPasswordFieldKeyReleased(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 300, 30));
+
+        registerDialogConfirmPasswordText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogConfirmPasswordText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogConfirmPasswordText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogConfirmPasswordText.setText("Powtórz hasło:");
+        registerDialogPanel.add(registerDialogConfirmPasswordText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 160, -1));
+
+        registerDialogConfirmPasswordField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogConfirmPasswordField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogConfirmPasswordField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogConfirmPasswordField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogConfirmPasswordField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogConfirmPasswordField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogConfirmPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogConfirmPasswordFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                registerDialogConfirmPasswordFieldKeyReleased(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogConfirmPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 300, 30));
+
+        registerDialogPasswordWarningText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogPasswordWarningText.setForeground(new java.awt.Color(250, 111, 111));
+        registerDialogPasswordWarningText.setText("Podane hasła się różnią.");
+        registerDialogPanel.add(registerDialogPasswordWarningText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 215, -1, -1));
+
+        registerDialogPasswordCorrectText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogPasswordCorrectText.setForeground(new java.awt.Color(102, 224, 154));
+        registerDialogPasswordCorrectText.setText("Podane hasła są poprawne.");
+        registerDialogPanel.add(registerDialogPasswordCorrectText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 215, -1, -1));
+
+        registerDialogEmailText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogEmailText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogEmailText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogEmailText.setText("e-mail:");
+        registerDialogPanel.add(registerDialogEmailText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 160, -1));
+
+        registerDialogEmailTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogEmailTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogEmailTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogEmailTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogEmailTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogEmailTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogEmailTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogEmailTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogEmailTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogEmailTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogEmailTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                registerDialogEmailTextFieldKeyReleased(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogEmailTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 240, 300, 30));
+
+        registerDialogEmailWarningText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogEmailWarningText.setForeground(new java.awt.Color(250, 111, 111));
+        registerDialogEmailWarningText.setText("Podany e-mail jest już zajęty.");
+        registerDialogPanel.add(registerDialogEmailWarningText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 275, -1, -1));
+
+        registerDialogEmailCorrectText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        registerDialogEmailCorrectText.setForeground(new java.awt.Color(102, 224, 154));
+        registerDialogEmailCorrectText.setText("Podany e-mail jest dostępny.");
+        registerDialogPanel.add(registerDialogEmailCorrectText, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 275, -1, -1));
+
+        registerDialogNameText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogNameText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogNameText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogNameText.setText("Imię:");
+        registerDialogPanel.add(registerDialogNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 160, -1));
+
+        registerDialogNameTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogNameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogNameTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogNameTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogNameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogNameTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogNameTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogNameTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogNameTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogNameTextFieldKeyPressed(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 300, 30));
+
+        registerDialogAgeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogAgeText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogAgeText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogAgeText.setText("Wiek:");
+        registerDialogPanel.add(registerDialogAgeText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 160, -1));
+
+        registerDialogAgeTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogAgeTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogAgeTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogAgeTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogAgeTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogAgeTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogAgeTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogAgeTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogAgeTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogAgeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogAgeTextFieldKeyPressed(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogAgeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 80, 30));
+
+        registerDialogGenderText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogGenderText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogGenderText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogGenderText.setText("Płeć:");
+        registerDialogPanel.add(registerDialogGenderText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 160, -1));
+
+        registerDialogWeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogWeightText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogWeightText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogWeightText.setText("Waga (kg):");
+        registerDialogPanel.add(registerDialogWeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 160, -1));
+
+        registerDialogWeightTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogWeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogWeightTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogWeightTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogWeightTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogWeightTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogWeightTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogWeightTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogWeightTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogWeightTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogWeightTextFieldKeyPressed(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogWeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 80, 30));
+
+        registerDialogHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogHeightText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogHeightText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogHeightText.setText("Wzrost (cm):");
+        registerDialogPanel.add(registerDialogHeightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 160, -1));
+
+        registerDialogHeightTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogHeightTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogHeightTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogHeightTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogHeightTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogHeightTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogHeightTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogHeightTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogHeightTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogHeightTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogHeightTextFieldKeyPressed(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogHeightTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 80, 30));
+
+        registerDialogGoalText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogGoalText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogGoalText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        registerDialogGoalText.setText("Cel (kg):");
+        registerDialogPanel.add(registerDialogGoalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 160, -1));
+
+        registerDialogGoalTextField.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogGoalTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        registerDialogGoalTextField.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogGoalTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        registerDialogGoalTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        registerDialogGoalTextField.setCaretColor(new java.awt.Color(238, 238, 238));
+        registerDialogGoalTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        registerDialogGoalTextField.setMargin(new java.awt.Insets(2, 15, 2, 2));
+        registerDialogGoalTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        registerDialogGoalTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registerDialogGoalTextFieldKeyPressed(evt);
+            }
+        });
+        registerDialogPanel.add(registerDialogGoalTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 80, 30));
+
+        registerDialogSelectGenderButton.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogSelectGenderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registerDialogSelectGenderButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogSelectGenderFemaleButton.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogSelectGenderFemaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderFemaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderFemaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderFemaleButtonMouseExited(evt);
+            }
+        });
+        registerDialogSelectGenderFemaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogSelectGenderFemaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        registerDialogSelectGenderFemaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        registerDialogSelectGenderFemaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogSelectGenderFemaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registerDialogSelectGenderFemaleButtonText.setText("Kobieta");
+        registerDialogSelectGenderFemaleButtonText.setOpaque(true);
+        registerDialogSelectGenderFemaleButton.add(registerDialogSelectGenderFemaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 97, 26));
+
+        registerDialogSelectGenderButton.add(registerDialogSelectGenderFemaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 97, 26));
+
+        registerDialogSelectGenderMaleButton.setBackground(new java.awt.Color(50, 54, 61));
+        registerDialogSelectGenderMaleButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderMaleButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderMaleButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registerDialogSelectGenderMaleButtonMouseExited(evt);
+            }
+        });
+        registerDialogSelectGenderMaleButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogSelectGenderMaleButtonText.setBackground(new java.awt.Color(0, 173, 181));
+        registerDialogSelectGenderMaleButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        registerDialogSelectGenderMaleButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogSelectGenderMaleButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registerDialogSelectGenderMaleButtonText.setText("Mężczyzna");
+        registerDialogSelectGenderMaleButton.add(registerDialogSelectGenderMaleButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 97, 26));
+
+        registerDialogSelectGenderButton.add(registerDialogSelectGenderMaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 2, 97, 26));
+
+        registerDialogPanel.add(registerDialogSelectGenderButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(171, 500, 203, 30));
+
+        registerDialogCancelButton.setBackground(new java.awt.Color(57, 62, 70));
+        registerDialogCancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
+        registerDialogCancelButton.setForeground(new java.awt.Color(50, 54, 61));
+        registerDialogCancelButton.setToolTipText("");
+        registerDialogCancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registerDialogCancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                registerDialogCancelButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registerDialogCancelButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registerDialogCancelButtonMouseExited(evt);
+            }
+        });
+        registerDialogCancelButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogCancelButtonText.setBackground(new java.awt.Color(57, 62, 70));
+        registerDialogCancelButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        registerDialogCancelButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogCancelButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registerDialogCancelButtonText.setText("Anuluj");
+        registerDialogCancelButton.add(registerDialogCancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        registerDialogPanel.add(registerDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(285, 560, 90, 25));
+
+        registerDialogRegisterButton.setBackground(new java.awt.Color(0, 173, 181));
+        registerDialogRegisterButton.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogRegisterButton.setToolTipText("");
+        registerDialogRegisterButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registerDialogRegisterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                registerDialogRegisterButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registerDialogRegisterButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registerDialogRegisterButtonMouseExited(evt);
+            }
+        });
+        registerDialogRegisterButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registerDialogRegisterButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        registerDialogRegisterButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        registerDialogRegisterButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registerDialogRegisterButtonText.setText("Zarejestruj");
+        registerDialogRegisterButton.add(registerDialogRegisterButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        registerDialogPanel.add(registerDialogRegisterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 560, 90, 25));
+
+        javax.swing.GroupLayout registerDialogLayout = new javax.swing.GroupLayout(registerDialog.getContentPane());
+        registerDialog.getContentPane().setLayout(registerDialogLayout);
+        registerDialogLayout.setHorizontalGroup(
+            registerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(registerDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        registerDialogLayout.setVerticalGroup(
+            registerDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(registerDialogLayout.createSequentialGroup()
+                .addComponent(registerDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        addMealDialog.setMinimumSize(new java.awt.Dimension(640, 480));
+        addMealDialog.setModal(true);
+        addMealDialog.setUndecorated(true);
+        addMealDialog.setLocationRelativeTo(null);
+
+        addMealDialogPanel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealDialogPanel.setMinimumSize(new java.awt.Dimension(640, 480));
+        addMealDialogPanel.setPreferredSize(new java.awt.Dimension(640, 480));
+        addMealDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealDialogUpperBar.setBackground(new java.awt.Color(0, 173, 181));
+        addMealDialogUpperBar.setOpaque(true);
+        addMealDialogPanel.add(addMealDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 5));
+
+        addMealDialogUpperThickBar.setBackground(new java.awt.Color(50, 54, 61));
+        addMealDialogUpperThickBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealDialogTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 30)); // NOI18N
+        addMealDialogTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        addMealDialogTitleText.setText("Nowy posiłek");
+        addMealDialogUpperThickBar.add(addMealDialogTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
+
+        addMealDialogPanel.add(addMealDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 60));
+
+        addMealProduct1Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct1Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct1Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct1Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct1Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addProduct1ButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct1ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct1ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct1ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct1ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct1ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct1ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct1ButtonLayout = new javax.swing.GroupLayout(addProduct1Button);
+        addProduct1Button.setLayout(addProduct1ButtonLayout);
+        addProduct1ButtonLayout.setHorizontalGroup(
+            addProduct1ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct1ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct1ButtonLayout.setVerticalGroup(
+            addProduct1ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct1ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct1ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct1Panel.add(addProduct1Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct1TextField.setEditable(false);
+        addProduct1TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct1TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct1TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct1TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct1TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct1Panel.add(addProduct1TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 600, -1));
+
+        addMealProduct2Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct2Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct2Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct2Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct2Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct2Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct2ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct2ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct2ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct2ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct2ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct2ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct2ButtonLayout = new javax.swing.GroupLayout(addProduct2Button);
+        addProduct2Button.setLayout(addProduct2ButtonLayout);
+        addProduct2ButtonLayout.setHorizontalGroup(
+            addProduct2ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct2ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct2ButtonLayout.setVerticalGroup(
+            addProduct2ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct2ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct2ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct2Panel.add(addProduct2Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct2TextField.setEditable(false);
+        addProduct2TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct2TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct2TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct2TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct2TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct2Panel.add(addProduct2TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 115, 600, -1));
+
+        addMealProduct3Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct3Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct3Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct3Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct3Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct3Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct3ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct3ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct3ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct3ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct3ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct3ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct3ButtonLayout = new javax.swing.GroupLayout(addProduct3Button);
+        addProduct3Button.setLayout(addProduct3ButtonLayout);
+        addProduct3ButtonLayout.setHorizontalGroup(
+            addProduct3ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct3ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct3ButtonLayout.setVerticalGroup(
+            addProduct3ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct3ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct3ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct3Panel.add(addProduct3Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct3TextField.setEditable(false);
+        addProduct3TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct3TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct3TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct3TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct3TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct3Panel.add(addProduct3TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 600, -1));
+
+        addMealProduct4Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct4Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct4Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct4Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct4Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct4Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct4ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct4ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct4ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct4ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct4ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct4ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct4ButtonLayout = new javax.swing.GroupLayout(addProduct4Button);
+        addProduct4Button.setLayout(addProduct4ButtonLayout);
+        addProduct4ButtonLayout.setHorizontalGroup(
+            addProduct4ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct4ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct4ButtonLayout.setVerticalGroup(
+            addProduct4ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct4ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct4ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct4Panel.add(addProduct4Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct4TextField.setEditable(false);
+        addProduct4TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct4TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct4TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct4TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct4TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct4Panel.add(addProduct4TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct4Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 185, 600, -1));
+
+        addMealProduct5Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct5Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct5Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct5Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct5Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct5Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct5ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct5ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct5ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct5ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct5ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct5ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct5ButtonLayout = new javax.swing.GroupLayout(addProduct5Button);
+        addProduct5Button.setLayout(addProduct5ButtonLayout);
+        addProduct5ButtonLayout.setHorizontalGroup(
+            addProduct5ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct5ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct5ButtonLayout.setVerticalGroup(
+            addProduct5ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct5ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct5ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct5Panel.add(addProduct5Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct5TextField.setEditable(false);
+        addProduct5TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct5TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct5TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct5TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct5TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct5Panel.add(addProduct5TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct5Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 600, -1));
+
+        addMealProduct6Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct6Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct6Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct6Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct6Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct6Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct6ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct6ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct6ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct6ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct6ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct6ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct6ButtonLayout = new javax.swing.GroupLayout(addProduct6Button);
+        addProduct6Button.setLayout(addProduct6ButtonLayout);
+        addProduct6ButtonLayout.setHorizontalGroup(
+            addProduct6ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct6ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct6ButtonLayout.setVerticalGroup(
+            addProduct6ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct6ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct6ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct6Panel.add(addProduct6Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct6TextField.setEditable(false);
+        addProduct6TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct6TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct6TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct6TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct6TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct6Panel.add(addProduct6TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct6Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 255, 600, -1));
+
+        addMealProduct7Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct7Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct7Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct7Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct7Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct7Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct7ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct7ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct7ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct7ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct7ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct7ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct7ButtonLayout = new javax.swing.GroupLayout(addProduct7Button);
+        addProduct7Button.setLayout(addProduct7ButtonLayout);
+        addProduct7ButtonLayout.setHorizontalGroup(
+            addProduct7ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct7ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct7ButtonLayout.setVerticalGroup(
+            addProduct7ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct7ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct7ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct7Panel.add(addProduct7Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct7TextField.setEditable(false);
+        addProduct7TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct7TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct7TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct7TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct7TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct7Panel.add(addProduct7TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct7Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 600, -1));
+
+        addMealProduct8Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct8Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct8Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct8Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct8Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct8Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct8ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct8ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct8ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct8ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct8ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct8ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct8ButtonLayout = new javax.swing.GroupLayout(addProduct8Button);
+        addProduct8Button.setLayout(addProduct8ButtonLayout);
+        addProduct8ButtonLayout.setHorizontalGroup(
+            addProduct8ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct8ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct8ButtonLayout.setVerticalGroup(
+            addProduct8ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct8ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct8ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct8Panel.add(addProduct8Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct8TextField.setEditable(false);
+        addProduct8TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct8TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct8TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct8TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct8TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct8Panel.add(addProduct8TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct8Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 325, 600, -1));
+
+        addMealProduct9Panel.setBackground(new java.awt.Color(57, 62, 70));
+        addMealProduct9Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addProduct9Button.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct9Button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        addProduct9Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addProduct9Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addProduct9ButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addProduct9ButtonMouseExited(evt);
+            }
+        });
+
+        addProduct9ButtonPlusSign.setFont(new java.awt.Font("Source Code Pro Black", 1, 28)); // NOI18N
+        addProduct9ButtonPlusSign.setForeground(new java.awt.Color(0, 173, 181));
+        addProduct9ButtonPlusSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addProduct9ButtonPlusSign.setText("+");
+
+        javax.swing.GroupLayout addProduct9ButtonLayout = new javax.swing.GroupLayout(addProduct9Button);
+        addProduct9Button.setLayout(addProduct9ButtonLayout);
+        addProduct9ButtonLayout.setHorizontalGroup(
+            addProduct9ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(addProduct9ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        addProduct9ButtonLayout.setVerticalGroup(
+            addProduct9ButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addProduct9ButtonLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(addProduct9ButtonPlusSign, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addMealProduct9Panel.add(addProduct9Button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        addProduct9TextField.setEditable(false);
+        addProduct9TextField.setBackground(new java.awt.Color(50, 54, 61));
+        addProduct9TextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addProduct9TextField.setForeground(new java.awt.Color(238, 238, 238));
+        addProduct9TextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        addProduct9TextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        addMealProduct9Panel.add(addProduct9TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 570, 30));
+
+        addMealDialogPanel.add(addMealProduct9Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 600, -1));
+
+        addMealDialogCancelButton.setBackground(new java.awt.Color(57, 62, 70));
+        addMealDialogCancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
+        addMealDialogCancelButton.setForeground(new java.awt.Color(50, 54, 61));
+        addMealDialogCancelButton.setToolTipText("");
+        addMealDialogCancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addMealDialogCancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addMealDialogCancelButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addMealDialogCancelButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addMealDialogCancelButtonMouseExited(evt);
+            }
+        });
+        addMealDialogCancelButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealDialogCancelButtonText.setBackground(new java.awt.Color(57, 62, 70));
+        addMealDialogCancelButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        addMealDialogCancelButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        addMealDialogCancelButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addMealDialogCancelButtonText.setText("Anuluj");
+        addMealDialogCancelButton.add(addMealDialogCancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        addMealDialogPanel.add(addMealDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 430, 90, 25));
+
+        addMealDialogConfirmButton.setBackground(new java.awt.Color(0, 173, 181));
+        addMealDialogConfirmButton.setForeground(new java.awt.Color(238, 238, 238));
+        addMealDialogConfirmButton.setToolTipText("");
+        addMealDialogConfirmButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addMealDialogConfirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addMealDialogConfirmButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addMealDialogConfirmButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addMealDialogConfirmButtonMouseExited(evt);
+            }
+        });
+        addMealDialogConfirmButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealDialogConfirmButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        addMealDialogConfirmButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        addMealDialogConfirmButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addMealDialogConfirmButtonText.setText("Zatwierdź");
+        addMealDialogConfirmButton.add(addMealDialogConfirmButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        addMealDialogPanel.add(addMealDialogConfirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 430, 90, 25));
+
+        javax.swing.GroupLayout addMealDialogLayout = new javax.swing.GroupLayout(addMealDialog.getContentPane());
+        addMealDialog.getContentPane().setLayout(addMealDialogLayout);
+        addMealDialogLayout.setHorizontalGroup(
+            addMealDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(addMealDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(addMealDialogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(addMealDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        addMealDialogLayout.setVerticalGroup(
+            addMealDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 480, Short.MAX_VALUE)
+            .addGroup(addMealDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(addMealDialogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(addMealDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        selectProductDialog.setMinimumSize(new java.awt.Dimension(640, 480));
+        selectProductDialog.setModal(true);
+        selectProductDialog.setUndecorated(true);
+        selectProductDialog.setLocationRelativeTo(null);
+
+        selectProductDialogPanel.setBackground(new java.awt.Color(57, 62, 70));
+        selectProductDialogPanel.setMinimumSize(new java.awt.Dimension(640, 480));
+        selectProductDialogPanel.setPreferredSize(new java.awt.Dimension(640, 480));
+        selectProductDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectProductDialogUpperBar.setBackground(new java.awt.Color(0, 173, 181));
+        selectProductDialogUpperBar.setOpaque(true);
+        selectProductDialogPanel.add(selectProductDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 5));
+
+        selectProductDialogUpperThickBar.setBackground(new java.awt.Color(50, 54, 61));
+        selectProductDialogUpperThickBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectProductDialogTitleText.setFont(new java.awt.Font("Segoe UI Light", 0, 30)); // NOI18N
+        selectProductDialogTitleText.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogTitleText.setText("Wybierz produkt");
+        selectProductDialogUpperThickBar.add(selectProductDialogTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
+
+        selectProductDialogPanel.add(selectProductDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 60));
+
+        selectProductDialogCancelButton.setBackground(new java.awt.Color(57, 62, 70));
+        selectProductDialogCancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
+        selectProductDialogCancelButton.setForeground(new java.awt.Color(50, 54, 61));
+        selectProductDialogCancelButton.setToolTipText("");
+        selectProductDialogCancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectProductDialogCancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectProductDialogCancelButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectProductDialogCancelButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectProductDialogCancelButtonMouseExited(evt);
+            }
+        });
+        selectProductDialogCancelButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectProductDialogCancelButtonText.setBackground(new java.awt.Color(57, 62, 70));
+        selectProductDialogCancelButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        selectProductDialogCancelButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogCancelButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        selectProductDialogCancelButtonText.setText("Anuluj");
+        selectProductDialogCancelButton.add(selectProductDialogCancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        selectProductDialogPanel.add(selectProductDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 430, 90, 25));
+
+        selectProductDialogConfirmButton.setBackground(new java.awt.Color(0, 173, 181));
+        selectProductDialogConfirmButton.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogConfirmButton.setToolTipText("");
+        selectProductDialogConfirmButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selectProductDialogConfirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectProductDialogConfirmButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectProductDialogConfirmButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectProductDialogConfirmButtonMouseExited(evt);
+            }
+        });
+        selectProductDialogConfirmButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        selectProductDialogConfirmButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        selectProductDialogConfirmButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogConfirmButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        selectProductDialogConfirmButtonText.setText("Zatwierdź");
+        selectProductDialogConfirmButton.add(selectProductDialogConfirmButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
+
+        selectProductDialogPanel.add(selectProductDialogConfirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 430, 90, 25));
+
+        selectProductDialogProductsListScrollPane.setBorder(null);
+
+        selectProductDialogProductsList.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductsList.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        selectProductDialogProductsList.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        selectProductDialogProductsList.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        selectProductDialogProductsList.setSelectionBackground(new java.awt.Color(0, 173, 181));
+        selectProductDialogProductsListScrollPane.setViewportView(selectProductDialogProductsList);
+
+        selectProductDialogPanel.add(selectProductDialogProductsListScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 590, 290));
+
+        selectProductDialogProductSearchTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductSearchTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        selectProductDialogProductSearchTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductSearchTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        selectProductDialogProductSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                selectProductDialogProductSearchTextFieldKeyReleased(evt);
+            }
+        });
+        selectProductDialogPanel.add(selectProductDialogProductSearchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 290, 30));
+
+        javax.swing.GroupLayout selectProductDialogLayout = new javax.swing.GroupLayout(selectProductDialog.getContentPane());
+        selectProductDialog.getContentPane().setLayout(selectProductDialogLayout);
+        selectProductDialogLayout.setHorizontalGroup(
+            selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(selectProductDialogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(selectProductDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        selectProductDialogLayout.setVerticalGroup(
+            selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 480, Short.MAX_VALUE)
+            .addGroup(selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(selectProductDialogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(selectProductDialogPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DailyMe");
@@ -462,23 +1898,132 @@ public class GUI extends javax.swing.JFrame {
 
         menuPanel.add(infoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 230, 60));
 
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/close_20_20.png"))); // NOI18N
-        closeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButton.setBackground(new java.awt.Color(34, 40, 49));
         closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 closeButtonMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                closeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                closeButtonMouseExited(evt);
+            }
         });
-        menuPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, -1, -1));
+        closeButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        minimizeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/minimize_20_20_2.png"))); // NOI18N
-        minimizeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButtonIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/close_20_20.png"))); // NOI18N
+        closeButtonIcon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButton.add(closeButtonIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        closeButtonIconActive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/close_active_20_20.png"))); // NOI18N
+        closeButtonIconActive.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeButtonIconActive.setVisible(false);
+        closeButton.add(closeButtonIconActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        menuPanel.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 20, 20));
+
+        minimizeButton.setBackground(new java.awt.Color(34, 40, 49));
         minimizeButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minimizeButtonMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizeButtonMouseExited(evt);
+            }
         });
-        menuPanel.add(minimizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
+        minimizeButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        minimizeButtonIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/minimize_20_20_2.png"))); // NOI18N
+        minimizeButtonIcon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizeButton.add(minimizeButtonIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        minimizeButtonIconActive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/minimize_active_20_20_2.png"))); // NOI18N
+        minimizeButtonIconActive.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minimizeButtonIconActive.setVisible(false);
+        minimizeButton.add(minimizeButtonIconActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        menuPanel.add(minimizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 20, 20));
+
+        loginInfo.setBackground(new java.awt.Color(34, 40, 49));
+        loginInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        loginInfo.setVisible(false);
+        loginInfo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginInfoLoweBar.setBackground(new java.awt.Color(0, 173, 181));
+        loginInfoLoweBar.setOpaque(true);
+        loginInfoLoweBar.setVisible(false);
+        loginInfo.add(loginInfoLoweBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 39, 210, 1));
+
+        loginInfoUsernameTextField.setEditable(false);
+        loginInfoUsernameTextField.setBackground(new java.awt.Color(34, 40, 49));
+        loginInfoUsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
+        loginInfoUsernameTextField.setForeground(new java.awt.Color(222, 222, 222));
+        loginInfoUsernameTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        loginInfoUsernameTextField.setText("-");
+        loginInfoUsernameTextField.setToolTipText("");
+        loginInfoUsernameTextField.setBorder(null);
+        loginInfo.add(loginInfoUsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 40));
+
+        menuPanel.add(loginInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 210, 40));
+
+        logoutButton.setBackground(new java.awt.Color(34, 40, 49));
+        logoutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        logoutButton.setVisible(false);
+        logoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutButtonMouseExited(evt);
+            }
+        });
+        logoutButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        logoutButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        logoutButtonText.setForeground(new java.awt.Color(172, 172, 172));
+        logoutButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoutButtonText.setText("Wyloguj się");
+        logoutButton.add(logoutButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 20));
+
+        logoutButtonLowerBar.setBackground(new java.awt.Color(172, 172, 172));
+        logoutButtonLowerBar.setOpaque(true);
+        logoutButton.add(logoutButtonLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 19, 50, 1));
+
+        menuPanel.add(logoutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 70, 20));
+
+        loginButton.setBackground(new java.awt.Color(34, 40, 49));
+        loginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                loginButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                loginButtonMouseExited(evt);
+            }
+        });
+        loginButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        loginButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        loginButtonText.setForeground(new java.awt.Color(172, 172, 172));
+        loginButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loginButtonText.setText("Zaloguj się");
+        loginButton.add(loginButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 20));
+
+        loginButtonLowerBar.setBackground(new java.awt.Color(172, 172, 172));
+        loginButtonLowerBar.setOpaque(true);
+        loginButton.add(loginButtonLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 19, 50, 1));
+
+        menuPanel.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 70, 20));
 
         mainPanel.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 0, 230, 720));
 
@@ -495,20 +2040,23 @@ public class GUI extends javax.swing.JFrame {
         namePanel.setBackground(new java.awt.Color(50, 54, 61));
         namePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        nameText.setBackground(new java.awt.Color(238, 238, 238));
-        nameText.setFont(new java.awt.Font("Segoe UI Light", 0, 90)); // NOI18N
-        nameText.setForeground(new java.awt.Color(238, 238, 238));
-        nameText.setText("Bartosz");
-        namePanel.add(nameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 10, 580, 90));
-
         profileNameText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         profileNameText.setForeground(new java.awt.Color(138, 152, 173));
         profileNameText.setText("Profil:");
         namePanel.add(profileNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 7, -1, -1));
 
-        nameLowerBar.setBackground(new java.awt.Color(0, 173, 181));
-        nameLowerBar.setOpaque(true);
-        namePanel.add(nameLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
+        profileNameLowerBar.setBackground(new java.awt.Color(122, 122, 122));
+        profileNameLowerBar.setOpaque(true);
+        namePanel.add(profileNameLowerBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 605, 5));
+
+        profileNameTextField.setEditable(false);
+        profileNameTextField.setBackground(new java.awt.Color(50, 54, 61));
+        profileNameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 80)); // NOI18N
+        profileNameTextField.setForeground(new java.awt.Color(238, 238, 238));
+        profileNameTextField.setText("-");
+        profileNameTextField.setBorder(null);
+        profileNameTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        namePanel.add(profileNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 120));
 
         myProfilePanel.add(namePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 165, 605, 120));
 
@@ -531,6 +2079,8 @@ public class GUI extends javax.swing.JFrame {
         myProfilePanel.add(kcalPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 300, 605, 100));
 
         userParamPanel.setBackground(new java.awt.Color(50, 54, 61));
+        maleIcon.setVisible(false);
+        femaleIcon.setVisible(false);
         userParamPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         bmiText.setBackground(new java.awt.Color(238, 238, 238));
@@ -545,6 +2095,7 @@ public class GUI extends javax.swing.JFrame {
         bmiValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         bmiValueTextField.setText("-");
         bmiValueTextField.setBorder(null);
+        bmiValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         userParamPanel.add(bmiValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 18, 100, 40));
 
         bmiRateText.setBackground(new java.awt.Color(238, 238, 238));
@@ -560,6 +2111,7 @@ public class GUI extends javax.swing.JFrame {
         bmiRateValueTextField.setText("-");
         bmiRateValueTextField.setToolTipText("");
         bmiRateValueTextField.setBorder(null);
+        bmiRateValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         userParamPanel.add(bmiRateValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 72, 180, 30));
 
         goalText.setBackground(new java.awt.Color(238, 238, 238));
@@ -568,17 +2120,31 @@ public class GUI extends javax.swing.JFrame {
         goalText.setText("Cel:");
         userParamPanel.add(goalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 105, -1, -1));
 
-        goalValueText.setBackground(new java.awt.Color(238, 238, 238));
-        goalValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        goalValueText.setForeground(new java.awt.Color(238, 238, 238));
-        goalValueText.setText("60,0 kg");
-        userParamPanel.add(goalValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 110, -1, 40));
+        goalValueTextField.setEditable(false);
+        goalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        goalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        goalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        goalValueTextField.setText("-");
+        goalValueTextField.setToolTipText("");
+        goalValueTextField.setBorder(null);
+        goalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        userParamPanel.add(goalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 118, 180, 30));
 
         goalLeftText.setBackground(new java.awt.Color(238, 238, 238));
         goalLeftText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         goalLeftText.setForeground(new java.awt.Color(138, 152, 173));
         goalLeftText.setText("Do celu pozostało:");
         userParamPanel.add(goalLeftText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 150, -1, -1));
+
+        goalLeftTextField.setEditable(false);
+        goalLeftTextField.setBackground(new java.awt.Color(50, 54, 61));
+        goalLeftTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        goalLeftTextField.setForeground(new java.awt.Color(238, 238, 238));
+        goalLeftTextField.setText("-");
+        goalLeftTextField.setToolTipText("");
+        goalLeftTextField.setBorder(null);
+        goalLeftTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        userParamPanel.add(goalLeftTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 163, 180, 30));
 
         bmiValueTextField2.setEditable(false);
         bmiValueTextField2.setBackground(new java.awt.Color(50, 54, 61));
@@ -588,17 +2154,15 @@ public class GUI extends javax.swing.JFrame {
         bmiValueTextField2.setBorder(null);
         userParamPanel.add(bmiValueTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 18, 100, 40));
 
-        goalLeftValueText.setBackground(new java.awt.Color(238, 238, 238));
-        goalLeftValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        goalLeftValueText.setForeground(new java.awt.Color(238, 238, 238));
-        goalLeftValueText.setText("-3,0 kg");
-        userParamPanel.add(goalLeftValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 155, -1, 40));
-
         maleIcon.setBackground(new java.awt.Color(0, 173, 181));
         maleIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/male_32_32.png"))); // NOI18N
-        userParamPanel.add(maleIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 195, 30, -1));
+        userParamPanel.add(maleIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 197, 30, -1));
 
-        weightValuePanel.setBackground(new java.awt.Color(0, 173, 181));
+        femaleIcon.setBackground(new java.awt.Color(0, 173, 181));
+        femaleIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/female_32_32.png"))); // NOI18N
+        userParamPanel.add(femaleIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 197, 30, -1));
+
+        weightValuePanel.setBackground(new java.awt.Color(122, 122, 122));
         weightValuePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         weightText.setBackground(new java.awt.Color(238, 238, 238));
@@ -608,11 +2172,12 @@ public class GUI extends javax.swing.JFrame {
         weightValuePanel.add(weightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
 
         weightValueTextField.setEditable(false);
-        weightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        weightValueTextField.setBackground(new java.awt.Color(122, 122, 122));
         weightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 72)); // NOI18N
         weightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
-        weightValueTextField.setText("63.0");
+        weightValueTextField.setText("-");
         weightValueTextField.setBorder(null);
+        weightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         weightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 weightValueTextFieldKeyPressed(evt);
@@ -627,11 +2192,12 @@ public class GUI extends javax.swing.JFrame {
         weightValuePanel.add(heightText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 95, -1, -1));
 
         heightValueTextField.setEditable(false);
-        heightValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        heightValueTextField.setBackground(new java.awt.Color(122, 122, 122));
         heightValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
         heightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
-        heightValueTextField.setText("172");
+        heightValueTextField.setText("-");
         heightValueTextField.setBorder(null);
+        heightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         heightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 heightValueTextFieldKeyPressed(evt);
@@ -646,11 +2212,12 @@ public class GUI extends javax.swing.JFrame {
         weightValuePanel.add(ageText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 165, -1, -1));
 
         ageValueTextField.setEditable(false);
-        ageValueTextField.setBackground(new java.awt.Color(0, 173, 181));
+        ageValueTextField.setBackground(new java.awt.Color(122, 122, 122));
         ageValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 48)); // NOI18N
         ageValueTextField.setForeground(new java.awt.Color(238, 238, 238));
-        ageValueTextField.setText("20");
+        ageValueTextField.setText("-");
         ageValueTextField.setBorder(null);
+        ageValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         ageValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ageValueTextFieldKeyPressed(evt);
@@ -804,7 +2371,6 @@ public class GUI extends javax.swing.JFrame {
         myProfilePanel.add(lastActivitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 415, 605, 290));
 
         mainPanel.add(myProfilePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
-        initValues();
 
         mealDiaryPanel.setBackground(new java.awt.Color(57, 62, 70));
         mealDiaryPanel.setMinimumSize(new java.awt.Dimension(1050, 720));
@@ -813,6 +2379,659 @@ public class GUI extends javax.swing.JFrame {
 
         mealDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mealdiary_banner_1.png"))); // NOI18N
         mealDiaryPanel.add(mealDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        mealListPanel.setBackground(new java.awt.Color(50, 54, 61));
+        mealListPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal1Panel.setBackground(new java.awt.Color(50, 54, 61));
+        meal1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal1Name.setEditable(false);
+        meal1Name.setBackground(new java.awt.Color(50, 54, 61));
+        meal1Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal1Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal1Name.setText("-");
+        meal1Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal1Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal1Panel.add(meal1Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal1KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal1KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal1KcalText.setText("Kalorie:");
+        meal1KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal1Panel.add(meal1KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal1KcalValueTextField.setEditable(false);
+        meal1KcalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal1KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal1KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal1KcalValueTextField.setText("-");
+        meal1KcalValueTextField.setBorder(null);
+        meal1KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal1Panel.add(meal1KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal1ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal1ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal1ProteinsText.setText("Białko:");
+        meal1ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal1Panel.add(meal1ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal1ProteinsValueTextField.setEditable(false);
+        meal1ProteinsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal1ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal1ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal1ProteinsValueTextField.setText("-");
+        meal1ProteinsValueTextField.setBorder(null);
+        meal1ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal1Panel.add(meal1ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal1FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal1FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal1FatsText.setText("Tłuszcz:");
+        meal1FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal1Panel.add(meal1FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal1FatsValueTextField.setEditable(false);
+        meal1FatsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal1FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal1FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal1FatsValueTextField.setText("-");
+        meal1FatsValueTextField.setBorder(null);
+        meal1FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal1Panel.add(meal1FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal1CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal1CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal1CarbsText.setText("Węglowodany:");
+        meal1CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal1Panel.add(meal1CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal1CarbsValueTextField.setEditable(false);
+        meal1CarbsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal1CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal1CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal1CarbsValueTextField.setText("-");
+        meal1CarbsValueTextField.setBorder(null);
+        meal1CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal1Panel.add(meal1CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 67));
+
+        meal2Panel.setBackground(new java.awt.Color(46, 49, 55));
+        meal2Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal2Name.setEditable(false);
+        meal2Name.setBackground(new java.awt.Color(46, 49, 55));
+        meal2Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal2Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal2Name.setText("-");
+        meal2Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal2Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal2Panel.add(meal2Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal2KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal2KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal2KcalText.setText("Kalorie:");
+        meal2KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal2Panel.add(meal2KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal2KcalValueTextField.setEditable(false);
+        meal2KcalValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal2KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal2KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal2KcalValueTextField.setText("-");
+        meal2KcalValueTextField.setBorder(null);
+        meal2KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal2Panel.add(meal2KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal2ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal2ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal2ProteinsText.setText("Białko:");
+        meal2ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal2Panel.add(meal2ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal2ProteinsValueTextField.setEditable(false);
+        meal2ProteinsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal2ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal2ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal2ProteinsValueTextField.setText("-");
+        meal2ProteinsValueTextField.setBorder(null);
+        meal2ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal2Panel.add(meal2ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal2FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal2FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal2FatsText.setText("Tłuszcz:");
+        meal2FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal2Panel.add(meal2FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal2FatsValueTextField.setEditable(false);
+        meal2FatsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal2FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal2FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal2FatsValueTextField.setText("-");
+        meal2FatsValueTextField.setBorder(null);
+        meal2FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal2Panel.add(meal2FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal2CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal2CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal2CarbsText.setText("Węglowodany:");
+        meal2CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal2Panel.add(meal2CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal2CarbsValueTextField.setEditable(false);
+        meal2CarbsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal2CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal2CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal2CarbsValueTextField.setText("-");
+        meal2CarbsValueTextField.setBorder(null);
+        meal2CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal2Panel.add(meal2CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 67, 740, 68));
+
+        meal3Panel.setBackground(new java.awt.Color(50, 54, 61));
+        meal3Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal3Name.setEditable(false);
+        meal3Name.setBackground(new java.awt.Color(50, 54, 61));
+        meal3Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal3Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal3Name.setText("-");
+        meal3Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal3Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal3Panel.add(meal3Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal3KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal3KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal3KcalText.setText("Kalorie:");
+        meal3KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal3Panel.add(meal3KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal3KcalValueTextField.setEditable(false);
+        meal3KcalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal3KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal3KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal3KcalValueTextField.setText("-");
+        meal3KcalValueTextField.setBorder(null);
+        meal3KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal3Panel.add(meal3KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal3ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal3ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal3ProteinsText.setText("Białko:");
+        meal3ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal3Panel.add(meal3ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal3ProteinsValueTextField.setEditable(false);
+        meal3ProteinsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal3ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal3ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal3ProteinsValueTextField.setText("-");
+        meal3ProteinsValueTextField.setBorder(null);
+        meal3ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal3Panel.add(meal3ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal3FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal3FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal3FatsText.setText("Tłuszcz:");
+        meal3FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal3Panel.add(meal3FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal3FatsValueTextField.setEditable(false);
+        meal3FatsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal3FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal3FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal3FatsValueTextField.setText("-");
+        meal3FatsValueTextField.setBorder(null);
+        meal3FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal3Panel.add(meal3FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal3CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal3CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal3CarbsText.setText("Węglowodany:");
+        meal3CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal3Panel.add(meal3CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal3CarbsValueTextField.setEditable(false);
+        meal3CarbsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal3CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal3CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal3CarbsValueTextField.setText("-");
+        meal3CarbsValueTextField.setBorder(null);
+        meal3CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal3Panel.add(meal3CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 135, 740, 67));
+
+        meal4Panel.setBackground(new java.awt.Color(46, 49, 55));
+        meal4Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal4Name.setEditable(false);
+        meal4Name.setBackground(new java.awt.Color(46, 49, 55));
+        meal4Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal4Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal4Name.setText("-");
+        meal4Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal4Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal4Panel.add(meal4Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal4KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal4KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal4KcalText.setText("Kalorie:");
+        meal4KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal4Panel.add(meal4KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal4KcalValueTextField.setEditable(false);
+        meal4KcalValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal4KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal4KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal4KcalValueTextField.setText("-");
+        meal4KcalValueTextField.setBorder(null);
+        meal4KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal4Panel.add(meal4KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal4ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal4ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal4ProteinsText.setText("Białko:");
+        meal4ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal4Panel.add(meal4ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal4ProteinsValueTextField.setEditable(false);
+        meal4ProteinsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal4ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal4ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal4ProteinsValueTextField.setText("-");
+        meal4ProteinsValueTextField.setBorder(null);
+        meal4ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal4Panel.add(meal4ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal4FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal4FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal4FatsText.setText("Tłuszcz:");
+        meal4FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal4Panel.add(meal4FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal4FatsValueTextField.setEditable(false);
+        meal4FatsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal4FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal4FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal4FatsValueTextField.setText("-");
+        meal4FatsValueTextField.setBorder(null);
+        meal4FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal4Panel.add(meal4FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal4CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal4CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal4CarbsText.setText("Węglowodany:");
+        meal4CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal4Panel.add(meal4CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal4CarbsValueTextField.setEditable(false);
+        meal4CarbsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal4CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal4CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal4CarbsValueTextField.setText("-");
+        meal4CarbsValueTextField.setBorder(null);
+        meal4CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal4Panel.add(meal4CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal4Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 202, 740, 68));
+
+        meal5Panel.setBackground(new java.awt.Color(50, 54, 61));
+        meal5Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal5Name.setEditable(false);
+        meal5Name.setBackground(new java.awt.Color(50, 54, 61));
+        meal5Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal5Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal5Name.setText("-");
+        meal5Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal5Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal5Panel.add(meal5Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal5KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal5KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal5KcalText.setText("Kalorie:");
+        meal5KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal5Panel.add(meal5KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal5KcalValueTextField.setEditable(false);
+        meal5KcalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal5KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal5KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal5KcalValueTextField.setText("-");
+        meal5KcalValueTextField.setBorder(null);
+        meal5KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal5Panel.add(meal5KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal5ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal5ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal5ProteinsText.setText("Białko:");
+        meal5ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal5Panel.add(meal5ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal5ProteinsValueTextField.setEditable(false);
+        meal5ProteinsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal5ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal5ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal5ProteinsValueTextField.setText("-");
+        meal5ProteinsValueTextField.setBorder(null);
+        meal5ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal5Panel.add(meal5ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal5FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal5FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal5FatsText.setText("Tłuszcz:");
+        meal5FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal5Panel.add(meal5FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal5FatsValueTextField.setEditable(false);
+        meal5FatsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal5FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal5FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal5FatsValueTextField.setText("-");
+        meal5FatsValueTextField.setBorder(null);
+        meal5FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal5Panel.add(meal5FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal5CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal5CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal5CarbsText.setText("Węglowodany:");
+        meal5CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal5Panel.add(meal5CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal5CarbsValueTextField.setEditable(false);
+        meal5CarbsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal5CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal5CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal5CarbsValueTextField.setText("-");
+        meal5CarbsValueTextField.setBorder(null);
+        meal5CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal5Panel.add(meal5CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal5Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 740, 67));
+
+        meal6Panel.setBackground(new java.awt.Color(46, 49, 55));
+        meal6Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal6Name.setEditable(false);
+        meal6Name.setBackground(new java.awt.Color(46, 49, 55));
+        meal6Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal6Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal6Name.setText("-");
+        meal6Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal6Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal6Panel.add(meal6Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal6KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal6KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal6KcalText.setText("Kalorie:");
+        meal6KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal6Panel.add(meal6KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal6KcalValueTextField.setEditable(false);
+        meal6KcalValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal6KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal6KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal6KcalValueTextField.setText("-");
+        meal6KcalValueTextField.setBorder(null);
+        meal6KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal6Panel.add(meal6KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal6ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal6ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal6ProteinsText.setText("Białko:");
+        meal6ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal6Panel.add(meal6ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal6ProteinsValueTextField.setEditable(false);
+        meal6ProteinsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal6ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal6ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal6ProteinsValueTextField.setText("-");
+        meal6ProteinsValueTextField.setBorder(null);
+        meal6ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal6Panel.add(meal6ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal6FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal6FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal6FatsText.setText("Tłuszcz:");
+        meal6FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal6Panel.add(meal6FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal6FatsValueTextField.setEditable(false);
+        meal6FatsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal6FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal6FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal6FatsValueTextField.setText("-");
+        meal6FatsValueTextField.setBorder(null);
+        meal6FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal6Panel.add(meal6FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal6CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal6CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal6CarbsText.setText("Węglowodany:");
+        meal6CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal6Panel.add(meal6CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal6CarbsValueTextField.setEditable(false);
+        meal6CarbsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal6CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal6CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal6CarbsValueTextField.setText("-");
+        meal6CarbsValueTextField.setBorder(null);
+        meal6CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal6Panel.add(meal6CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal6Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 337, 740, 68));
+
+        meal7Panel.setBackground(new java.awt.Color(50, 54, 61));
+        meal7Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal7Name.setEditable(false);
+        meal7Name.setBackground(new java.awt.Color(50, 54, 61));
+        meal7Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal7Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal7Name.setText("-");
+        meal7Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal7Name.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal7Panel.add(meal7Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal7KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal7KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal7KcalText.setText("Kalorie:");
+        meal7KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal7Panel.add(meal7KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal7KcalValueTextField.setEditable(false);
+        meal7KcalValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal7KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal7KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal7KcalValueTextField.setText("-");
+        meal7KcalValueTextField.setBorder(null);
+        meal7KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal7Panel.add(meal7KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal7ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal7ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal7ProteinsText.setText("Białko:");
+        meal7ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal7Panel.add(meal7ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal7ProteinsValueTextField.setEditable(false);
+        meal7ProteinsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal7ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal7ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal7ProteinsValueTextField.setText("-");
+        meal7ProteinsValueTextField.setBorder(null);
+        meal7ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal7Panel.add(meal7ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal7FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal7FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal7FatsText.setText("Tłuszcz:");
+        meal7FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal7Panel.add(meal7FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal7FatsValueTextField.setEditable(false);
+        meal7FatsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal7FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal7FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal7FatsValueTextField.setText("-");
+        meal7FatsValueTextField.setBorder(null);
+        meal7FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal7Panel.add(meal7FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal7CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal7CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal7CarbsText.setText("Węglowodany:");
+        meal7CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal7Panel.add(meal7CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal7CarbsValueTextField.setEditable(false);
+        meal7CarbsValueTextField.setBackground(new java.awt.Color(50, 54, 61));
+        meal7CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal7CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal7CarbsValueTextField.setText("-");
+        meal7CarbsValueTextField.setBorder(null);
+        meal7CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal7Panel.add(meal7CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal7Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 405, 740, 67));
+
+        meal8Panel.setBackground(new java.awt.Color(46, 49, 55));
+        meal8Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        meal8Name.setEditable(false);
+        meal8Name.setBackground(new java.awt.Color(46, 49, 55));
+        meal8Name.setFont(new java.awt.Font("Segoe UI Light", 0, 22)); // NOI18N
+        meal8Name.setForeground(new java.awt.Color(238, 238, 238));
+        meal8Name.setText("-");
+        meal8Name.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        meal8Panel.add(meal8Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 30));
+
+        meal8KcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal8KcalText.setForeground(new java.awt.Color(138, 152, 173));
+        meal8KcalText.setText("Kalorie:");
+        meal8KcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal8Panel.add(meal8KcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 40, -1));
+
+        meal8KcalValueTextField.setEditable(false);
+        meal8KcalValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal8KcalValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal8KcalValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal8KcalValueTextField.setText("-");
+        meal8KcalValueTextField.setBorder(null);
+        meal8KcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal8Panel.add(meal8KcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 75, -1));
+
+        meal8ProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal8ProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal8ProteinsText.setText("Białko:");
+        meal8ProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal8Panel.add(meal8ProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 31, 40, -1));
+
+        meal8ProteinsValueTextField.setEditable(false);
+        meal8ProteinsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal8ProteinsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal8ProteinsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal8ProteinsValueTextField.setText("-");
+        meal8ProteinsValueTextField.setBorder(null);
+        meal8ProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal8Panel.add(meal8ProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 75, -1));
+
+        meal8FatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal8FatsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal8FatsText.setText("Tłuszcz:");
+        meal8FatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal8Panel.add(meal8FatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 31, 40, -1));
+
+        meal8FatsValueTextField.setEditable(false);
+        meal8FatsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal8FatsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal8FatsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal8FatsValueTextField.setText("-");
+        meal8FatsValueTextField.setBorder(null);
+        meal8FatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal8Panel.add(meal8FatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 75, -1));
+
+        meal8CarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        meal8CarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        meal8CarbsText.setText("Węglowodany:");
+        meal8CarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        meal8Panel.add(meal8CarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 31, 70, -1));
+
+        meal8CarbsValueTextField.setEditable(false);
+        meal8CarbsValueTextField.setBackground(new java.awt.Color(46, 49, 55));
+        meal8CarbsValueTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        meal8CarbsValueTextField.setForeground(new java.awt.Color(238, 238, 238));
+        meal8CarbsValueTextField.setText("-");
+        meal8CarbsValueTextField.setBorder(null);
+        meal8CarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        meal8Panel.add(meal8CarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 75, -1));
+
+        mealListPanel.add(meal8Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 472, 740, 68));
+
+        mealDiaryPanel.add(mealListPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 165, 740, 540));
+        meal1Panel.setVisible(false);
+        meal2Panel.setVisible(false);
+        meal3Panel.setVisible(false);
+        meal4Panel.setVisible(false);
+        meal5Panel.setVisible(false);
+        meal6Panel.setVisible(false);
+        meal7Panel.setVisible(false);
+        meal8Panel.setVisible(false);
+
+        mealInfoPanel.setBackground(new java.awt.Color(50, 54, 61));
+        mealInfoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealButton.setBackground(new java.awt.Color(0, 173, 181));
+        addMealButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addMealButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addMealButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addMealButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addMealButtonMouseExited(evt);
+            }
+        });
+        addMealButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addMealButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        addMealButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        addMealButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addMealButtonText.setText("Dodaj posiłek");
+        addMealButton.add(addMealButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 255, 50));
+
+        mealInfoPanel.add(addMealButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 255, 50));
+
+        closeDayButton.setBackground(new java.awt.Color(50, 54, 61));
+        closeDayButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 173, 181)));
+        closeDayButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        closeDayButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                closeDayButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                closeDayButtonMouseExited(evt);
+            }
+        });
+        closeDayButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        closeDayButtonText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        closeDayButtonText.setForeground(new java.awt.Color(238, 238, 238));
+        closeDayButtonText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        closeDayButtonText.setText("Zamknij dzień");
+        closeDayButton.add(closeDayButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 255, 40));
+
+        mealInfoPanel.add(closeDayButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 495, 255, 40));
+
+        mealDiaryPanel.add(mealInfoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 165, 265, 540));
 
         mainPanel.add(mealDiaryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 720));
 
@@ -1235,6 +3454,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmrWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBmrWeightValueTextField.setBorder(null);
+        calcBmrWeightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBmrWeightValueTextFieldKeyPressed(evt);
@@ -1258,6 +3478,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmrHeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrHeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBmrHeightValueTextField.setBorder(null);
+        calcBmrHeightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrHeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBmrHeightValueTextFieldKeyPressed(evt);
@@ -1281,6 +3502,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmrAgeValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrAgeValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBmrAgeValueTextField.setBorder(null);
+        calcBmrAgeValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrAgeValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBmrAgeValueTextFieldKeyPressed(evt);
@@ -1566,6 +3788,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultKcalValueTextField.setText("-");
         bmrResultKcalValueTextField.setToolTipText("");
         bmrResultKcalValueTextField.setBorder(null);
+        bmrResultKcalValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultKcalValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
 
         bmrResultMacrosText1.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
@@ -1583,6 +3806,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultProteinsValueTextField.setText("-");
         bmrResultProteinsValueTextField.setToolTipText("");
         bmrResultProteinsValueTextField.setBorder(null);
+        bmrResultProteinsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultProteinsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 110, 50));
 
         bmrResultFatsValueTextField.setEditable(false);
@@ -1592,6 +3816,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultFatsValueTextField.setText("-");
         bmrResultFatsValueTextField.setToolTipText("");
         bmrResultFatsValueTextField.setBorder(null);
+        bmrResultFatsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultFatsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 110, 50));
 
         bmrResultCarbsValueTextField.setEditable(false);
@@ -1601,6 +3826,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultCarbsValueTextField.setText("-");
         bmrResultCarbsValueTextField.setToolTipText("");
         bmrResultCarbsValueTextField.setBorder(null);
+        bmrResultCarbsValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultCarbsValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 110, 50));
 
         calcBmrResultText2.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -1616,6 +3842,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultKcalCutValueTextField.setText("-");
         bmrResultKcalCutValueTextField.setToolTipText("");
         bmrResultKcalCutValueTextField.setBorder(null);
+        bmrResultKcalCutValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultKcalCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 195, 110, 30));
 
         bmrResultMacrosText2.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -1633,6 +3860,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultProteinsCutValueTextField.setText("-");
         bmrResultProteinsCutValueTextField.setToolTipText("");
         bmrResultProteinsCutValueTextField.setBorder(null);
+        bmrResultProteinsCutValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultProteinsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(139, 195, 60, 30));
 
         bmrResultFatsCutValueTextField.setEditable(false);
@@ -1642,6 +3870,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultFatsCutValueTextField.setText("-");
         bmrResultFatsCutValueTextField.setToolTipText("");
         bmrResultFatsCutValueTextField.setBorder(null);
+        bmrResultFatsCutValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultFatsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 195, 60, 30));
 
         bmrResultCarbsCutValueTextField.setEditable(false);
@@ -1651,6 +3880,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultCarbsCutValueTextField.setText("-");
         bmrResultCarbsCutValueTextField.setToolTipText("");
         bmrResultCarbsCutValueTextField.setBorder(null);
+        bmrResultCarbsCutValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultCarbsCutValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 195, 60, 30));
 
         calcBmrResultText3.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -1666,6 +3896,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultKcalOverValueTextField.setText("-");
         bmrResultKcalOverValueTextField.setToolTipText("");
         bmrResultKcalOverValueTextField.setBorder(null);
+        bmrResultKcalOverValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultKcalOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 255, 110, 30));
 
         bmrResultMacrosText3.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -1681,6 +3912,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultProteinsOverValueTextField.setText("-");
         bmrResultProteinsOverValueTextField.setToolTipText("");
         bmrResultProteinsOverValueTextField.setBorder(null);
+        bmrResultProteinsOverValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultProteinsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 255, 60, 30));
 
         bmrResultFatsOverValueTextField.setEditable(false);
@@ -1690,6 +3922,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultFatsOverValueTextField.setText("-");
         bmrResultFatsOverValueTextField.setToolTipText("");
         bmrResultFatsOverValueTextField.setBorder(null);
+        bmrResultFatsOverValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultFatsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 255, 60, 30));
 
         bmrResultCarbsOverValueTextField.setEditable(false);
@@ -1699,6 +3932,7 @@ public class GUI extends javax.swing.JFrame {
         bmrResultCarbsOverValueTextField.setText("-");
         bmrResultCarbsOverValueTextField.setToolTipText("");
         bmrResultCarbsOverValueTextField.setBorder(null);
+        bmrResultCarbsOverValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmrResultPanel.add(bmrResultCarbsOverValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 255, 60, 30));
 
         calcPanel.add(calcBmrResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
@@ -1724,6 +3958,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmiWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBmiWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBmiWeightValueTextField.setBorder(null);
+        calcBmiWeightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmiWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBmiWeightValueTextFieldKeyPressed(evt);
@@ -1747,6 +3982,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmiHeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBmiHeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBmiHeightValueTextField.setBorder(null);
+        calcBmiHeightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmiHeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBmiHeightValueTextFieldKeyPressed(evt);
@@ -1803,6 +4039,7 @@ public class GUI extends javax.swing.JFrame {
         bmiResultValueTextField.setText("-");
         bmiResultValueTextField.setToolTipText("");
         bmiResultValueTextField.setBorder(null);
+        bmiResultValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmiResultPanel.add(bmiResultValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
 
         calcBmiResultRateText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
@@ -1817,6 +4054,7 @@ public class GUI extends javax.swing.JFrame {
         bmiResultRateTextField.setForeground(new java.awt.Color(238, 238, 238));
         bmiResultRateTextField.setText("-");
         bmiResultRateTextField.setBorder(null);
+        bmiResultRateTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBmiResultPanel.add(bmiResultRateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 400, -1));
 
         calcPanel.add(calcBmiResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
@@ -1848,6 +4086,7 @@ public class GUI extends javax.swing.JFrame {
         calcBfiWeightValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBfiWeightValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBfiWeightValueTextField.setBorder(null);
+        calcBfiWeightValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBfiWeightValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBfiWeightValueTextFieldKeyPressed(evt);
@@ -1871,6 +4110,7 @@ public class GUI extends javax.swing.JFrame {
         calcBfiWaistValueTextField.setForeground(new java.awt.Color(238, 238, 238));
         calcBfiWaistValueTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         calcBfiWaistValueTextField.setBorder(null);
+        calcBfiWaistValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBfiWaistValueTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 calcBfiWaistValueTextFieldKeyPressed(evt);
@@ -1985,6 +4225,7 @@ public class GUI extends javax.swing.JFrame {
         bfiResultValueTextField.setText("-");
         bfiResultValueTextField.setToolTipText("");
         bfiResultValueTextField.setBorder(null);
+        bfiResultValueTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBfiResultPanel.add(bfiResultValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 330, 80));
 
         calcBfiResultRateText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
@@ -1999,6 +4240,7 @@ public class GUI extends javax.swing.JFrame {
         bfiResultRateTextField.setForeground(new java.awt.Color(238, 238, 238));
         bfiResultRateTextField.setText("-");
         bfiResultRateTextField.setBorder(null);
+        bfiResultRateTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         calcBfiResultPanel.add(bfiResultRateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 125, 400, -1));
 
         calcPanel.add(calcBfiResultPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 390, 420, 315));
@@ -2040,12 +4282,45 @@ public class GUI extends javax.swing.JFrame {
     
     private void initValues() {
         if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
-            weight = Float.parseFloat(weightValueTextField.getText());
-            height = Integer.parseInt(heightValueTextField.getText());
-            age = Integer.parseInt(ageValueTextField.getText());
-            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
             bmiRateValueTextField.setText(bmiCalc.rateBmi());
+            goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
+            goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
+            profileNameTextField.setText(LoginSession.userName);
+            if(LoginSession.userGender == 0) {
+                femaleIcon.setVisible(true);
+                maleIcon.setVisible(false);
+            }
+            else if(LoginSession.userGender == 1) {
+                maleIcon.setVisible(true);
+                femaleIcon.setVisible(false);
+            }
         }
+    }
+    
+    private void loadProductList() {
+        try {
+            database.loadProductNames(this);
+                for(String productName : LoginSession.productNames) {
+                    model.addElement(productName);
+                }
+            selectProductDialogProductsList.setModel(model);
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+        }
+    }
+        
+    private void resetAllParameters() {
+        weightValueTextField.setText("-");
+        heightValueTextField.setText("-");
+        ageValueTextField.setText("-");
+        bmiValueTextField.setText("-");
+        bmiRateValueTextField.setText("-");
+        goalValueTextField.setText("-");
+        goalLeftTextField.setText("-");
+        profileNameTextField.setText("-");
+        femaleIcon.setVisible(false);
+        maleIcon.setVisible(false);
     }
     
     private void myProfileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseClicked
@@ -2065,10 +4340,6 @@ public class GUI extends javax.swing.JFrame {
     private void myProfileButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileButtonMouseExited
         myProfileButton.setBackground(Color.decode("#222831"));       
     }//GEN-LAST:event_myProfileButtonMouseExited
-
-    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        System.exit(0);
-    }//GEN-LAST:event_closeButtonMouseClicked
 
     private void mealDiaryButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryButtonMouseClicked
         menuBar(mealDiaryButtonBar);
@@ -2160,10 +4431,6 @@ public class GUI extends javax.swing.JFrame {
         infoButton.setBackground(Color.decode("#222831"));
     }//GEN-LAST:event_infoButtonMouseExited
 
-    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
-        setExtendedState(Frame.ICONIFIED);       
-    }//GEN-LAST:event_minimizeButtonMouseClicked
-
     private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
         notesTextArea.setEditable(true);
         buttonActive=true;
@@ -2211,11 +4478,20 @@ public class GUI extends javax.swing.JFrame {
         ageValueTextField.setEditable(false);
         
         if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
-            weight = Float.parseFloat(weightValueTextField.getText());
+            weight = Double.parseDouble(weightValueTextField.getText());
             height = Integer.parseInt(heightValueTextField.getText());
             age = Integer.parseInt(ageValueTextField.getText());
-            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (double)height))));
             bmiRateValueTextField.setText(bmiCalc.rateBmi());
+            
+            try {
+                database.updateUserParameters(weight, height, age, LoginSession.userID, this);
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+            }
+                registerDialogEmptyFields();
+                registerDialog.setVisible(false);
+        
         }
     }//GEN-LAST:event_modifyParamsToggleButtonOffMouseClicked
 
@@ -2241,7 +4517,7 @@ public class GUI extends javax.swing.JFrame {
         calcBmiPanel.setVisible(false);
         calcBmiResultPanel.setVisible(false);
         
-        gender = 0;
+        calcGender = 0;
     }//GEN-LAST:event_calcBfiButtonMouseClicked
 
     private void calcBmiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmiButtonMouseExited
@@ -2266,7 +4542,7 @@ public class GUI extends javax.swing.JFrame {
         calcBfiPanel.setVisible(false);
         calcBfiResultPanel.setVisible(false);
         
-        gender = 0;
+        calcGender = 0;
     }//GEN-LAST:event_calcBmiButtonMouseClicked
 
     private void calcBmrButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseExited
@@ -2292,21 +4568,21 @@ public class GUI extends javax.swing.JFrame {
         calcBfiPanel.setVisible(false);
         calcBfiResultPanel.setVisible(false);
         
-        gender = 0;
+        calcGender = 0;
     }//GEN-LAST:event_calcBmrButtonMouseClicked
 
     private void calcBmrSelectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseClicked
         calcBmrSelectGenderFemaleButtonText.setOpaque(true);
         calcBmrSelectGenderMaleButtonText.setOpaque(false);
         repaintSelectGenderButtons();
-        gender=0;
+        calcGender = 0;
     }//GEN-LAST:event_calcBmrSelectGenderFemaleButtonMouseClicked
 
     private void calcBmrSelectGenderMaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderMaleButtonMouseClicked
         calcBmrSelectGenderMaleButtonText.setOpaque(true);
         calcBmrSelectGenderFemaleButtonText.setOpaque(false);
         repaintSelectGenderButtons();
-        gender=1;
+        calcGender = 1;
     }//GEN-LAST:event_calcBmrSelectGenderMaleButtonMouseClicked
 
     private void calcBmrSelectGenderFemaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrSelectGenderFemaleButtonMouseEntered
@@ -2326,7 +4602,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_calcBmrSelectGenderMaleButtonMouseExited
 
     private void calculateBmrButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseEntered
-        calculateBmrButton.setBackground(Color.decode("#00C7D1"));
+        calculateBmrButton.setBackground(Color.decode("#009BA3"));
     }//GEN-LAST:event_calculateBmrButtonMouseEntered
 
     private void calculateBmrButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseExited
@@ -2335,11 +4611,11 @@ public class GUI extends javax.swing.JFrame {
 
     private void calculateBmrButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmrButtonMouseClicked
         if(!(calcBmrWeightValueTextField.getText().equals("") || calcBmrHeightValueTextField.getText().equals("") || calcBmrAgeValueTextField.getText().equals(""))) {
-            weight = Float.parseFloat(calcBmrWeightValueTextField.getText());
+            weight = Double.parseDouble(calcBmrWeightValueTextField.getText());
             height = Integer.parseInt(calcBmrHeightValueTextField.getText());
             age = Integer.parseInt(calcBmrAgeValueTextField.getText());
 
-            bmrResultKcalValueTextField.setText(String.valueOf(bmrCalc.calculateKcalAmount(weight, height, age, activityLevel, gender)) + " kcal");
+            bmrResultKcalValueTextField.setText(String.valueOf(bmrCalc.calculateKcalAmount(weight, height, age, activityLevel, calcGender)) + " kcal");
             bmrResultKcalCutValueTextField.setText(String.valueOf(bmrCalc.calculateKcalCutAmount()) + " kcal");
             bmrResultKcalOverValueTextField.setText(String.valueOf(bmrCalc.calculateKcalOverAmount()) + " kcal");
 
@@ -2422,80 +4698,40 @@ public class GUI extends javax.swing.JFrame {
         physicalActivityLevel5Button.setBackground(Color.decode("#3B3F46"));
     }//GEN-LAST:event_physicalActivityLevel5ButtonMouseExited
     
-    private void intNumberVal(java.awt.event.KeyEvent evt, JTextField field) {
-        String fieldString = field.getText();
-        int fieldStringLength = fieldString.length();
-        if(evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') {
-            if(fieldStringLength < 3) {
-                field.setEditable(true);
-            }
-            else {
-                field.setEditable(false);
-            }
-        }
-        else {
-            if(evt.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getExtendedKeyCode() == KeyEvent.VK_DELETE) {
-                field.setEditable(true);
-            }
-            else {
-                field.setEditable(false);
-            }
-        }
-    }
     
-    private void floatNumberVal(java.awt.event.KeyEvent evt, JTextField field) {
-        String fieldString = field.getText();
-        int fieldStringLength = fieldString.length();
-        if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || evt.getKeyChar() == '.') {
-            if(fieldStringLength < 5) {
-                field.setEditable(true);
-            }
-            else {
-                field.setEditable(false);
-            }
-        }
-        else {
-            if(evt.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getExtendedKeyCode() == KeyEvent.VK_DELETE) {
-                field.setEditable(true);
-            }
-            else {
-                field.setEditable(false);
-            }
-        }
-    }
     
     private void calcBmrWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrWeightValueTextFieldKeyPressed
-        floatNumberVal(evt, calcBmrWeightValueTextField);
+        val.floatNumberVal(evt, calcBmrWeightValueTextField);
     }//GEN-LAST:event_calcBmrWeightValueTextFieldKeyPressed
 
     private void calcBmrHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrHeightValueTextFieldKeyPressed
-        intNumberVal(evt, calcBmrHeightValueTextField);
+        val.intNumberVal(evt, calcBmrHeightValueTextField);
     }//GEN-LAST:event_calcBmrHeightValueTextFieldKeyPressed
 
     private void calcBmrAgeValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmrAgeValueTextFieldKeyPressed
-        intNumberVal(evt, calcBmrAgeValueTextField);
+        val.intNumberVal(evt, calcBmrAgeValueTextField);
     }//GEN-LAST:event_calcBmrAgeValueTextFieldKeyPressed
 
     private void calcBmiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiWeightValueTextFieldKeyPressed
-        floatNumberVal(evt, calcBmiWeightValueTextField);
+        val.floatNumberVal(evt, calcBmiWeightValueTextField);
     }//GEN-LAST:event_calcBmiWeightValueTextFieldKeyPressed
 
     private void calcBmiHeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBmiHeightValueTextFieldKeyPressed
-        intNumberVal(evt, calcBmiHeightValueTextField);
+        val.intNumberVal(evt, calcBmiHeightValueTextField);
     }//GEN-LAST:event_calcBmiHeightValueTextFieldKeyPressed
 
     private void calculateBmiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseClicked
         if(!(calcBmiWeightValueTextField.getText().equals("") || calcBmiHeightValueTextField.getText().equals(""))) {
-            weight = Float.parseFloat(calcBmiWeightValueTextField.getText());
+            weight = Double.parseDouble(calcBmiWeightValueTextField.getText());
             height = Integer.parseInt(calcBmiHeightValueTextField.getText());
 
-            bmiResultValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (float)height))));
+            bmiResultValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (double)height))));
             bmiResultRateTextField.setText(bmiCalc.rateBmi());
         }
     }//GEN-LAST:event_calculateBmiButtonMouseClicked
 
     private void calculateBmiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseEntered
-        calculateBmiButton.setBackground(Color.decode("#00C7D1"));
+        calculateBmiButton.setBackground(Color.decode("#009BA3"));
     }//GEN-LAST:event_calculateBmiButtonMouseEntered
 
     private void calculateBmiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBmiButtonMouseExited
@@ -2503,25 +4739,25 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_calculateBmiButtonMouseExited
 
     private void calcBfiWeightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWeightValueTextFieldKeyPressed
-        floatNumberVal(evt, calcBfiWeightValueTextField);
+        val.floatNumberVal(evt, calcBfiWeightValueTextField);
     }//GEN-LAST:event_calcBfiWeightValueTextFieldKeyPressed
 
     private void calcBfiWaistValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcBfiWaistValueTextFieldKeyPressed
-        intNumberVal(evt, calcBfiWaistValueTextField);
+        val.intNumberVal(evt, calcBfiWaistValueTextField);
     }//GEN-LAST:event_calcBfiWaistValueTextFieldKeyPressed
 
     private void calculateBfiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseClicked
         if(!(calcBfiWeightValueTextField.getText().equals("") || calcBfiWaistValueTextField.getText().equals(""))) {
-            weight = Float.parseFloat(calcBfiWeightValueTextField.getText());
+            weight = Double.parseDouble(calcBfiWeightValueTextField.getText());
             waist = Integer.parseInt(calcBfiWaistValueTextField.getText());
 
-            bfiResultValueTextField.setText(String.valueOf(df.format(bfiCalc.calculateBfi(weight, (float)waist, gender))) + "%");
-            bfiResultRateTextField.setText(bfiCalc.rateBfi(gender));
+            bfiResultValueTextField.setText(String.valueOf(df.format(bfiCalc.calculateBfi(weight, (double)waist, calcGender))) + "%");
+            bfiResultRateTextField.setText(bfiCalc.rateBfi(calcGender));
         }
     }//GEN-LAST:event_calculateBfiButtonMouseClicked
 
     private void calculateBfiButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseEntered
-        calculateBfiButton.setBackground(Color.decode("#00C7D1"));
+        calculateBfiButton.setBackground(Color.decode("#009BA3"));
     }//GEN-LAST:event_calculateBfiButtonMouseEntered
 
     private void calculateBfiButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calculateBfiButtonMouseExited
@@ -2532,7 +4768,7 @@ public class GUI extends javax.swing.JFrame {
         calcBfiSelectGenderFemaleButtonText.setOpaque(true);
         calcBfiSelectGenderMaleButtonText.setOpaque(false);
         repaintSelectGenderButtons();
-        gender=0;
+        calcGender = 0;
     }//GEN-LAST:event_calcBfiSelectGenderFemaleButtonMouseClicked
 
     private void calcBfiSelectGenderFemaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderFemaleButtonMouseEntered
@@ -2547,7 +4783,7 @@ public class GUI extends javax.swing.JFrame {
         calcBfiSelectGenderMaleButtonText.setOpaque(true);
         calcBfiSelectGenderFemaleButtonText.setOpaque(false);
         repaintSelectGenderButtons();
-        gender=1;
+        calcGender = 1;
     }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseClicked
 
     private void calcBfiSelectGenderMaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBfiSelectGenderMaleButtonMouseEntered
@@ -2559,15 +4795,15 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_calcBfiSelectGenderMaleButtonMouseExited
 
     private void weightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_weightValueTextFieldKeyPressed
-        floatNumberVal(evt, weightValueTextField);
+        val.floatNumberVal(evt, weightValueTextField);
     }//GEN-LAST:event_weightValueTextFieldKeyPressed
 
     private void heightValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_heightValueTextFieldKeyPressed
-        intNumberVal(evt, heightValueTextField);
+        val.intNumberVal(evt, heightValueTextField);
     }//GEN-LAST:event_heightValueTextFieldKeyPressed
 
     private void ageValueTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ageValueTextFieldKeyPressed
-        intNumberVal(evt, heightValueTextField); 
+        val.intNumberVal(evt, heightValueTextField); 
     }//GEN-LAST:event_ageValueTextFieldKeyPressed
 
     private void selectRunningButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectRunningButtonMouseEntered
@@ -2760,18 +4996,618 @@ public class GUI extends javax.swing.JFrame {
     private void selectJumpingRopeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectJumpingRopeButtonMouseClicked
         selectSportButtonClicked(selectJumpingRopeBannerColor, selectJumpingRopeBannerBw, selectJumpingRopeBar, 8);
     }//GEN-LAST:event_selectJumpingRopeButtonMouseClicked
+
+    private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
+        loginDialog.setVisible(true);
+    }//GEN-LAST:event_loginButtonMouseClicked
+
+    private void loginDialogCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogCancelButtonMouseClicked
+        loginDialogEmptyFields();
+        loginDialog.setVisible(false);
+    }//GEN-LAST:event_loginDialogCancelButtonMouseClicked
+
+    private void loginDialogCancelButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogCancelButtonMouseEntered
+        loginDialogCancelButton.setBackground(Color.decode("#42474F"));
+    }//GEN-LAST:event_loginDialogCancelButtonMouseEntered
+
+    private void loginDialogCancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogCancelButtonMouseExited
+        loginDialogCancelButton.setBackground(Color.decode("#393E46"));
+    }//GEN-LAST:event_loginDialogCancelButtonMouseExited
     
+    private void loginDialogLoginButtonClicked() {
+        String usernameStr = loginDialogLoginTextField.getText();
+        String passwordStr = new String(loginDialogPasswordField.getPassword());
+        String usertypeStr = "regular";
+        if(database.isLogin(usernameStr, passwordStr, usertypeStr, this)) {
+            loginDialogWarningText.setVisible(false);
+            loginDialogEmptyFields();
+            loginDialog.setVisible(false);
+            LoginSession.isLoggedIn = true;
+            loginButton.setVisible(false);
+            loginInfoUsernameTextField.setText(LoginSession.nickname);
+            loginInfo.setVisible(true);
+            logoutButton.setVisible(true);
+            setUserParameters(LoginSession.userID);
+            
+            profileNameLowerBar.setBackground(Color.decode("#00ADB5"));
+            weightValuePanel.setBackground(Color.decode("#00ADB5"));
+            weightValueTextField.setBackground(Color.decode("#00ADB5"));
+            heightValueTextField.setBackground(Color.decode("#00ADB5"));
+            ageValueTextField.setBackground(Color.decode("#00ADB5"));
+            loginInfoLoweBar.setVisible(true);
+            
+            repaintMyProfilePanel();
+        }
+        else
+            loginDialogWarningText.setVisible(true);
+    }
+    
+    private void loginDialogLoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogLoginButtonMouseClicked
+        loginDialogLoginButtonClicked();
+    }//GEN-LAST:event_loginDialogLoginButtonMouseClicked
+    
+    private void setUserParameters(int UID) {
+        try {
+            if(database.setParameters(UID, this)) {
+                loginInfoUsernameTextField.setText(LoginSession.nickname);
+                weightValueTextField.setText(String.valueOf(df.format(LoginSession.userWeight)));
+                heightValueTextField.setText(String.valueOf(LoginSession.userHeight));
+                ageValueTextField.setText(String.valueOf(LoginSession.userAge));
+                initValues();
+            }
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+        }
+    }
+    
+    private void loginDialogLoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogLoginButtonMouseEntered
+        loginDialogLoginButton.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_loginDialogLoginButtonMouseEntered
+
+    private void loginDialogLoginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogLoginButtonMouseExited
+        loginDialogLoginButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_loginDialogLoginButtonMouseExited
+
+    private void loginDialogLoginTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginDialogLoginTextFieldKeyPressed
+        val.limitCharVal(evt, loginDialogLoginTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            loginDialogLoginButtonClicked();
+            
+    }//GEN-LAST:event_loginDialogLoginTextFieldKeyPressed
+
+    private void loginDialogPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginDialogPasswordFieldKeyPressed
+        val.limitCharVal(evt, loginDialogPasswordField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            loginDialogLoginButtonClicked();
+    }//GEN-LAST:event_loginDialogPasswordFieldKeyPressed
+
+    private void registerDialogLoginTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogLoginTextFieldKeyPressed
+        val.limitCharVal(evt, registerDialogLoginTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogLoginTextFieldKeyPressed
+
+    private void registerDialogPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogPasswordFieldKeyPressed
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogPasswordFieldKeyPressed
+    
+    private void loginDialogEmptyFields() {
+        loginDialogLoginTextField.setText("");
+        loginDialogPasswordField.setText("");
+    }
+    
+    private void registerDialogEmptyFields() {
+        registerDialogLoginTextField.setText("");
+        registerDialogPasswordField.setText("");
+        registerDialogConfirmPasswordField.setText("");
+        registerDialogEmailTextField.setText("");
+        registerDialogNameTextField.setText("");
+        registerDialogAgeTextField.setText("");
+        registerDialogWeightTextField.setText("");
+        registerDialogHeightTextField.setText("");
+        registerDialogGoalTextField.setText("");
+        registerDialogSelectGenderFemaleButtonText.setOpaque(true);
+        registerDialogSelectGenderMaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        registerGender = 0;
+    }
+    
+    private void registerDialogCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogCancelButtonMouseClicked
+        registerDialogEmptyFields();
+        loginDialog.setVisible(true);
+        registerDialog.setVisible(false);
+    }//GEN-LAST:event_registerDialogCancelButtonMouseClicked
+
+    private void registerDialogCancelButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogCancelButtonMouseEntered
+        registerDialogCancelButton.setBackground(Color.decode("#42474F"));
+    }//GEN-LAST:event_registerDialogCancelButtonMouseEntered
+
+    private void registerDialogCancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogCancelButtonMouseExited
+        registerDialogCancelButton.setBackground(Color.decode("#393E46"));
+    }//GEN-LAST:event_registerDialogCancelButtonMouseExited
+    
+    private boolean isNicknameAvailable(String nickname) {
+        try {
+            if(database.checkNicknames(nickname, this)) {
+                if(nickname.equals(LoginSession.nicknameFound))
+                    return false;
+            }
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+        }
+        return true;
+    }
+    
+    private boolean isEmailAvailable(String email) {
+        try {
+            if(database.checkEmails(email, this)) {
+                if(email.equals(LoginSession.emailFound))
+                    return false;
+            }
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+        }
+        return true;
+    }
+    
+    private boolean isPasswordCorrect(String password1, String password2) {
+        return password1.equals(password2);
+    }
+    
+    private boolean areRegisterDialogFieldsFilled() {
+        if(!(registerDialogLoginTextField.getText().equals("") || (registerDialogPasswordField.getPassword().length == 0) || 
+                (registerDialogConfirmPasswordField.getPassword().length == 0) || registerDialogEmailTextField.getText().equals("") ||
+                registerDialogNameTextField.getText().equals("") || registerDialogAgeTextField.getText().equals("") || 
+                registerDialogWeightTextField.getText().equals("") || registerDialogHeightTextField.getText().equals("") ||
+                registerDialogGoalTextField.getText().equals(""))) 
+            return true;
+        else
+            return false;
+    }
+    
+    private void registerDialogRegisterButtonClicked() {
+        if(loginCorrect && passwordCorrect && emailCorrect && areRegisterDialogFieldsFilled()) {
+            String usernameStr = registerDialogLoginTextField.getText();
+            passwordStr = new String(registerDialogPasswordField.getPassword());
+            String emailStr = registerDialogEmailTextField.getText();
+            String nameStr = registerDialogNameTextField.getText();
+            age = Integer.parseInt(registerDialogAgeTextField.getText());
+            weight = Double.parseDouble(registerDialogWeightTextField.getText());
+            height = Integer.parseInt(registerDialogHeightTextField.getText());
+            double goal = Double.parseDouble(registerDialogGoalTextField.getText());
+
+            try {
+                database.register(usernameStr, passwordStr, emailStr, nameStr, age, weight, height, goal, registerGender, this);
+                
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+            }
+                registerDialogEmptyFields();
+                registerDialog.setVisible(false);
+        }
+    }
+    
+    private void registerDialogRegisterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogRegisterButtonMouseClicked
+        registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogRegisterButtonMouseClicked
+
+    private void registerDialogRegisterButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogRegisterButtonMouseEntered
+        registerDialogRegisterButton.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_registerDialogRegisterButtonMouseEntered
+
+    private void registerDialogRegisterButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogRegisterButtonMouseExited
+        registerDialogRegisterButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_registerDialogRegisterButtonMouseExited
+
+    private void registerDialogConfirmPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogConfirmPasswordFieldKeyPressed
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogConfirmPasswordFieldKeyPressed
+
+    private void registerDialogEmailTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogEmailTextFieldKeyPressed
+        val.limitCharVal(evt, registerDialogEmailTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogEmailTextFieldKeyPressed
+
+    private void registerDialogNameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogNameTextFieldKeyPressed
+        val.lettersVal(evt, registerDialogNameTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogNameTextFieldKeyPressed
+
+    private void registerDialogAgeTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogAgeTextFieldKeyPressed
+        val.intNumberVal(evt, registerDialogAgeTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogAgeTextFieldKeyPressed
+
+    private void registerDialogSelectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderFemaleButtonMouseClicked
+        registerDialogSelectGenderFemaleButtonText.setOpaque(true);
+        registerDialogSelectGenderMaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        registerGender = 0;
+    }//GEN-LAST:event_registerDialogSelectGenderFemaleButtonMouseClicked
+
+    private void registerDialogSelectGenderFemaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderFemaleButtonMouseEntered
+        registerDialogSelectGenderFemaleButton.setBackground(Color.decode("#424751"));
+    }//GEN-LAST:event_registerDialogSelectGenderFemaleButtonMouseEntered
+
+    private void registerDialogSelectGenderFemaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderFemaleButtonMouseExited
+        registerDialogSelectGenderFemaleButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_registerDialogSelectGenderFemaleButtonMouseExited
+
+    private void registerDialogSelectGenderMaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderMaleButtonMouseClicked
+        registerDialogSelectGenderMaleButtonText.setOpaque(true);
+        registerDialogSelectGenderFemaleButtonText.setOpaque(false);
+        repaintSelectGenderButtons();
+        registerGender = 1;
+    }//GEN-LAST:event_registerDialogSelectGenderMaleButtonMouseClicked
+
+    private void registerDialogSelectGenderMaleButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderMaleButtonMouseEntered
+        registerDialogSelectGenderMaleButton.setBackground(Color.decode("#424751"));
+    }//GEN-LAST:event_registerDialogSelectGenderMaleButtonMouseEntered
+
+    private void registerDialogSelectGenderMaleButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerDialogSelectGenderMaleButtonMouseExited
+        registerDialogSelectGenderMaleButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_registerDialogSelectGenderMaleButtonMouseExited
+
+    private void loginDialogRegisterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogRegisterButtonMouseClicked
+        registerDialog.setVisible(true);
+        loginDialog.setVisible(false);
+    }//GEN-LAST:event_loginDialogRegisterButtonMouseClicked
+
+    private void registerDialogWeightTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogWeightTextFieldKeyPressed
+        val.floatNumberVal(evt, registerDialogWeightTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogWeightTextFieldKeyPressed
+
+    private void registerDialogHeightTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogHeightTextFieldKeyPressed
+        val.intNumberVal(evt, registerDialogHeightTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogHeightTextFieldKeyPressed
+
+    private void registerDialogGoalTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogGoalTextFieldKeyPressed
+        val.floatNumberVal(evt, registerDialogGoalTextField);
+        if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
+            registerDialogRegisterButtonClicked();
+    }//GEN-LAST:event_registerDialogGoalTextFieldKeyPressed
+
+    private void registerDialogConfirmPasswordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogConfirmPasswordFieldKeyReleased
+        passwordStr = new String(registerDialogPasswordField.getPassword());
+        passwordConfirmStr = new String(registerDialogConfirmPasswordField.getPassword());
+        if(isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+            registerDialogPasswordWarningText.setVisible(false);
+            registerDialogPasswordCorrectText.setVisible(true);
+            passwordCorrect = true;
+        }
+        else if(!isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+            registerDialogPasswordWarningText.setVisible(true);
+            registerDialogPasswordCorrectText.setVisible(false);
+            passwordCorrect = false;
+        }
+    }//GEN-LAST:event_registerDialogConfirmPasswordFieldKeyReleased
+
+    private void registerDialogPasswordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogPasswordFieldKeyReleased
+        passwordStr = new String(registerDialogPasswordField.getPassword());
+        passwordConfirmStr = new String(registerDialogConfirmPasswordField.getPassword());
+        if(isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+            registerDialogPasswordWarningText.setVisible(false);
+            registerDialogPasswordCorrectText.setVisible(true);
+            passwordCorrect = true;
+        }
+        else if(!isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+            registerDialogPasswordWarningText.setVisible(true);
+            registerDialogPasswordCorrectText.setVisible(false);
+            passwordCorrect = false;
+        }
+    }//GEN-LAST:event_registerDialogPasswordFieldKeyReleased
+
+    private void registerDialogLoginTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogLoginTextFieldKeyReleased
+        if(isNicknameAvailable(registerDialogLoginTextField.getText())) {
+            registerDialogLoginWarningText.setVisible(false);
+            registerDialogLoginCorrectText.setVisible(true);
+            loginCorrect = true;
+        }
+        else if(!isNicknameAvailable(registerDialogLoginTextField.getText())) {
+            registerDialogLoginWarningText.setVisible(true);
+            registerDialogLoginCorrectText.setVisible(false);
+            loginCorrect = false;
+        }
+    }//GEN-LAST:event_registerDialogLoginTextFieldKeyReleased
+
+    private void registerDialogEmailTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerDialogEmailTextFieldKeyReleased
+        if(isEmailAvailable(registerDialogEmailTextField.getText())) {
+            registerDialogEmailWarningText.setVisible(false);
+            registerDialogEmailCorrectText.setVisible(true);
+            emailCorrect = true;
+        }
+        else if(!isEmailAvailable(registerDialogEmailTextField.getText())) {
+            registerDialogEmailWarningText.setVisible(true);
+            registerDialogEmailCorrectText.setVisible(false);
+            emailCorrect = false;
+        }
+    }//GEN-LAST:event_registerDialogEmailTextFieldKeyReleased
+
+    private void logoutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButtonMouseClicked
+        LoginSession.resetParameters();
+        resetAllParameters();
+        loginInfo.setVisible(false);
+        logoutButton.setVisible(false);
+        loginButton.setVisible(true);
+        LoginSession.isLoggedIn = false; 
+        profileNameLowerBar.setBackground(Color.decode("#7A7A7A"));
+        weightValuePanel.setBackground(Color.decode("#7A7A7A"));
+        weightValueTextField.setBackground(Color.decode("#7A7A7A"));
+        heightValueTextField.setBackground(Color.decode("#7A7A7A"));
+        ageValueTextField.setBackground(Color.decode("#7A7A7A"));
+        loginInfoLoweBar.setVisible(false);
+        
+        repaintMyProfilePanel();
+    }//GEN-LAST:event_logoutButtonMouseClicked
+
+    private void addMealButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealButtonMouseEntered
+        addMealButton.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_addMealButtonMouseEntered
+
+    private void addMealButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealButtonMouseExited
+        addMealButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_addMealButtonMouseExited
+
+    private void closeDayButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeDayButtonMouseEntered
+        closeDayButton.setBackground(Color.decode("#2C2F34"));
+    }//GEN-LAST:event_closeDayButtonMouseEntered
+
+    private void closeDayButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeDayButtonMouseExited
+        closeDayButton.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_closeDayButtonMouseExited
+
+    private void addProduct1ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct1ButtonMouseEntered
+        addProduct1Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct1ButtonMouseEntered
+
+    private void addProduct1ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct1ButtonMouseExited
+        addProduct1Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct1ButtonMouseExited
+
+    private void addProduct2ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct2ButtonMouseEntered
+        addProduct2Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct2ButtonMouseEntered
+
+    private void addProduct2ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct2ButtonMouseExited
+        addProduct2Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct2ButtonMouseExited
+
+    private void addProduct3ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct3ButtonMouseEntered
+        addProduct3Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct3ButtonMouseEntered
+
+    private void addProduct3ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct3ButtonMouseExited
+        addProduct3Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct3ButtonMouseExited
+
+    private void addProduct4ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct4ButtonMouseEntered
+        addProduct4Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct4ButtonMouseEntered
+
+    private void addProduct4ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct4ButtonMouseExited
+        addProduct4Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct4ButtonMouseExited
+
+    private void addProduct5ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct5ButtonMouseEntered
+        addProduct5Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct5ButtonMouseEntered
+
+    private void addProduct5ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct5ButtonMouseExited
+        addProduct5Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct5ButtonMouseExited
+
+    private void addProduct8ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct8ButtonMouseEntered
+        addProduct8Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct8ButtonMouseEntered
+
+    private void addProduct8ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct8ButtonMouseExited
+        addProduct8Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct8ButtonMouseExited
+
+    private void addProduct7ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct7ButtonMouseEntered
+        addProduct7Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct7ButtonMouseEntered
+
+    private void addProduct7ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct7ButtonMouseExited
+        addProduct7Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct7ButtonMouseExited
+
+    private void addProduct6ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct6ButtonMouseEntered
+        addProduct8Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct6ButtonMouseEntered
+
+    private void addProduct6ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct6ButtonMouseExited
+        addProduct6Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct6ButtonMouseExited
+
+    private void addMealDialogCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogCancelButtonMouseClicked
+        addMealDialog.setVisible(false);
+    }//GEN-LAST:event_addMealDialogCancelButtonMouseClicked
+
+    private void addMealDialogCancelButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogCancelButtonMouseEntered
+        addMealDialogCancelButton.setBackground(Color.decode("#42474F"));
+    }//GEN-LAST:event_addMealDialogCancelButtonMouseEntered
+
+    private void addMealDialogCancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogCancelButtonMouseExited
+        addMealDialogCancelButton.setBackground(Color.decode("#393E46"));
+    }//GEN-LAST:event_addMealDialogCancelButtonMouseExited
+
+    private void addMealDialogConfirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogConfirmButtonMouseClicked
+        mealsNumber++;
+        addMealDialog.setVisible(false);
+        if(mealsNumber == 1)
+            meal1Panel.setVisible(true);
+        if(mealsNumber == 2)
+            meal2Panel.setVisible(true);
+        if(mealsNumber == 3)
+            meal3Panel.setVisible(true);
+        if(mealsNumber == 4)
+            meal4Panel.setVisible(true);
+        if(mealsNumber == 5)
+            meal5Panel.setVisible(true);
+        if(mealsNumber == 6)
+            meal6Panel.setVisible(true);
+        if(mealsNumber == 7)
+            meal7Panel.setVisible(true);
+        if(mealsNumber == 8)
+            meal8Panel.setVisible(true);
+    }//GEN-LAST:event_addMealDialogConfirmButtonMouseClicked
+
+    private void addMealDialogConfirmButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogConfirmButtonMouseEntered
+        addMealDialogConfirmButton.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_addMealDialogConfirmButtonMouseEntered
+
+    private void addMealDialogConfirmButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealDialogConfirmButtonMouseExited
+        addMealDialogConfirmButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_addMealDialogConfirmButtonMouseExited
+
+    private void addMealButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMealButtonMouseClicked
+        addMealDialog.setVisible(true);
+    }//GEN-LAST:event_addMealButtonMouseClicked
+
+    private void addProduct9ButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct9ButtonMouseEntered
+        addProduct9Button.setBackground(Color.decode("#2D2F33"));
+    }//GEN-LAST:event_addProduct9ButtonMouseEntered
+
+    private void addProduct9ButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct9ButtonMouseExited
+        addProduct9Button.setBackground(Color.decode("#32363D"));
+    }//GEN-LAST:event_addProduct9ButtonMouseExited
+
+    private void selectProductDialogCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogCancelButtonMouseClicked
+        selectProductDialog.setVisible(false);
+    }//GEN-LAST:event_selectProductDialogCancelButtonMouseClicked
+
+    private void selectProductDialogCancelButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogCancelButtonMouseEntered
+        selectProductDialogCancelButton.setBackground(Color.decode("#42474F"));
+    }//GEN-LAST:event_selectProductDialogCancelButtonMouseEntered
+
+    private void selectProductDialogCancelButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogCancelButtonMouseExited
+        selectProductDialogCancelButton.setBackground(Color.decode("#393E46"));
+    }//GEN-LAST:event_selectProductDialogCancelButtonMouseExited
+
+    private void selectProductDialogConfirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogConfirmButtonMouseClicked
+        selectProductDialog.setVisible(false);
+    }//GEN-LAST:event_selectProductDialogConfirmButtonMouseClicked
+
+    private void selectProductDialogConfirmButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogConfirmButtonMouseEntered
+        selectProductDialogConfirmButton.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_selectProductDialogConfirmButtonMouseEntered
+
+    private void selectProductDialogConfirmButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectProductDialogConfirmButtonMouseExited
+        selectProductDialogConfirmButton.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_selectProductDialogConfirmButtonMouseExited
+
+    private void addProduct1ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProduct1ButtonMouseClicked
+        selectProductDialog.setVisible(true);
+    }//GEN-LAST:event_addProduct1ButtonMouseClicked
+
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_closeButtonMouseClicked
+
+    private void closeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseEntered
+        closeButtonIconActive.setVisible(true);
+        closeButtonIcon.setVisible(false);
+    }//GEN-LAST:event_closeButtonMouseEntered
+
+    private void closeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseExited
+        closeButtonIcon.setVisible(true);
+        closeButtonIconActive.setVisible(false);
+    }//GEN-LAST:event_closeButtonMouseExited
+
+    private void minimizeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseClicked
+        setExtendedState(Frame.ICONIFIED);  
+    }//GEN-LAST:event_minimizeButtonMouseClicked
+
+    private void minimizeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseEntered
+        minimizeButtonIconActive.setVisible(true);
+        minimizeButtonIcon.setVisible(false);
+    }//GEN-LAST:event_minimizeButtonMouseEntered
+
+    private void minimizeButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeButtonMouseExited
+        minimizeButtonIcon.setVisible(true);
+        minimizeButtonIconActive.setVisible(false);
+    }//GEN-LAST:event_minimizeButtonMouseExited
+
+    private void loginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseEntered
+        loginButtonText.setForeground(Color.decode("#939393"));
+        loginButtonLowerBar.setBackground(Color.decode("#939393"));
+    }//GEN-LAST:event_loginButtonMouseEntered
+
+    private void loginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseExited
+        loginButtonText.setForeground(Color.decode("#ACACAC"));
+        loginButtonLowerBar.setBackground(Color.decode("#ACACAC"));
+    }//GEN-LAST:event_loginButtonMouseExited
+
+    private void logoutButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButtonMouseEntered
+        logoutButtonText.setForeground(Color.decode("#939393"));
+        logoutButtonLowerBar.setBackground(Color.decode("#939393"));
+    }//GEN-LAST:event_logoutButtonMouseEntered
+
+    private void logoutButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButtonMouseExited
+        logoutButtonText.setForeground(Color.decode("#ACACAC"));
+        logoutButtonLowerBar.setBackground(Color.decode("#ACACAC"));
+    }//GEN-LAST:event_logoutButtonMouseExited
+
+    private void loginDialogRegisterButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogRegisterButtonMouseEntered
+        loginDialogRegisterButtonText.setForeground(Color.decode("#009BA3"));
+        loginDialogRegisterButtonLowerBar.setBackground(Color.decode("#009BA3"));
+    }//GEN-LAST:event_loginDialogRegisterButtonMouseEntered
+
+    private void loginDialogRegisterButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginDialogRegisterButtonMouseExited
+        loginDialogRegisterButtonText.setForeground(Color.decode("#00ADB5"));
+        loginDialogRegisterButtonLowerBar.setBackground(Color.decode("#00ADB5"));
+    }//GEN-LAST:event_loginDialogRegisterButtonMouseExited
+
+    private void selectProductDialogProductSearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_selectProductDialogProductSearchTextFieldKeyReleased
+        if(!selectProductDialogProductSearchTextField.getText().equals("")) {
+            try {
+                DefaultListModel<String> searchModel = new DefaultListModel<String>();
+                for(String productName : LoginSession.productNames) {
+                    if(productName.contains((selectProductDialogProductSearchTextField.getText()).substring(0,1).toUpperCase() 
+                            + (selectProductDialogProductSearchTextField.getText()).substring(1).toLowerCase()))
+                        searchModel.addElement(productName);
+                }
+                selectProductDialogProductsList.setModel(searchModel);
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Database error LOL: " + exception.getMessage());
+            }
+        }
+        else if(selectProductDialogProductSearchTextField.getText().equals("")) {
+            selectProductDialogProductsList.setModel(model);
+        }
+    }//GEN-LAST:event_selectProductDialogProductSearchTextFieldKeyReleased
+     
     private void repaintSelectGenderButtons() {
         calcBmrSelectGenderFemaleButton.repaint();
         calcBmrSelectGenderMaleButton.repaint();
         calcBfiSelectGenderFemaleButton.repaint();
         calcBfiSelectGenderMaleButton.repaint();
+        registerDialogSelectGenderFemaleButton.repaint();
+        registerDialogSelectGenderMaleButton.repaint();
     }
     
     private void repaintCalcButtons() {
         calcBmrButton.repaint();
         calcBmiButton.repaint();
         calcBfiButton.repaint();
+    }
+    
+    private void repaintMyProfilePanel() {
+        profileNameLowerBar.repaint();
+        weightValuePanel.repaint();
+        weightValueTextField.repaint();
+        heightValueTextField.repaint();
+        ageValueTextField.repaint();
     }
     
     public void activityBar(JLabel label1, JLabel label2) {
@@ -2851,6 +5687,53 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel addMealButton;
+    private javax.swing.JLabel addMealButtonText;
+    private javax.swing.JDialog addMealDialog;
+    private javax.swing.JPanel addMealDialogCancelButton;
+    private javax.swing.JLabel addMealDialogCancelButtonText;
+    private javax.swing.JPanel addMealDialogConfirmButton;
+    private javax.swing.JLabel addMealDialogConfirmButtonText;
+    private javax.swing.JPanel addMealDialogPanel;
+    private javax.swing.JLabel addMealDialogTitleText;
+    private javax.swing.JLabel addMealDialogUpperBar;
+    private javax.swing.JPanel addMealDialogUpperThickBar;
+    private javax.swing.JPanel addMealProduct1Panel;
+    private javax.swing.JPanel addMealProduct2Panel;
+    private javax.swing.JPanel addMealProduct3Panel;
+    private javax.swing.JPanel addMealProduct4Panel;
+    private javax.swing.JPanel addMealProduct5Panel;
+    private javax.swing.JPanel addMealProduct6Panel;
+    private javax.swing.JPanel addMealProduct7Panel;
+    private javax.swing.JPanel addMealProduct8Panel;
+    private javax.swing.JPanel addMealProduct9Panel;
+    private javax.swing.JPanel addProduct1Button;
+    private javax.swing.JLabel addProduct1ButtonPlusSign;
+    private javax.swing.JTextField addProduct1TextField;
+    private javax.swing.JPanel addProduct2Button;
+    private javax.swing.JLabel addProduct2ButtonPlusSign;
+    private javax.swing.JTextField addProduct2TextField;
+    private javax.swing.JPanel addProduct3Button;
+    private javax.swing.JLabel addProduct3ButtonPlusSign;
+    private javax.swing.JTextField addProduct3TextField;
+    private javax.swing.JPanel addProduct4Button;
+    private javax.swing.JLabel addProduct4ButtonPlusSign;
+    private javax.swing.JTextField addProduct4TextField;
+    private javax.swing.JPanel addProduct5Button;
+    private javax.swing.JLabel addProduct5ButtonPlusSign;
+    private javax.swing.JTextField addProduct5TextField;
+    private javax.swing.JPanel addProduct6Button;
+    private javax.swing.JLabel addProduct6ButtonPlusSign;
+    private javax.swing.JTextField addProduct6TextField;
+    private javax.swing.JPanel addProduct7Button;
+    private javax.swing.JLabel addProduct7ButtonPlusSign;
+    private javax.swing.JTextField addProduct7TextField;
+    private javax.swing.JPanel addProduct8Button;
+    private javax.swing.JLabel addProduct8ButtonPlusSign;
+    private javax.swing.JTextField addProduct8TextField;
+    private javax.swing.JPanel addProduct9Button;
+    private javax.swing.JLabel addProduct9ButtonPlusSign;
+    private javax.swing.JTextField addProduct9TextField;
     private javax.swing.JLabel ageText;
     private javax.swing.JTextField ageValueTextField;
     private javax.swing.JLabel bfiButtonText;
@@ -2945,11 +5828,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel calculateBmiButtonText;
     private javax.swing.JPanel calculateBmrButton;
     private javax.swing.JLabel calculateBmrButtonText;
-    private javax.swing.JLabel closeButton;
+    private javax.swing.JPanel closeButton;
+    private javax.swing.JLabel closeButtonIcon;
+    private javax.swing.JLabel closeButtonIconActive;
+    private javax.swing.JPanel closeDayButton;
+    private javax.swing.JLabel closeDayButtonText;
+    private javax.swing.JLabel femaleIcon;
     private javax.swing.JLabel goalLeftText;
-    private javax.swing.JLabel goalLeftValueText;
+    private javax.swing.JTextField goalLeftTextField;
     private javax.swing.JLabel goalText;
-    private javax.swing.JLabel goalValueText;
+    private javax.swing.JTextField goalValueTextField;
     private javax.swing.JLabel heightText;
     private javax.swing.JTextField heightValueTextField;
     private javax.swing.JLabel infoBanner;
@@ -2971,16 +5859,129 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel lastActivity2ValueText;
     private javax.swing.JPanel lastActivity3Panel;
     private javax.swing.JLabel lastActivity3ValueText;
+    private javax.swing.JPanel loginButton;
+    private javax.swing.JLabel loginButtonLowerBar;
+    private javax.swing.JLabel loginButtonText;
+    private javax.swing.JDialog loginDialog;
+    private javax.swing.JPanel loginDialogCancelButton;
+    private javax.swing.JLabel loginDialogCancelButtonText;
+    private javax.swing.JLabel loginDialogLeftBorder;
+    private javax.swing.JPanel loginDialogLoginButton;
+    private javax.swing.JLabel loginDialogLoginButtonText;
+    private javax.swing.JLabel loginDialogLoginText;
+    private javax.swing.JTextField loginDialogLoginTextField;
+    private javax.swing.JLabel loginDialogLowerBorder;
+    private javax.swing.JPanel loginDialogPanel;
+    private javax.swing.JPasswordField loginDialogPasswordField;
+    private javax.swing.JLabel loginDialogPasswordText;
+    private javax.swing.JPanel loginDialogRegisterButton;
+    private javax.swing.JLabel loginDialogRegisterButtonLowerBar;
+    private javax.swing.JLabel loginDialogRegisterButtonText;
+    private javax.swing.JLabel loginDialogRightBorder;
+    private javax.swing.JLabel loginDialogTitleText;
+    private javax.swing.JLabel loginDialogUpperBar;
+    private javax.swing.JPanel loginDialogUpperThickBar;
+    private javax.swing.JLabel loginDialogWarningText;
+    private javax.swing.JPanel loginInfo;
+    private javax.swing.JLabel loginInfoLoweBar;
+    private javax.swing.JTextField loginInfoUsernameTextField;
+    private javax.swing.JPanel logoutButton;
+    private javax.swing.JLabel logoutButtonLowerBar;
+    private javax.swing.JLabel logoutButtonText;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel maleIcon;
+    private javax.swing.JLabel meal1CarbsText;
+    private javax.swing.JTextField meal1CarbsValueTextField;
+    private javax.swing.JLabel meal1FatsText;
+    private javax.swing.JTextField meal1FatsValueTextField;
+    private javax.swing.JLabel meal1KcalText;
+    private javax.swing.JTextField meal1KcalValueTextField;
+    private javax.swing.JTextField meal1Name;
+    private javax.swing.JPanel meal1Panel;
+    private javax.swing.JLabel meal1ProteinsText;
+    private javax.swing.JTextField meal1ProteinsValueTextField;
+    private javax.swing.JLabel meal2CarbsText;
+    private javax.swing.JTextField meal2CarbsValueTextField;
+    private javax.swing.JLabel meal2FatsText;
+    private javax.swing.JTextField meal2FatsValueTextField;
+    private javax.swing.JLabel meal2KcalText;
+    private javax.swing.JTextField meal2KcalValueTextField;
+    private javax.swing.JTextField meal2Name;
+    private javax.swing.JPanel meal2Panel;
+    private javax.swing.JLabel meal2ProteinsText;
+    private javax.swing.JTextField meal2ProteinsValueTextField;
+    private javax.swing.JLabel meal3CarbsText;
+    private javax.swing.JTextField meal3CarbsValueTextField;
+    private javax.swing.JLabel meal3FatsText;
+    private javax.swing.JTextField meal3FatsValueTextField;
+    private javax.swing.JLabel meal3KcalText;
+    private javax.swing.JTextField meal3KcalValueTextField;
+    private javax.swing.JTextField meal3Name;
+    private javax.swing.JPanel meal3Panel;
+    private javax.swing.JLabel meal3ProteinsText;
+    private javax.swing.JTextField meal3ProteinsValueTextField;
+    private javax.swing.JLabel meal4CarbsText;
+    private javax.swing.JTextField meal4CarbsValueTextField;
+    private javax.swing.JLabel meal4FatsText;
+    private javax.swing.JTextField meal4FatsValueTextField;
+    private javax.swing.JLabel meal4KcalText;
+    private javax.swing.JTextField meal4KcalValueTextField;
+    private javax.swing.JTextField meal4Name;
+    private javax.swing.JPanel meal4Panel;
+    private javax.swing.JLabel meal4ProteinsText;
+    private javax.swing.JTextField meal4ProteinsValueTextField;
+    private javax.swing.JLabel meal5CarbsText;
+    private javax.swing.JTextField meal5CarbsValueTextField;
+    private javax.swing.JLabel meal5FatsText;
+    private javax.swing.JTextField meal5FatsValueTextField;
+    private javax.swing.JLabel meal5KcalText;
+    private javax.swing.JTextField meal5KcalValueTextField;
+    private javax.swing.JTextField meal5Name;
+    private javax.swing.JPanel meal5Panel;
+    private javax.swing.JLabel meal5ProteinsText;
+    private javax.swing.JTextField meal5ProteinsValueTextField;
+    private javax.swing.JLabel meal6CarbsText;
+    private javax.swing.JTextField meal6CarbsValueTextField;
+    private javax.swing.JLabel meal6FatsText;
+    private javax.swing.JTextField meal6FatsValueTextField;
+    private javax.swing.JLabel meal6KcalText;
+    private javax.swing.JTextField meal6KcalValueTextField;
+    private javax.swing.JTextField meal6Name;
+    private javax.swing.JPanel meal6Panel;
+    private javax.swing.JLabel meal6ProteinsText;
+    private javax.swing.JTextField meal6ProteinsValueTextField;
+    private javax.swing.JLabel meal7CarbsText;
+    private javax.swing.JTextField meal7CarbsValueTextField;
+    private javax.swing.JLabel meal7FatsText;
+    private javax.swing.JTextField meal7FatsValueTextField;
+    private javax.swing.JLabel meal7KcalText;
+    private javax.swing.JTextField meal7KcalValueTextField;
+    private javax.swing.JTextField meal7Name;
+    private javax.swing.JPanel meal7Panel;
+    private javax.swing.JLabel meal7ProteinsText;
+    private javax.swing.JTextField meal7ProteinsValueTextField;
+    private javax.swing.JLabel meal8CarbsText;
+    private javax.swing.JTextField meal8CarbsValueTextField;
+    private javax.swing.JLabel meal8FatsText;
+    private javax.swing.JTextField meal8FatsValueTextField;
+    private javax.swing.JLabel meal8KcalText;
+    private javax.swing.JTextField meal8KcalValueTextField;
+    private javax.swing.JTextField meal8Name;
+    private javax.swing.JPanel meal8Panel;
+    private javax.swing.JLabel meal8ProteinsText;
+    private javax.swing.JTextField meal8ProteinsValueTextField;
     private javax.swing.JLabel mealDiaryBanner;
     private javax.swing.JPanel mealDiaryButton;
     private javax.swing.JLabel mealDiaryButtonBar;
     private javax.swing.JLabel mealDiaryButtonIcon;
     private javax.swing.JLabel mealDiaryButtonText;
     private javax.swing.JPanel mealDiaryPanel;
+    private javax.swing.JPanel mealInfoPanel;
+    private javax.swing.JPanel mealListPanel;
     private javax.swing.JPanel menuPanel;
-    private javax.swing.JLabel minimizeButton;
+    private javax.swing.JPanel minimizeButton;
+    private javax.swing.JLabel minimizeButtonIcon;
+    private javax.swing.JLabel minimizeButtonIconActive;
     private javax.swing.JLabel modifyNotesButton;
     private javax.swing.JPanel modifyParamsToggleButton;
     private javax.swing.JLabel modifyParamsToggleButtonOff;
@@ -2991,9 +5992,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel myProfileButtonIcon;
     private javax.swing.JLabel myProfileButtonText;
     private javax.swing.JPanel myProfilePanel;
-    private javax.swing.JLabel nameLowerBar;
     private javax.swing.JPanel namePanel;
-    private javax.swing.JLabel nameText;
     private javax.swing.JPanel notesPanel;
     private javax.swing.JLabel notesText;
     private javax.swing.JTextArea notesTextArea;
@@ -3013,7 +6012,51 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel physicalActivityLevel5Text2;
     private javax.swing.JPanel physicalActivityTypePanel;
     private javax.swing.JLabel physicalActivityTypeText;
+    private javax.swing.JLabel profileNameLowerBar;
     private javax.swing.JLabel profileNameText;
+    private javax.swing.JTextField profileNameTextField;
+    private javax.swing.JDialog registerDialog;
+    private javax.swing.JLabel registerDialogAgeText;
+    private javax.swing.JTextField registerDialogAgeTextField;
+    private javax.swing.JPanel registerDialogCancelButton;
+    private javax.swing.JLabel registerDialogCancelButtonText;
+    private javax.swing.JPasswordField registerDialogConfirmPasswordField;
+    private javax.swing.JLabel registerDialogConfirmPasswordText;
+    private javax.swing.JLabel registerDialogEmailCorrectText;
+    private javax.swing.JLabel registerDialogEmailText;
+    private javax.swing.JTextField registerDialogEmailTextField;
+    private javax.swing.JLabel registerDialogEmailWarningText;
+    private javax.swing.JLabel registerDialogGenderText;
+    private javax.swing.JLabel registerDialogGoalText;
+    private javax.swing.JTextField registerDialogGoalTextField;
+    private javax.swing.JLabel registerDialogHeightText;
+    private javax.swing.JTextField registerDialogHeightTextField;
+    private javax.swing.JLabel registerDialogLeftBorder;
+    private javax.swing.JLabel registerDialogLoginCorrectText;
+    private javax.swing.JLabel registerDialogLoginText;
+    private javax.swing.JTextField registerDialogLoginTextField;
+    private javax.swing.JLabel registerDialogLoginWarningText;
+    private javax.swing.JLabel registerDialogLowerBorder;
+    private javax.swing.JLabel registerDialogNameText;
+    private javax.swing.JTextField registerDialogNameTextField;
+    private javax.swing.JPanel registerDialogPanel;
+    private javax.swing.JLabel registerDialogPasswordCorrectText;
+    private javax.swing.JPasswordField registerDialogPasswordField;
+    private javax.swing.JLabel registerDialogPasswordText;
+    private javax.swing.JLabel registerDialogPasswordWarningText;
+    private javax.swing.JPanel registerDialogRegisterButton;
+    private javax.swing.JLabel registerDialogRegisterButtonText;
+    private javax.swing.JLabel registerDialogRightBorder;
+    private javax.swing.JPanel registerDialogSelectGenderButton;
+    private javax.swing.JPanel registerDialogSelectGenderFemaleButton;
+    private javax.swing.JLabel registerDialogSelectGenderFemaleButtonText;
+    private javax.swing.JPanel registerDialogSelectGenderMaleButton;
+    private javax.swing.JLabel registerDialogSelectGenderMaleButtonText;
+    private javax.swing.JLabel registerDialogTitleText;
+    private javax.swing.JLabel registerDialogUpperBar;
+    private javax.swing.JPanel registerDialogUpperThickBar;
+    private javax.swing.JLabel registerDialogWeightText;
+    private javax.swing.JTextField registerDialogWeightTextField;
     private javax.swing.JLabel saveNotesButton;
     private javax.swing.JLabel selectBikeRidingBannerBw;
     private javax.swing.JLabel selectBikeRidingBannerColor;
@@ -3031,6 +6074,18 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel selectLiftingBannerColor;
     private javax.swing.JLabel selectLiftingBar;
     private javax.swing.JPanel selectLiftingButton;
+    private javax.swing.JDialog selectProductDialog;
+    private javax.swing.JPanel selectProductDialogCancelButton;
+    private javax.swing.JLabel selectProductDialogCancelButtonText;
+    private javax.swing.JPanel selectProductDialogConfirmButton;
+    private javax.swing.JLabel selectProductDialogConfirmButtonText;
+    private javax.swing.JPanel selectProductDialogPanel;
+    private javax.swing.JTextField selectProductDialogProductSearchTextField;
+    private javax.swing.JList<String> selectProductDialogProductsList;
+    protected javax.swing.JScrollPane selectProductDialogProductsListScrollPane;
+    private javax.swing.JLabel selectProductDialogTitleText;
+    private javax.swing.JLabel selectProductDialogUpperBar;
+    private javax.swing.JPanel selectProductDialogUpperThickBar;
     private javax.swing.JLabel selectRunningBannerBw;
     private javax.swing.JLabel selectRunningBannerColor;
     private javax.swing.JLabel selectRunningBar;
