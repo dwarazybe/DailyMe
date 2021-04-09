@@ -16,6 +16,11 @@ public class LoginSession {
     public static int userHeight;
     public static int userAge;
     public static int userGender;
+    public static int productWeight;
+    public static double productKcal;
+    public static double productProteins;
+    public static double productFats;
+    public static double productCarbs;
     public static double userWeightGoal;
     public static boolean isLoggedIn = false;
     

@@ -28,6 +28,12 @@ public class GUI extends javax.swing.JFrame {
     protected int waist;
     protected int calcGender = 0;
     protected int registerGender = 0;
+    private int productWeight;
+    private double productKcal;
+    private double productProteins;
+    private double productFats;
+    private double productCarbs;
+    protected String selectedProduct;
     private int sportSelected = 0;
     private boolean loginCorrect = false;
     private boolean passwordCorrect = false;
@@ -174,7 +180,18 @@ public class GUI extends javax.swing.JFrame {
         selectProductDialogConfirmButtonText = new javax.swing.JLabel();
         selectProductDialogProductsListScrollPane = new javax.swing.JScrollPane();
         selectProductDialogProductsList = new javax.swing.JList<>();
+        selectProductDialogSearchText = new javax.swing.JLabel();
         selectProductDialogProductSearchTextField = new javax.swing.JTextField();
+        selectProductDialogAmountText = new javax.swing.JLabel();
+        selectProductDialogProductAmountTextField = new javax.swing.JTextField();
+        selectProductDialogKcalText = new javax.swing.JLabel();
+        selectProductDialogProductKcalTextField = new javax.swing.JTextField();
+        selectProductDialogProteinsText = new javax.swing.JLabel();
+        selectProductDialogProductProteinsTextField = new javax.swing.JTextField();
+        selectProductDialogFatsText = new javax.swing.JLabel();
+        selectProductDialogProductFatsTextField = new javax.swing.JTextField();
+        selectProductDialogCarbsText = new javax.swing.JLabel();
+        selectProductDialogProductCarbsTextField = new javax.swing.JTextField();
         mainPanel = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         myProfileButton = new javax.swing.JPanel();
@@ -1575,19 +1592,19 @@ public class GUI extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        selectProductDialog.setMinimumSize(new java.awt.Dimension(640, 480));
+        selectProductDialog.setMinimumSize(new java.awt.Dimension(750, 480));
         selectProductDialog.setModal(true);
         selectProductDialog.setUndecorated(true);
         selectProductDialog.setLocationRelativeTo(null);
 
         selectProductDialogPanel.setBackground(new java.awt.Color(57, 62, 70));
-        selectProductDialogPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-        selectProductDialogPanel.setPreferredSize(new java.awt.Dimension(640, 480));
+        selectProductDialogPanel.setMinimumSize(new java.awt.Dimension(750, 480));
+        selectProductDialogPanel.setPreferredSize(new java.awt.Dimension(750, 480));
         selectProductDialogPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         selectProductDialogUpperBar.setBackground(new java.awt.Color(0, 173, 181));
         selectProductDialogUpperBar.setOpaque(true);
-        selectProductDialogPanel.add(selectProductDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 5));
+        selectProductDialogPanel.add(selectProductDialogUpperBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 5));
 
         selectProductDialogUpperThickBar.setBackground(new java.awt.Color(50, 54, 61));
         selectProductDialogUpperThickBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1597,7 +1614,7 @@ public class GUI extends javax.swing.JFrame {
         selectProductDialogTitleText.setText("Wybierz produkt");
         selectProductDialogUpperThickBar.add(selectProductDialogTitleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
 
-        selectProductDialogPanel.add(selectProductDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 60));
+        selectProductDialogPanel.add(selectProductDialogUpperThickBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 60));
 
         selectProductDialogCancelButton.setBackground(new java.awt.Color(57, 62, 70));
         selectProductDialogCancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
@@ -1624,7 +1641,7 @@ public class GUI extends javax.swing.JFrame {
         selectProductDialogCancelButtonText.setText("Anuluj");
         selectProductDialogCancelButton.add(selectProductDialogCancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
 
-        selectProductDialogPanel.add(selectProductDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 430, 90, 25));
+        selectProductDialogPanel.add(selectProductDialogCancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 430, 90, 25));
 
         selectProductDialogConfirmButton.setBackground(new java.awt.Color(0, 173, 181));
         selectProductDialogConfirmButton.setForeground(new java.awt.Color(238, 238, 238));
@@ -1649,7 +1666,7 @@ public class GUI extends javax.swing.JFrame {
         selectProductDialogConfirmButtonText.setText("Zatwierdź");
         selectProductDialogConfirmButton.add(selectProductDialogConfirmButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
 
-        selectProductDialogPanel.add(selectProductDialogConfirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 430, 90, 25));
+        selectProductDialogPanel.add(selectProductDialogConfirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 430, 90, 25));
 
         selectProductDialogProductsListScrollPane.setBorder(null);
 
@@ -1659,26 +1676,118 @@ public class GUI extends javax.swing.JFrame {
         selectProductDialogProductsList.setForeground(new java.awt.Color(238, 238, 238));
         selectProductDialogProductsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         selectProductDialogProductsList.setSelectionBackground(new java.awt.Color(0, 173, 181));
+        selectProductDialogProductsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                selectProductDialogProductsListValueChanged(evt);
+            }
+        });
         selectProductDialogProductsListScrollPane.setViewportView(selectProductDialogProductsList);
 
-        selectProductDialogPanel.add(selectProductDialogProductsListScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 590, 290));
+        selectProductDialogPanel.add(selectProductDialogProductsListScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 710, 280));
+
+        selectProductDialogSearchText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogSearchText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogSearchText.setText("Szukaj:");
+        selectProductDialogSearchText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogSearchText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 66, 40, 20));
 
         selectProductDialogProductSearchTextField.setBackground(new java.awt.Color(66, 71, 79));
-        selectProductDialogProductSearchTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        selectProductDialogProductSearchTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         selectProductDialogProductSearchTextField.setForeground(new java.awt.Color(238, 238, 238));
         selectProductDialogProductSearchTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        selectProductDialogProductSearchTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
         selectProductDialogProductSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 selectProductDialogProductSearchTextFieldKeyReleased(evt);
             }
         });
-        selectProductDialogPanel.add(selectProductDialogProductSearchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 290, 30));
+        selectProductDialogPanel.add(selectProductDialogProductSearchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 230, 30));
+
+        selectProductDialogAmountText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogAmountText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogAmountText.setText("Ilość (g):");
+        selectProductDialogAmountText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogAmountText, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 66, 50, 20));
+
+        selectProductDialogProductAmountTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductAmountTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        selectProductDialogProductAmountTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductAmountTextField.setText("100");
+        selectProductDialogProductAmountTextField.setToolTipText("");
+        selectProductDialogProductAmountTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        selectProductDialogProductAmountTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        selectProductDialogProductAmountTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                selectProductDialogProductAmountTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                selectProductDialogProductAmountTextFieldKeyReleased(evt);
+            }
+        });
+        selectProductDialogPanel.add(selectProductDialogProductAmountTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 80, 30));
+
+        selectProductDialogKcalText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogKcalText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogKcalText.setText("Kalorie:");
+        selectProductDialogKcalText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogKcalText, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 66, 50, 20));
+
+        selectProductDialogProductKcalTextField.setEditable(false);
+        selectProductDialogProductKcalTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductKcalTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        selectProductDialogProductKcalTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductKcalTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
+        selectProductDialogProductKcalTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        selectProductDialogPanel.add(selectProductDialogProductKcalTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 100, 30));
+
+        selectProductDialogProteinsText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogProteinsText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogProteinsText.setText("Białko:");
+        selectProductDialogProteinsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogProteinsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 66, 50, 20));
+        selectProductDialogProteinsText.getAccessibleContext().setAccessibleName("Białko:");
+
+        selectProductDialogProductProteinsTextField.setEditable(false);
+        selectProductDialogProductProteinsTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductProteinsTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        selectProductDialogProductProteinsTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductProteinsTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
+        selectProductDialogProductProteinsTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        selectProductDialogPanel.add(selectProductDialogProductProteinsTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, 80, 30));
+
+        selectProductDialogFatsText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogFatsText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogFatsText.setText("Tłuszcz:");
+        selectProductDialogFatsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogFatsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 66, 50, 20));
+
+        selectProductDialogProductFatsTextField.setEditable(false);
+        selectProductDialogProductFatsTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductFatsTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        selectProductDialogProductFatsTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductFatsTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
+        selectProductDialogProductFatsTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        selectProductDialogPanel.add(selectProductDialogProductFatsTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 80, 30));
+
+        selectProductDialogCarbsText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        selectProductDialogCarbsText.setForeground(new java.awt.Color(138, 152, 173));
+        selectProductDialogCarbsText.setText("Węglowodany:");
+        selectProductDialogCarbsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectProductDialogPanel.add(selectProductDialogCarbsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 66, -1, 20));
+
+        selectProductDialogProductCarbsTextField.setEditable(false);
+        selectProductDialogProductCarbsTextField.setBackground(new java.awt.Color(66, 71, 79));
+        selectProductDialogProductCarbsTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        selectProductDialogProductCarbsTextField.setForeground(new java.awt.Color(238, 238, 238));
+        selectProductDialogProductCarbsTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
+        selectProductDialogProductCarbsTextField.setSelectionColor(new java.awt.Color(0, 173, 181));
+        selectProductDialogPanel.add(selectProductDialogProductCarbsTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 90, 80, 30));
 
         javax.swing.GroupLayout selectProductDialogLayout = new javax.swing.GroupLayout(selectProductDialog.getContentPane());
         selectProductDialog.getContentPane().setLayout(selectProductDialogLayout);
         selectProductDialogLayout.setHorizontalGroup(
             selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 750, Short.MAX_VALUE)
             .addGroup(selectProductDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(selectProductDialogLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -5579,13 +5688,48 @@ public class GUI extends javax.swing.JFrame {
                 }
                 selectProductDialogProductsList.setModel(searchModel);
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(this, "Database error LOL: " + exception.getMessage());
+                JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
             }
         }
         else if(selectProductDialogProductSearchTextField.getText().equals("")) {
             selectProductDialogProductsList.setModel(model);
         }
     }//GEN-LAST:event_selectProductDialogProductSearchTextFieldKeyReleased
+    
+    private void selectProductDialogSetProductInfo() {
+        productKcal = ((LoginSession.productKcal / LoginSession.productWeight) * productWeight);
+        productProteins = ((LoginSession.productProteins / LoginSession.productWeight) * productWeight);
+        productFats = ((LoginSession.productFats / LoginSession.productWeight) * productWeight);
+        productCarbs = ((LoginSession.productCarbs / LoginSession.productWeight) * productWeight);
+        selectProductDialogProductKcalTextField.setText(String.valueOf(df.format(productKcal)) + " kcal");
+        selectProductDialogProductProteinsTextField.setText(String.valueOf(df.format(productProteins)) + "g");
+        selectProductDialogProductFatsTextField.setText(String.valueOf(df.format(productFats))+ "g");
+        selectProductDialogProductCarbsTextField.setText(String.valueOf(df.format(productCarbs))+ "g");
+    }
+    
+    private void selectProductDialogProductsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_selectProductDialogProductsListValueChanged
+        try {
+            if(!selectProductDialogProductAmountTextField.getText().equals("")) {
+                productWeight = Integer.parseInt(selectProductDialogProductAmountTextField.getText());
+                selectedProduct = selectProductDialogProductsList.getSelectedValue();
+                database.loadProductInfo(selectedProduct, this);
+                selectProductDialogSetProductInfo();
+            }
+        } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+        }
+    }//GEN-LAST:event_selectProductDialogProductsListValueChanged
+
+    private void selectProductDialogProductAmountTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_selectProductDialogProductAmountTextFieldKeyReleased
+        if(!selectProductDialogProductAmountTextField.getText().equals("")) {
+            productWeight = Integer.parseInt(selectProductDialogProductAmountTextField.getText());
+            selectProductDialogSetProductInfo();
+        }
+    }//GEN-LAST:event_selectProductDialogProductAmountTextFieldKeyReleased
+
+    private void selectProductDialogProductAmountTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_selectProductDialogProductAmountTextFieldKeyPressed
+        val.intNumberVal(evt, selectProductDialogProductAmountTextField);
+    }//GEN-LAST:event_selectProductDialogProductAmountTextFieldKeyPressed
      
     private void repaintSelectGenderButtons() {
         calcBmrSelectGenderFemaleButton.repaint();
@@ -6075,14 +6219,25 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel selectLiftingBar;
     private javax.swing.JPanel selectLiftingButton;
     private javax.swing.JDialog selectProductDialog;
+    private javax.swing.JLabel selectProductDialogAmountText;
     private javax.swing.JPanel selectProductDialogCancelButton;
     private javax.swing.JLabel selectProductDialogCancelButtonText;
+    private javax.swing.JLabel selectProductDialogCarbsText;
     private javax.swing.JPanel selectProductDialogConfirmButton;
     private javax.swing.JLabel selectProductDialogConfirmButtonText;
+    private javax.swing.JLabel selectProductDialogFatsText;
+    private javax.swing.JLabel selectProductDialogKcalText;
     private javax.swing.JPanel selectProductDialogPanel;
+    private javax.swing.JTextField selectProductDialogProductAmountTextField;
+    private javax.swing.JTextField selectProductDialogProductCarbsTextField;
+    private javax.swing.JTextField selectProductDialogProductFatsTextField;
+    private javax.swing.JTextField selectProductDialogProductKcalTextField;
+    private javax.swing.JTextField selectProductDialogProductProteinsTextField;
     private javax.swing.JTextField selectProductDialogProductSearchTextField;
     private javax.swing.JList<String> selectProductDialogProductsList;
     protected javax.swing.JScrollPane selectProductDialogProductsListScrollPane;
+    private javax.swing.JLabel selectProductDialogProteinsText;
+    private javax.swing.JLabel selectProductDialogSearchText;
     private javax.swing.JLabel selectProductDialogTitleText;
     private javax.swing.JLabel selectProductDialogUpperBar;
     private javax.swing.JPanel selectProductDialogUpperThickBar;

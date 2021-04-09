@@ -135,7 +135,6 @@ public class DatabaseOperations {
     
     public static void loadProductNames(JFrame frame) {
         try {
-            
             Connection myConn = DatabaseConnection.getConnection();
             String productNamesQuery = "SELECT Name FROM Products;";
             PreparedStatement productNames = myConn.prepareStatement(productNamesQuery);
@@ -143,13 +142,31 @@ public class DatabaseOperations {
             
             while(productNamesResult.next()) {
                 LoginSession.productNames.add(productNamesResult.getString("Name"));
-                
-
             }
             
-            //LoginSession.productNamesArray = (String[]) LoginSession.productNames.toArray(new String[LoginSession.productNames.size()]);
             } catch (Exception exception) {
-                JOptionPane.showMessageDialog(frame, "Database error XD: " + exception.getMessage());
+                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
+
+    }
+    
+    public static void loadProductInfo(String productName, JFrame frame) {
+        try {
+            Connection myConn = DatabaseConnection.getConnection();
+            String productInfoQuery = "SELECT Weight, Calories, Proteins, Fats, Carbs FROM Products WHERE Name = '" + productName + "';";
+            PreparedStatement productInfo = myConn.prepareStatement(productInfoQuery);
+            ResultSet productInfoResult = productInfo.executeQuery(); 
+            
+            while(productInfoResult.next()) {
+                LoginSession.productWeight = productInfoResult.getInt("Weight");
+                LoginSession.productKcal = productInfoResult.getDouble("Calories");
+                LoginSession.productProteins = productInfoResult.getDouble("Proteins");
+                LoginSession.productFats = productInfoResult.getDouble("Fats");
+                LoginSession.productCarbs = productInfoResult.getDouble("Carbs");
+            }
+            
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
         }
 
     }
