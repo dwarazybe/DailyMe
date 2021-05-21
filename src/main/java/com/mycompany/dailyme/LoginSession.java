@@ -1,7 +1,6 @@
 package com.mycompany.dailyme;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class LoginSession {
     public static int userID;
@@ -98,6 +97,8 @@ public class LoginSession {
     public static boolean isLoggedIn = false;
 
     public static int mealsNumber = 0;
+    
+    public static String userMessage;
     
     public static void resetParameters () {
         userID = 0;

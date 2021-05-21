@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 public class SelectProductDialog extends javax.swing.JDialog {
 
-    private final DatabaseOperations database;
     private final Validators val;
 
     private String selectedProduct;
@@ -24,10 +23,11 @@ public class SelectProductDialog extends javax.swing.JDialog {
     
     /**
      * Creates new form SelectProductDialog
+     * @param parent
+     * @param modal
      */
     public SelectProductDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.database = new DatabaseOperations();
         this.val = new Validators();
         initComponents();
     }
@@ -390,7 +390,7 @@ public class SelectProductDialog extends javax.swing.JDialog {
             if(!amountTextField.getText().equals("")) {
                 productWeight = Integer.parseInt(amountTextField.getText());
                 selectedProduct = productList.getSelectedValue();
-                database.loadProductInfo(selectedProduct, null);
+                DatabaseOperations.loadProductInfo(selectedProduct, null);
                 setProductInfo();
             }
         } catch (Exception exception) {
@@ -446,15 +446,11 @@ public class SelectProductDialog extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SelectProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SelectProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SelectProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SelectProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the dialog */

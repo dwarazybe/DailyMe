@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 public class RegisterDialog extends javax.swing.JDialog {
 
-    private final DatabaseOperations database;
     private final Validators val;
 
     private boolean loginCorrect = false;
@@ -18,17 +17,16 @@ public class RegisterDialog extends javax.swing.JDialog {
     private double weight;
     private int height;
     private int age;
-    private int waist;
     private int gender = 0;
     private TextMessageDialog msgDialog;
     
     /**
      * Creates new form RegisterDialog
+     * @param parent
+     * @param modal
      */
     public RegisterDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
-        this.database = new DatabaseOperations();
         this.val = new Validators();
         initComponents();
     }
@@ -547,7 +545,7 @@ public class RegisterDialog extends javax.swing.JDialog {
     
     private boolean isNicknameAvailable(String nickname) {
         try {
-            if(database.checkNicknames(nickname, null)) {
+            if(DatabaseOperations.checkNicknames(nickname, null)) {
                 if(nickname.equals(LoginSession.nicknameFound))
                     return false;
             }
@@ -559,7 +557,7 @@ public class RegisterDialog extends javax.swing.JDialog {
     
     private boolean isEmailAvailable(String email) {
         try {
-            if(database.checkEmails(email, null)) {
+            if(DatabaseOperations.checkEmails(email, null)) {
                 if(email.equals(LoginSession.emailFound))
                     return false;
             }
@@ -596,7 +594,7 @@ public class RegisterDialog extends javax.swing.JDialog {
             double goal = Double.parseDouble(goalTextField.getText());
 
             try {
-                database.register(usernameStr, passwordStr, emailStr, nameStr, age, weight, height, goal, gender, null);
+                DatabaseOperations.register(usernameStr, passwordStr, emailStr, nameStr, age, weight, height, goal, gender, null);
                 this.msgDialog = new TextMessageDialog(null, true, 1);
                 msgDialog.setVisible(true);
             } catch (Exception exception) {
@@ -786,15 +784,11 @@ public class RegisterDialog extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegisterDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegisterDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegisterDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RegisterDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the dialog */

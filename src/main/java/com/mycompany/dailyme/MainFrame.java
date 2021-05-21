@@ -2,36 +2,44 @@ package com.mycompany.dailyme;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class MainFrame extends javax.swing.JFrame {
+    private final String hostAddress = "192.168.1.7";
+    private final int portNumber = 8764;
+    private BufferedReader in;
+    private PrintWriter out;
+    private final Thread thread;
+    
+    private int positionX;
+    private int positionY;
     
     private final WorkoutCalculator workoutCalc;
     private final BmrCalculator bmrCalc;
     private final BmiCalculator bmiCalc;
     private final BfiCalculator bfiCalc;
-    private final DatabaseOperations database;
     private final Validators val;
     private AddMealDialog addMealDialog;
-    private SelectProductDialog selectProductDialog;
     
     protected double weight;
     protected int time;
+    protected double kcal;
     protected int height;
     protected int age;
     protected int waist;
@@ -43,6 +51,8 @@ public class MainFrame extends javax.swing.JFrame {
     private double totalProteins = 0.0;
     private double totalFats = 0.0;
     private double totalCarbs = 0.0;
+    
+    private int lastActivitiesCounter = 0;
     
     private int sportSelected = 0;
     private boolean modifyNotesButtonActive = false;
@@ -56,11 +66,15 @@ public class MainFrame extends javax.swing.JFrame {
         this.bmrCalc = new BmrCalculator();
         this.bmiCalc = new BmiCalculator();
         this.bfiCalc = new BfiCalculator();
-        this.database = new DatabaseOperations();
         this.val = new Validators();
         initDatabase();
         initComponents();
-        //loadProductList();
+        this.thread = new Thread(new Runnable() {
+            public void run() {
+		lastActivitiesService();
+            }
+        });
+        
     }
 
     /**
@@ -175,11 +189,20 @@ public class MainFrame extends javax.swing.JFrame {
         lastActivitiesPanel = new javax.swing.JPanel();
         lastActivitiesText = new javax.swing.JLabel();
         lastActivity1Panel = new javax.swing.JPanel();
-        lastActivity1ValueText = new javax.swing.JLabel();
+        lastActivity1UsernameTextField = new javax.swing.JTextField();
+        lastActivity1MessageTextField = new javax.swing.JTextField();
         lastActivity2Panel = new javax.swing.JPanel();
-        lastActivity2ValueText = new javax.swing.JLabel();
+        lastActivity2UsernameTextField = new javax.swing.JTextField();
+        lastActivity2MessageTextField = new javax.swing.JTextField();
         lastActivity3Panel = new javax.swing.JPanel();
-        lastActivity3ValueText = new javax.swing.JLabel();
+        lastActivity3UsernameTextField = new javax.swing.JTextField();
+        lastActivity3MessageTextField = new javax.swing.JTextField();
+        lastActivity4Panel = new javax.swing.JPanel();
+        lastActivity4UsernameTextField = new javax.swing.JTextField();
+        lastActivity4MessageTextField = new javax.swing.JTextField();
+        lastActivity5Panel = new javax.swing.JPanel();
+        lastActivity5UsernameTextField = new javax.swing.JTextField();
+        lastActivity5MessageTextField = new javax.swing.JTextField();
         mealDiaryPanel = new javax.swing.JPanel();
         mealDiaryBanner = new javax.swing.JLabel();
         mealListPanel = new javax.swing.JPanel();
@@ -776,6 +799,16 @@ public class MainFrame extends javax.swing.JFrame {
         startupPanel.add(startupPanelMinimizeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1228, 5, -1, -1));
 
         startupPanelBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login_background_dark2.png"))); // NOI18N
+        startupPanelBackground.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                startupPanelBackgroundMouseDragged(evt);
+            }
+        });
+        startupPanelBackground.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                startupPanelBackgroundMousePressed(evt);
+            }
+        });
         startupPanel.add(startupPanelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
         mainPanel.setBackground(new java.awt.Color(34, 40, 49));
@@ -1075,6 +1108,16 @@ public class MainFrame extends javax.swing.JFrame {
         myProfileBanner.setBackground(new java.awt.Color(34, 40, 49));
         myProfileBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myprofile_banner.png"))); // NOI18N
         myProfileBanner.setOpaque(true);
+        myProfileBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                myProfileBannerMouseDragged(evt);
+            }
+        });
+        myProfileBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                myProfileBannerMousePressed(evt);
+            }
+        });
         myProfilePanel.add(myProfileBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, -1));
 
         namePanel.setBackground(new java.awt.Color(50, 54, 61));
@@ -1083,7 +1126,7 @@ public class MainFrame extends javax.swing.JFrame {
         profileNameText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         profileNameText.setForeground(new java.awt.Color(138, 152, 173));
         profileNameText.setText("Profil:");
-        namePanel.add(profileNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 7, -1, -1));
+        namePanel.add(profileNameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, -1, -1));
 
         profileNameLowerBar.setBackground(new java.awt.Color(0, 173, 181));
         profileNameLowerBar.setOpaque(true);
@@ -1389,37 +1432,132 @@ public class MainFrame extends javax.swing.JFrame {
         lastActivitiesText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         lastActivitiesText.setForeground(new java.awt.Color(138, 152, 173));
         lastActivitiesText.setText("Ostatnie aktywności:");
-        lastActivitiesPanel.add(lastActivitiesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
+        lastActivitiesPanel.add(lastActivitiesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 5, -1, -1));
 
         lastActivity1Panel.setBackground(new java.awt.Color(52, 56, 63));
         lastActivity1Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lastActivity1ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        lastActivity1ValueText.setForeground(new java.awt.Color(168, 168, 168));
-        lastActivity1ValueText.setText("Bieganie, średnia intensywność, 30 minut");
-        lastActivity1Panel.add(lastActivity1ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+        lastActivity1UsernameTextField.setEditable(false);
+        lastActivity1UsernameTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity1UsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity1UsernameTextField.setForeground(new java.awt.Color(0, 173, 181));
+        lastActivity1UsernameTextField.setBorder(null);
+        lastActivity1UsernameTextField.setSelectedTextColor(new java.awt.Color(0, 173, 181));
+        lastActivity1UsernameTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity1Panel.add(lastActivity1UsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 40));
 
-        lastActivitiesPanel.add(lastActivity1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 585, 40));
+        lastActivity1MessageTextField.setEditable(false);
+        lastActivity1MessageTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity1MessageTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity1MessageTextField.setForeground(new java.awt.Color(238, 238, 238));
+        lastActivity1MessageTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lastActivity1MessageTextField.setBorder(null);
+        lastActivity1MessageTextField.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        lastActivity1MessageTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity1Panel.add(lastActivity1MessageTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 420, 40));
+
+        lastActivitiesPanel.add(lastActivity1Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 585, 42));
 
         lastActivity2Panel.setBackground(new java.awt.Color(52, 56, 63));
         lastActivity2Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lastActivity2ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        lastActivity2ValueText.setForeground(new java.awt.Color(168, 168, 168));
-        lastActivity2ValueText.setText("Trening siłowy, wysoka intensywność, 40 minut");
-        lastActivity2Panel.add(lastActivity2ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+        lastActivity2UsernameTextField.setEditable(false);
+        lastActivity2UsernameTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity2UsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity2UsernameTextField.setForeground(new java.awt.Color(0, 173, 181));
+        lastActivity2UsernameTextField.setBorder(null);
+        lastActivity2UsernameTextField.setSelectedTextColor(new java.awt.Color(0, 173, 181));
+        lastActivity2UsernameTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity2Panel.add(lastActivity2UsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 40));
 
-        lastActivitiesPanel.add(lastActivity2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 585, 40));
+        lastActivity2MessageTextField.setEditable(false);
+        lastActivity2MessageTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity2MessageTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity2MessageTextField.setForeground(new java.awt.Color(238, 238, 238));
+        lastActivity2MessageTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lastActivity2MessageTextField.setBorder(null);
+        lastActivity2MessageTextField.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        lastActivity2MessageTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity2Panel.add(lastActivity2MessageTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 420, 40));
+
+        lastActivitiesPanel.add(lastActivity2Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 82, 585, 42));
 
         lastActivity3Panel.setBackground(new java.awt.Color(52, 56, 63));
         lastActivity3Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lastActivity3ValueText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        lastActivity3ValueText.setForeground(new java.awt.Color(168, 168, 168));
-        lastActivity3ValueText.setText("Skakanie na skakance, 20 minut");
-        lastActivity3Panel.add(lastActivity3ValueText, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 10, -1, -1));
+        lastActivity3UsernameTextField.setEditable(false);
+        lastActivity3UsernameTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity3UsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity3UsernameTextField.setForeground(new java.awt.Color(0, 173, 181));
+        lastActivity3UsernameTextField.setBorder(null);
+        lastActivity3UsernameTextField.setSelectedTextColor(new java.awt.Color(0, 173, 181));
+        lastActivity3UsernameTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity3Panel.add(lastActivity3UsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 40));
 
-        lastActivitiesPanel.add(lastActivity3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 585, 40));
+        lastActivity3MessageTextField.setEditable(false);
+        lastActivity3MessageTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity3MessageTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity3MessageTextField.setForeground(new java.awt.Color(238, 238, 238));
+        lastActivity3MessageTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lastActivity3MessageTextField.setBorder(null);
+        lastActivity3MessageTextField.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        lastActivity3MessageTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity3Panel.add(lastActivity3MessageTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 420, 40));
+
+        lastActivitiesPanel.add(lastActivity3Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 134, 585, 42));
+
+        lastActivity4Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity4Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity4UsernameTextField.setEditable(false);
+        lastActivity4UsernameTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity4UsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity4UsernameTextField.setForeground(new java.awt.Color(0, 173, 181));
+        lastActivity4UsernameTextField.setBorder(null);
+        lastActivity4UsernameTextField.setSelectedTextColor(new java.awt.Color(0, 173, 181));
+        lastActivity4UsernameTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity4Panel.add(lastActivity4UsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 40));
+
+        lastActivity4MessageTextField.setEditable(false);
+        lastActivity4MessageTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity4MessageTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity4MessageTextField.setForeground(new java.awt.Color(238, 238, 238));
+        lastActivity4MessageTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lastActivity4MessageTextField.setBorder(null);
+        lastActivity4MessageTextField.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        lastActivity4MessageTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity4Panel.add(lastActivity4MessageTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 420, 40));
+
+        lastActivitiesPanel.add(lastActivity4Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 186, 585, 42));
+
+        lastActivity5Panel.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity5Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lastActivity5UsernameTextField.setEditable(false);
+        lastActivity5UsernameTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity5UsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity5UsernameTextField.setForeground(new java.awt.Color(0, 173, 181));
+        lastActivity5UsernameTextField.setBorder(null);
+        lastActivity5UsernameTextField.setSelectedTextColor(new java.awt.Color(0, 173, 181));
+        lastActivity5UsernameTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity5Panel.add(lastActivity5UsernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 40));
+
+        lastActivity5MessageTextField.setEditable(false);
+        lastActivity5MessageTextField.setBackground(new java.awt.Color(52, 56, 63));
+        lastActivity5MessageTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 16)); // NOI18N
+        lastActivity5MessageTextField.setForeground(new java.awt.Color(238, 238, 238));
+        lastActivity5MessageTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lastActivity5MessageTextField.setBorder(null);
+        lastActivity5MessageTextField.setSelectedTextColor(new java.awt.Color(238, 238, 238));
+        lastActivity5MessageTextField.setSelectionColor(new java.awt.Color(52, 56, 63));
+        lastActivity5Panel.add(lastActivity5MessageTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 420, 40));
+
+        lastActivitiesPanel.add(lastActivity5Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 238, 585, 42));
+        lastActivity1Panel.setVisible(false);
+        lastActivity2Panel.setVisible(false);
+        lastActivity3Panel.setVisible(false);
+        lastActivity4Panel.setVisible(false);
+        lastActivity5Panel.setVisible(false);
 
         myProfilePanel.add(lastActivitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 415, 605, 290));
 
@@ -1431,6 +1569,16 @@ public class MainFrame extends javax.swing.JFrame {
         mealDiaryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         mealDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mealdiary_banner_1.png"))); // NOI18N
+        mealDiaryBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mealDiaryBannerMouseDragged(evt);
+            }
+        });
+        mealDiaryBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mealDiaryBannerMousePressed(evt);
+            }
+        });
         mealDiaryPanel.add(mealDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         mealListPanel.setBackground(new java.awt.Color(50, 54, 61));
@@ -2202,6 +2350,16 @@ public class MainFrame extends javax.swing.JFrame {
         workoutDiaryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         workoutDiaryBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/workoutdiary_banner.png"))); // NOI18N
+        workoutDiaryBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                workoutDiaryBannerMouseDragged(evt);
+            }
+        });
+        workoutDiaryBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                workoutDiaryBannerMousePressed(evt);
+            }
+        });
         workoutDiaryPanel.add(workoutDiaryBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         selectSportBar.setBackground(new java.awt.Color(57, 62, 70));
@@ -2635,6 +2793,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         workoutDetailsPanel.add(workoutDetailsIntensityPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 30, 145));
 
+        workoutDetailsSportNameTextField.setEditable(false);
         workoutDetailsSportNameTextField.setBackground(new java.awt.Color(50, 54, 61));
         workoutDetailsSportNameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 36)); // NOI18N
         workoutDetailsSportNameTextField.setForeground(new java.awt.Color(238, 238, 238));
@@ -2722,6 +2881,16 @@ public class MainFrame extends javax.swing.JFrame {
         statsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         statsBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stats_banner_1.png"))); // NOI18N
+        statsBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                statsBannerMouseDragged(evt);
+            }
+        });
+        statsBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                statsBannerMousePressed(evt);
+            }
+        });
         statsPanel.add(statsBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         kcalStatsPanel.setBackground(new java.awt.Color(50, 54, 61));
@@ -3587,6 +3756,16 @@ public class MainFrame extends javax.swing.JFrame {
         calcPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         calcBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calc_banner.png"))); // NOI18N
+        calcBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                calcBannerMouseDragged(evt);
+            }
+        });
+        calcBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                calcBannerMousePressed(evt);
+            }
+        });
         calcPanel.add(calcBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         calcMenu.setBackground(new java.awt.Color(50, 54, 61));
@@ -4555,6 +4734,16 @@ public class MainFrame extends javax.swing.JFrame {
         infoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         infoBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/info_banner.png"))); // NOI18N
+        infoBanner.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                infoBannerMouseDragged(evt);
+            }
+        });
+        infoBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                infoBannerMousePressed(evt);
+            }
+        });
         infoPanel.add(infoBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         dailymeInfoPanel.setBackground(new java.awt.Color(50, 54, 61));
@@ -4565,7 +4754,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         contactText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
         contactText.setForeground(new java.awt.Color(238, 238, 238));
-        contactText.setText("Kontakt:     bukowskibe@gmail.com");
+        contactText.setText("Kontakt:  contact@dailyme.com");
         dailymeInfoPanel.add(contactText, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 45, -1, -1));
 
         allRightsReservedText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
@@ -4679,41 +4868,91 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private void initDatabase() {
+    private void lastActivitiesService() {
+        Socket socket;
         try {
-            database.connectToDatabase();
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
+            socket = new Socket(hostAddress, portNumber);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            while(true) {
+                String msg = in.readLine();
+                if(msg.startsWith("GETNAME"))
+                    out.println(LoginSession.nickname);
+                else if(msg.startsWith("USERNAME")) {
+                    moveLastActivityBars(1);
+                    lastActivity1UsernameTextField.setText(msg.substring(9));
+                }
+                else if(msg.startsWith("MSG")) {
+                    moveLastActivityBars(2);
+                    lastActivity1MessageTextField.setText(msg.substring(4));
+                    lastActivitiesCounter++;
+                }
+            } 
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    private void moveLastActivityBars(int option) {
+        if(lastActivitiesCounter == 0)
+            lastActivity1Panel.setVisible(true);
+        if(lastActivitiesCounter == 1)
+            lastActivity2Panel.setVisible(true);
+        if(lastActivitiesCounter == 2)
+            lastActivity3Panel.setVisible(true);
+        if(lastActivitiesCounter == 3)
+            lastActivity4Panel.setVisible(true);
+        if(lastActivitiesCounter == 4)
+            lastActivity5Panel.setVisible(true);
+        if(option == 1) {
+            lastActivity5UsernameTextField.setText(lastActivity4UsernameTextField.getText());
+            lastActivity4UsernameTextField.setText(lastActivity3UsernameTextField.getText());
+            lastActivity3UsernameTextField.setText(lastActivity2UsernameTextField.getText());
+            lastActivity2UsernameTextField.setText(lastActivity1UsernameTextField.getText());
+        }
+        if(option == 2) {
+            lastActivity5MessageTextField.setText(lastActivity4MessageTextField.getText());
+            lastActivity4MessageTextField.setText(lastActivity3MessageTextField.getText());
+            lastActivity3MessageTextField.setText(lastActivity2MessageTextField.getText());
+            lastActivity2MessageTextField.setText(lastActivity1MessageTextField.getText());
+        }
+    }
+    
+    private void initDatabase() {
+        try {
+            DatabaseOperations.connectToDatabase();
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(this, "Connection error: " + exception.getMessage());
+        }
+    }
+
     private void initValues() {
         if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
-                bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
-                bmiRateValueTextField.setText(bmiCalc.rateBmi());
-                goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
-                goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
-                profileNameTextField.setText(LoginSession.userName);
-                loadLastMeals();
-                setMealsStats();
-                setWorkoutStats();
-                setMealDiaryDiagram();
-                setWorkoutDiaryDiagram();
-                if(LoginSession.userGender == 0) {
-                    femaleIcon.setVisible(true);
-                    maleIcon.setVisible(false);
-                }
-                else if(LoginSession.userGender == 1) {
-                    maleIcon.setVisible(true);
-                    femaleIcon.setVisible(false);
-                }
+            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
+            bmiRateValueTextField.setText(bmiCalc.rateBmi());
+            goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
+            goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
+            profileNameTextField.setText(LoginSession.userName);
+            loadLastMeals();
+            setMealsStats();
+            setWorkoutStats();
+            setMealDiaryDiagram();
+            setWorkoutDiaryDiagram();
+            if(LoginSession.userGender == 0) {
+                femaleIcon.setVisible(true);
+                maleIcon.setVisible(false);
+            }
+            else if(LoginSession.userGender == 1) {
+                maleIcon.setVisible(true);
+                femaleIcon.setVisible(false);
+            }
         }
     }
     
     protected void setUserParameters() {
         try {
-            database.setParameters(this);
-            database.loadNotes(this);
+            DatabaseOperations.setParameters(this);
+            DatabaseOperations.loadNotes(this);
             loginInfoUsernameTextField.setText("[" + LoginSession.nickname + "]");
             weightValueTextField.setText(String.valueOf(df.format(LoginSession.userWeight)));
             heightValueTextField.setText(String.valueOf(LoginSession.userHeight));
@@ -4730,19 +4969,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    /*private void loadProductList() {
-        this.selectProductDialog = new SelectProductDialog(null, true);
-        try {
-            database.loadProductNames(this);
-                for(String productName : LoginSession.productNames) {
-                    selectProductDialog.model.addElement(productName);
-                }
-            selectProductDialog.productList.setModel(selectProductDialog.model);
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
-        }
-    }*/
-    
     private void resetAllParameters() {
         kcalValueTextField.setText("0 kcal");
         weightValueTextField.setText("-");
@@ -4753,6 +4979,24 @@ public class MainFrame extends javax.swing.JFrame {
         goalValueTextField.setText("-");
         goalLeftTextField.setText("-");
         profileNameTextField.setText("-");
+        
+        lastActivitiesCounter = 0;
+        lastActivity1UsernameTextField.setText("");
+        lastActivity1MessageTextField.setText("");
+        lastActivity1Panel.setVisible(false);
+        lastActivity2UsernameTextField.setText("");
+        lastActivity2MessageTextField.setText("");
+        lastActivity2Panel.setVisible(false);
+        lastActivity3UsernameTextField.setText("");
+        lastActivity3MessageTextField.setText("");
+        lastActivity3Panel.setVisible(false);
+        lastActivity4UsernameTextField.setText("");
+        lastActivity4MessageTextField.setText("");
+        lastActivity4Panel.setVisible(false);
+        lastActivity5UsernameTextField.setText("");
+        lastActivity5MessageTextField.setText("");
+        lastActivity5Panel.setVisible(false);
+        
         femaleIcon.setVisible(false);
         maleIcon.setVisible(false);
     }
@@ -4867,16 +5111,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
         notesTextArea.setEditable(true);
-        modifyNotesButtonActive=true;
-        if(modifyNotesButtonActive==true)
+        modifyNotesButtonActive = true;
+        if(modifyNotesButtonActive == true)
             modifyNotesButton.setBackground(Color.decode("#00ADB5"));      
     }//GEN-LAST:event_modifyNotesButtonMouseClicked
 
     private void saveNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseClicked
         notesTextArea.setEditable(false);
-        modifyNotesButtonActive=false;
+        modifyNotesButtonActive = false;
         try {
-            database.saveNotes(notesTextArea.getText(), this);
+            DatabaseOperations.saveNotes(notesTextArea.getText(), this);
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
         }
@@ -4892,12 +5136,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveNotesButtonMouseExited
 
     private void modifyNotesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseEntered
-        if(modifyNotesButtonActive==false)
+        if(modifyNotesButtonActive == false)
             modifyNotesButton.setBackground(Color.decode("#4A515D"));      
     }//GEN-LAST:event_modifyNotesButtonMouseEntered
 
     private void modifyNotesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseExited
-        if(modifyNotesButtonActive==false)
+        if(modifyNotesButtonActive == false)
             modifyNotesButton.setBackground(Color.decode("#3F454F"));      
     }//GEN-LAST:event_modifyNotesButtonMouseExited
 
@@ -4924,7 +5168,7 @@ public class MainFrame extends javax.swing.JFrame {
             bmiRateValueTextField.setText(bmiCalc.rateBmi());
             
             try {
-                database.updateUserParameters(weight, height, age, LoginSession.userID, this);
+                DatabaseOperations.updateUserParameters(weight, height, age, LoginSession.userID, this);
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
             }      
@@ -4987,7 +5231,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void calcBmrButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseEntered
         calcBmrButton.setBackground(Color.decode("#3E4248"));
-
     }//GEN-LAST:event_calcBmrButtonMouseEntered
 
     private void calcBmrButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBmrButtonMouseClicked
@@ -5618,8 +5861,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void closeDayButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeDayButtonMouseClicked
         try {
-            database.archiveMealDiary(totalKcal, totalProteins, totalFats, totalCarbs, this);
-            database.deleteLastMeals(this);
+            DatabaseOperations.archiveMealDiary(totalKcal, totalProteins, totalFats, totalCarbs, this);
+            DatabaseOperations.deleteLastMeals(this);
             this.msgDialog = new TextMessageDialog(null, true, 2);
             msgDialog.setVisible(true);
             emptyMealDiary();
@@ -5638,9 +5881,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void saveLastMeals() {
         if(LoginSession.mealsNumber > 0) {
             try {
-                database.deleteLastMeals(this);
+                DatabaseOperations.deleteLastMeals(this);
                 for(int i=0; i<LoginSession.mealsNumber; i++) {
-                    database.archiveLastMeals(LoginSession.mealNameArray[i], LoginSession.mealKcalArray[i], LoginSession.mealProteinsArray[i], 
+                    DatabaseOperations.archiveLastMeals(LoginSession.mealNameArray[i], LoginSession.mealKcalArray[i], LoginSession.mealProteinsArray[i], 
                             LoginSession.mealFatsArray[i], LoginSession.mealCarbsArray[i], this);
                 }
             } catch (Exception exception) {
@@ -5651,7 +5894,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void loadLastMeals() {
         try {
-            database.loadLastMeals(this);
+            DatabaseOperations.loadLastMeals(this);
             if(LoginSession.mealsNumber > 0) {
                 meal1Panel.setVisible(true);
                 meal1NameTextField.setText(LoginSession.mealNameArray[0]);
@@ -5795,13 +6038,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void loginButtonClicked() {
-        loginPanel.setVisible(false);
         String usernameStr = loginTextField.getText();
         String passwordStr = new String(passwordField.getPassword());
         String usertypeStr = "regular";
         if(!(usernameStr.equals("") || passwordStr.equals(""))) {
             try {
-                if(database.isLogin(usernameStr, passwordStr, usertypeStr, null)) {
+                if(DatabaseOperations.isLogin(usernameStr, passwordStr, usertypeStr, null)) {
+                    loginPanel.setVisible(false);
+                    thread.start();
                     warningText.setVisible(false);
                     emptyFields();
                     LoginSession.isLoggedIn = true;
@@ -5967,39 +6211,39 @@ public class MainFrame extends javax.swing.JFrame {
         if(!(workoutDetailsWeightTextField.getText().equals("") || workoutDetailsTimeTextField.getText().equals(""))) {
             weight = Double.parseDouble(workoutDetailsWeightTextField.getText());
             time = Integer.parseInt(workoutDetailsTimeTextField.getText());
-            
             if(sportSelected == 1)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.running(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.running(weight, time, intensityLevel);
             if(sportSelected == 2)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.lifting(time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.lifting(time, intensityLevel);
             if(sportSelected == 3)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.bikeRiding(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.bikeRiding(weight, time, intensityLevel);
             if(sportSelected == 4)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.football(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.football(weight, time, intensityLevel);
             if(sportSelected == 5)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.swimming(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.swimming(weight, time, intensityLevel);
             if(sportSelected == 6)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.skating(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.skating(weight, time, intensityLevel);
             if(sportSelected == 7)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.yoga(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.yoga(weight, time, intensityLevel);
             if(sportSelected == 8)
-                workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(workoutCalc.jumpingRope(weight, time, intensityLevel))) + " kcal");
+                kcal = workoutCalc.jumpingRope(weight, time, intensityLevel);
+            workoutDetailsKcalValueTextField.setText(String.valueOf(df.format(kcal)) + "kcal");
         }
     }
     
     private void workoutDetailsCalculateKcalButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDetailsCalculateKcalButtonMouseClicked
         if(!(workoutDetailsWeightTextField.getText().equals("") || workoutDetailsTimeTextField.getText().equals(""))) {
             try {
-                database.archiveWorkoutDiary(workoutDetailsSportNameTextField.getText(), weight, time, intensityLevel, workoutCalc.kcal, this);
+                DatabaseOperations.archiveWorkoutDiary(workoutDetailsSportNameTextField.getText(), weight, time, intensityLevel, workoutCalc.kcal, this);
                 this.msgDialog = new TextMessageDialog(null, true, 3);
                 msgDialog.setVisible(true);
+                out.println(workoutDetailsSportNameTextField.getText() + " [" + time + "min | " + df.format(kcal) + " kcal]");
                 workoutDetailsWeightTextField.setText("");
                 workoutDetailsTimeTextField.setText("");
                 intensityLevelButtonsFill(workoutDetailsIntensityLevel2ButtonFill);
                 intensityLevel = 2;
                 workoutDetailsKcalValueTextField.setText("-");
                 setMealsStats();
-                setWorkoutStats();
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(this, "Database error: " + exception.getMessage());
             }        
@@ -6056,9 +6300,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/dwarazybe/DailyMe"));
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (URISyntaxException | IOException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -6068,9 +6310,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("https://facebook.com/"));
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (URISyntaxException | IOException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -6080,17 +6320,80 @@ public class MainFrame extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("https://instagram.com/"));
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (URISyntaxException | IOException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_instagramButtonMouseClicked
+
+    private void getPosition(MouseEvent evt) {
+        positionX = evt.getX();
+        positionY = evt.getY();
+    }
+    
+    private void setFrameLocation(MouseEvent evt) {
+        this.setLocation(evt.getXOnScreen() - positionX, evt.getYOnScreen() - positionY);
+    }
+    
+    private void myProfileBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_myProfileBannerMouseDragged
+
+    private void myProfileBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProfileBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_myProfileBannerMousePressed
+
+    private void mealDiaryBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_mealDiaryBannerMouseDragged
+
+    private void mealDiaryBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mealDiaryBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_mealDiaryBannerMousePressed
+
+    private void workoutDiaryBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_workoutDiaryBannerMouseDragged
+
+    private void workoutDiaryBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workoutDiaryBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_workoutDiaryBannerMousePressed
+
+    private void statsBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_statsBannerMouseDragged
+
+    private void statsBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_statsBannerMousePressed
+
+    private void calcBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_calcBannerMouseDragged
+
+    private void calcBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calcBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_calcBannerMousePressed
+
+    private void infoBannerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBannerMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_infoBannerMouseDragged
+
+    private void infoBannerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBannerMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_infoBannerMousePressed
+
+    private void startupPanelBackgroundMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startupPanelBackgroundMouseDragged
+        setFrameLocation(evt);
+    }//GEN-LAST:event_startupPanelBackgroundMouseDragged
+
+    private void startupPanelBackgroundMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startupPanelBackgroundMousePressed
+        getPosition(evt);
+    }//GEN-LAST:event_startupPanelBackgroundMousePressed
       
     private void setMealsStats() {
         try {
-            database.loadMealsStats(this);
+            DatabaseOperations.loadMealsStats(this);
             averageDailyKcalValueTextField.setText(String.valueOf(df.format(LoginSession.averageKcal)) + " kcal");
             averageDailyProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.averageProteins)) + "g");
             averageDailyFatsValueTextField.setText(String.valueOf(df.format(LoginSession.averageFats)) + "g");
@@ -6108,7 +6411,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void setWorkoutStats() {
         try {
-            database.loadWorkoutStats(this);
+            DatabaseOperations.loadWorkoutStats(this);
             averageDailyBurnedKcalValueTextField.setText(String.valueOf(df.format(LoginSession.averageBurnedKcal)) + " kcal");
             mostDailyBurnedKcalValueTextField.setText(String.valueOf(df.format(LoginSession.maxBurnedKcal)) + " kcal");
             mostDailyBurnedKcalDateTextField.setText(LoginSession.maxBurnedKcalDate);
@@ -6124,7 +6427,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void setMealDiaryDiagram() {
         try {
-            database.loadMealDiaryDiagramData(this);
+            DatabaseOperations.loadMealDiaryDiagramData(this);
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.mealDiaryInterval7Kcal), 35, LoginSession.mealDiaryInterval7Kcal));
             mealDiaryDiagramBar1DateTextField.setText(LoginSession.mealDiaryInterval7Date);
             
@@ -6152,7 +6455,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void setWorkoutDiaryDiagram() {
         try {
-            database.loadWorkoutDiaryDiagramData(this);
+            DatabaseOperations.loadWorkoutDiaryDiagramData(this);
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.workoutDiaryInterval7Kcal), 35, LoginSession.workoutDiaryInterval7Kcal));
             workoutDiaryDiagramBar1DateTextField.setText(LoginSession.workoutDiaryInterval7Date);
             
@@ -6245,15 +6548,18 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -6442,12 +6748,21 @@ public class MainFrame extends javax.swing.JFrame {
     protected javax.swing.JTextField kcalValueTextField;
     private javax.swing.JPanel lastActivitiesPanel;
     private javax.swing.JLabel lastActivitiesText;
+    private javax.swing.JTextField lastActivity1MessageTextField;
     private javax.swing.JPanel lastActivity1Panel;
-    private javax.swing.JLabel lastActivity1ValueText;
+    private javax.swing.JTextField lastActivity1UsernameTextField;
+    private javax.swing.JTextField lastActivity2MessageTextField;
     private javax.swing.JPanel lastActivity2Panel;
-    private javax.swing.JLabel lastActivity2ValueText;
+    private javax.swing.JTextField lastActivity2UsernameTextField;
+    private javax.swing.JTextField lastActivity3MessageTextField;
     private javax.swing.JPanel lastActivity3Panel;
-    private javax.swing.JLabel lastActivity3ValueText;
+    private javax.swing.JTextField lastActivity3UsernameTextField;
+    private javax.swing.JTextField lastActivity4MessageTextField;
+    private javax.swing.JPanel lastActivity4Panel;
+    private javax.swing.JTextField lastActivity4UsernameTextField;
+    private javax.swing.JTextField lastActivity5MessageTextField;
+    private javax.swing.JPanel lastActivity5Panel;
+    private javax.swing.JTextField lastActivity5UsernameTextField;
     private javax.swing.JLabel leastDailyKcalDateText;
     private javax.swing.JTextField leastDailyKcalDateTextField;
     private javax.swing.JLabel leastDailyKcalText;

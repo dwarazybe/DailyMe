@@ -3,6 +3,7 @@ package com.mycompany.dailyme;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -28,9 +29,9 @@ public class DatabaseOperations {
                 if(LoginSession.userID > 0)
                     return true;
                 }         
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
             JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
         return false;
     }
     
@@ -51,9 +52,9 @@ public class DatabaseOperations {
                 return true;
             } 
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
         return false;
     }
     
@@ -69,9 +70,9 @@ public class DatabaseOperations {
                 return true;
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
         return false;
     }
     
@@ -87,9 +88,9 @@ public class DatabaseOperations {
                 return true;
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
         return false;
     }
     
@@ -115,9 +116,9 @@ public class DatabaseOperations {
             PreparedStatement userInfo = myConn.prepareStatement(userInfoQuery);
             userInfo.execute();
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void updateUserParameters(double weight, int height, int age, int userID, JFrame frame) {
@@ -126,7 +127,7 @@ public class DatabaseOperations {
             PreparedStatement updateParameters = myConn.prepareStatement(updateParametersQuery);
             updateParameters.execute();
 
-        } catch (Exception exception) {
+        } catch (SQLException exception) {
             JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
         }
     }
@@ -141,9 +142,9 @@ public class DatabaseOperations {
                 LoginSession.productNames.add(productNamesResult.getString("Name"));
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
 
     }
     
@@ -161,9 +162,9 @@ public class DatabaseOperations {
                 LoginSession.productCarbs = productInfoResult.getDouble("Carbs");
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void archiveMealDiary(double kcal, double proteins, double fats, double carbs, JFrame frame) {
@@ -173,9 +174,9 @@ public class DatabaseOperations {
             PreparedStatement archiveMealDiary = myConn.prepareStatement(archiveMealDiaryQuery);
             archiveMealDiary.execute();
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void deleteLastMeals(JFrame frame) {
@@ -184,9 +185,9 @@ public class DatabaseOperations {
             PreparedStatement deleteLastMeals = myConn.prepareStatement(deleteLastMealsQuery);
             deleteLastMeals.execute();
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void archiveLastMeals(String name, double kcal, double proteins, double fats, double carbs, JFrame frame) {
@@ -196,9 +197,9 @@ public class DatabaseOperations {
             PreparedStatement archiveLastMeals = myConn.prepareStatement(archiveLastMealsQuery);
             archiveLastMeals.execute();
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void loadLastMeals(JFrame frame) {
@@ -224,9 +225,9 @@ public class DatabaseOperations {
                 i++;
             }
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void archiveWorkoutDiary(String type, double weight, int time, int intensityLevel, double kcal, JFrame frame) {
@@ -236,9 +237,9 @@ public class DatabaseOperations {
             PreparedStatement archiveWorkoutDiary = myConn.prepareStatement(archiveWorkoutDiaryQuery);
             archiveWorkoutDiary.execute();
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void saveNotes(String notes, JFrame frame) {
@@ -251,7 +252,7 @@ public class DatabaseOperations {
             deleteUserNotes.execute();
             saveUserNotes.execute();
 
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
         }
     }
@@ -266,9 +267,9 @@ public class DatabaseOperations {
                 LoginSession.userNotes = loadUserNotesResult.getString("Notes");
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void loadWorkoutStats(JFrame frame) {
@@ -317,9 +318,9 @@ public class DatabaseOperations {
                 LoginSession.firstTrainingDate = FirstDateResult.getString("MinDate");
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void loadMealsStats(JFrame frame) {
@@ -368,9 +369,9 @@ public class DatabaseOperations {
                 LoginSession.firstDiaryDate = FirstDiaryResult.getString("MinDate");
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void loadMealDiaryDiagramData(JFrame frame) {
@@ -442,9 +443,9 @@ public class DatabaseOperations {
                     LoginSession.mealDiaryInterval7Kcal = 192;
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
     
     public static void loadWorkoutDiaryDiagramData(JFrame frame) {
@@ -516,8 +517,8 @@ public class DatabaseOperations {
                     LoginSession.workoutDiaryInterval7Kcal = 192;
             }
             
-            } catch (Exception exception) {
+            } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-        }
+            }
     }
 }
