@@ -2,19 +2,25 @@ package client;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
 public class RegisterDialog extends javax.swing.JDialog {
-
     private final Validators val;
-
+    private final SHA256 sha256;
+    
     private boolean loginCorrect = false;
     private boolean passwordCorrect = false;
     private boolean emailCorrect = false;
-    private String passwordStr = null;
-    private String passwordConfirmStr = null;
+    private String password = null;
+    private String encryptedPassword = null;
+    private String passwordConfirmed = null;
+    private byte[] hashSalt;
     private double weight;
+    private double goal;
     private int height;
     private int age;
     private int gender = 0;
@@ -28,6 +34,7 @@ public class RegisterDialog extends javax.swing.JDialog {
     public RegisterDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.val = new Validators();
+        this.sha256 = new SHA256();
         initComponents();
     }
 
@@ -527,7 +534,23 @@ public class RegisterDialog extends javax.swing.JDialog {
         selectGenderMaleButton.repaint();
     }
     
+    private void resetVariables() {
+        loginCorrect = false;
+        passwordCorrect = false;
+        emailCorrect = false;
+        password = null;
+        passwordConfirmed = null;
+        encryptedPassword = null;
+        passwordConfirmed = null;
+        weight = 0.0;
+        goal = 0.0;
+        height = 0;
+        age = 0;
+        gender = 0;
+    }
+    
     private void emptyFields() {
+        resetVariables();
         loginTextField.setText("");
         passwordField.setText("");
         confirmPasswordField.setText("");
@@ -582,33 +605,40 @@ public class RegisterDialog extends javax.swing.JDialog {
             return false;
     }
     
-    private void registerButtonClicked() {
+    private void registerButtonClicked() throws NoSuchAlgorithmException {
         if(loginCorrect && passwordCorrect && emailCorrect && areFieldsFilled()) {         
-            String usernameStr = loginTextField.getText();
-            passwordStr = new String(passwordField.getPassword());
-            String emailStr = emailTextField.getText();
-            String nameStr = nameTextField.getText();
+            String username = loginTextField.getText();
+            password = new String(passwordField.getPassword());   
+            hashSalt = sha256.getSalt();
+            String stringSalt = new String(hashSalt);
+            encryptedPassword = sha256.encryptPassword(password, hashSalt);
+            String email = emailTextField.getText();
+            String name = nameTextField.getText();
             age = Integer.parseInt(ageTextField.getText());
             weight = Double.parseDouble(weightTextField.getText());
             height = Integer.parseInt(heightTextField.getText());
-            double goal = Double.parseDouble(goalTextField.getText());
-
+            goal = Double.parseDouble(goalTextField.getText());
             try {
-                DatabaseOperations.register(usernameStr, passwordStr, emailStr, nameStr, age, weight, height, goal, gender, null);
+                DatabaseOperations.register(username, encryptedPassword, stringSalt, email, name, age, weight, height, goal, gender, null);
                 this.msgDialog = new TextMessageDialog(null, true, 1);
-                msgDialog.setVisible(true);
+                emptyFields();
+                
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null, "Error: " + exception.getMessage());
             }
-                emptyFields();
-                dispose();
+            dispose();
+            msgDialog.setVisible(true);
         }
     }
     
     private void loginTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginTextFieldKeyPressed
         val.limitCharVal(evt, loginTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loginTextFieldKeyPressed
 
     private void loginTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginTextFieldKeyReleased
@@ -626,18 +656,22 @@ public class RegisterDialog extends javax.swing.JDialog {
 
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_passwordFieldKeyPressed
 
     private void passwordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyReleased
-        passwordStr = new String(passwordField.getPassword());
-        passwordConfirmStr = new String(confirmPasswordField.getPassword());
-        if(isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+        password = new String(passwordField.getPassword());
+        passwordConfirmed = new String(confirmPasswordField.getPassword());
+        if(isPasswordCorrect(password, passwordConfirmed)) {
             passwordWarningText.setVisible(false);
             passwordCorrectText.setVisible(true);
             passwordCorrect = true;
         }
-        else if(!isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+        else if(!isPasswordCorrect(password, passwordConfirmed)) {
             passwordWarningText.setVisible(true);
             passwordCorrectText.setVisible(false);
             passwordCorrect = false;
@@ -646,18 +680,22 @@ public class RegisterDialog extends javax.swing.JDialog {
 
     private void confirmPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_confirmPasswordFieldKeyPressed
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_confirmPasswordFieldKeyPressed
 
     private void confirmPasswordFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_confirmPasswordFieldKeyReleased
-        passwordStr = new String(passwordField.getPassword());
-        passwordConfirmStr = new String(confirmPasswordField.getPassword());
-        if(isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+        password = new String(passwordField.getPassword());
+        passwordConfirmed = new String(confirmPasswordField.getPassword());
+        if(isPasswordCorrect(password, passwordConfirmed)) {
             passwordWarningText.setVisible(false);
             passwordCorrectText.setVisible(true);
             passwordCorrect = true;
         }
-        else if(!isPasswordCorrect(passwordStr, passwordConfirmStr)) {
+        else if(!isPasswordCorrect(password, passwordConfirmed)) {
             passwordWarningText.setVisible(true);
             passwordCorrectText.setVisible(false);
             passwordCorrect = false;
@@ -667,7 +705,11 @@ public class RegisterDialog extends javax.swing.JDialog {
     private void emailTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTextFieldKeyPressed
         val.limitCharVal(evt, emailTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_emailTextFieldKeyPressed
 
     private void emailTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTextFieldKeyReleased
@@ -686,31 +728,51 @@ public class RegisterDialog extends javax.swing.JDialog {
     private void nameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextFieldKeyPressed
         val.lettersVal(evt, nameTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_nameTextFieldKeyPressed
 
     private void ageTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ageTextFieldKeyPressed
         val.intNumberVal(evt, ageTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ageTextFieldKeyPressed
 
     private void weightTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_weightTextFieldKeyPressed
         val.floatNumberVal(evt, weightTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_weightTextFieldKeyPressed
 
     private void heightTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_heightTextFieldKeyPressed
         val.intNumberVal(evt, heightTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_heightTextFieldKeyPressed
 
     private void goalTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_goalTextFieldKeyPressed
         val.floatNumberVal(evt, goalTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            registerButtonClicked();
+            try {
+                registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_goalTextFieldKeyPressed
 
     private void selectGenderFemaleButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectGenderFemaleButtonMouseClicked
@@ -757,7 +819,11 @@ public class RegisterDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelButtonMouseExited
 
     private void registerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMouseClicked
-        registerButtonClicked();
+        try {
+            registerButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RegisterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_registerButtonMouseClicked
 
     private void registerButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMouseEntered

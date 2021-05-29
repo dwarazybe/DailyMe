@@ -1,7 +1,10 @@
 package client;
 
 import java.awt.Color;
+import static java.lang.Thread.sleep;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -16,6 +19,12 @@ public class SelectProductDialog extends javax.swing.JDialog {
     private double productFats;
     private double productCarbs;
 
+    private Thread scrollThread;
+    
+    private int listMaxIndex;
+    private boolean scrollDown = false;
+    private boolean scrollUp = false;
+    
     DefaultListModel<String> model = new DefaultListModel<String>();
     DefaultListModel<String> searchModel = new DefaultListModel<String>();
     
@@ -71,17 +80,24 @@ public class SelectProductDialog extends javax.swing.JDialog {
         cancelButtonText = new javax.swing.JLabel();
         confirmButton = new javax.swing.JPanel();
         confirmButtonText = new javax.swing.JLabel();
+        scrollUpButton = new javax.swing.JPanel();
+        scrollUpSign = new javax.swing.JLabel();
+        scrollUpButtonBar = new javax.swing.JLabel();
+        scrollDownButton = new javax.swing.JPanel();
+        scrollDownSign = new javax.swing.JLabel();
+        scrollDownButtonBar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(750, 480));
+        setMinimumSize(new java.awt.Dimension(750, 530));
         setModal(true);
         setName("selectProductDialog"); // NOI18N
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(750, 530));
         setResizable(false);
 
         mainPanel.setBackground(new java.awt.Color(57, 62, 70));
-        mainPanel.setMinimumSize(new java.awt.Dimension(750, 480));
-        mainPanel.setPreferredSize(new java.awt.Dimension(750, 480));
+        mainPanel.setMinimumSize(new java.awt.Dimension(750, 530));
+        mainPanel.setPreferredSize(new java.awt.Dimension(750, 530));
         mainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         upperBar.setBackground(new java.awt.Color(0, 173, 181));
@@ -90,15 +106,15 @@ public class SelectProductDialog extends javax.swing.JDialog {
 
         leftBorder.setBackground(new java.awt.Color(82, 86, 93));
         leftBorder.setOpaque(true);
-        mainPanel.add(leftBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1, 480));
+        mainPanel.add(leftBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1, 530));
 
         rightBorder.setBackground(new java.awt.Color(82, 86, 93));
         rightBorder.setOpaque(true);
-        mainPanel.add(rightBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(749, 0, 1, 480));
+        mainPanel.add(rightBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(749, 0, 1, 530));
 
         lowerBorder.setBackground(new java.awt.Color(82, 86, 93));
         lowerBorder.setOpaque(true);
-        mainPanel.add(lowerBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 479, 750, 1));
+        mainPanel.add(lowerBorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 529, 750, 1));
 
         titleText.setFont(new java.awt.Font("Segoe UI Light", 0, 30)); // NOI18N
         titleText.setForeground(new java.awt.Color(238, 238, 238));
@@ -106,12 +122,15 @@ public class SelectProductDialog extends javax.swing.JDialog {
         mainPanel.add(titleText, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 410, 60));
 
         productListScrollPane.setBorder(null);
+        productListScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        productListScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         productList.setBackground(new java.awt.Color(66, 71, 79));
         productList.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         productList.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         productList.setForeground(new java.awt.Color(238, 238, 238));
         productList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        productList.setAutoscrolls(false);
         productList.setSelectionBackground(new java.awt.Color(0, 173, 181));
         productList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -120,7 +139,7 @@ public class SelectProductDialog extends javax.swing.JDialog {
         });
         productListScrollPane.setViewportView(productList);
 
-        mainPanel.add(productListScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 710, 280));
+        mainPanel.add(productListScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 710, 290));
 
         searchText.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         searchText.setForeground(new java.awt.Color(138, 152, 173));
@@ -262,7 +281,7 @@ public class SelectProductDialog extends javax.swing.JDialog {
         carbsTextFieldBar.setVerifyInputWhenFocusTarget(false);
         mainPanel.add(carbsTextFieldBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 120, 75, 1));
 
-        cancelButton.setBackground(new java.awt.Color(57, 62, 70));
+        cancelButton.setBackground(new java.awt.Color(66, 71, 79));
         cancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 94, 94)));
         cancelButton.setForeground(new java.awt.Color(50, 54, 61));
         cancelButton.setToolTipText("");
@@ -287,7 +306,7 @@ public class SelectProductDialog extends javax.swing.JDialog {
         cancelButtonText.setText("Anuluj");
         cancelButton.add(cancelButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
 
-        mainPanel.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 430, 90, 25));
+        mainPanel.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 480, 90, 25));
 
         confirmButton.setBackground(new java.awt.Color(0, 173, 181));
         confirmButton.setForeground(new java.awt.Color(238, 238, 238));
@@ -312,27 +331,65 @@ public class SelectProductDialog extends javax.swing.JDialog {
         confirmButtonText.setText("Zatwierdź");
         confirmButton.add(confirmButtonText, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 25));
 
-        mainPanel.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 430, 90, 25));
+        mainPanel.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 480, 90, 25));
+
+        scrollUpButton.setBackground(new java.awt.Color(66, 71, 79));
+        scrollUpButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                scrollUpButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                scrollUpButtonMouseExited(evt);
+            }
+        });
+        scrollUpButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        scrollUpSign.setFont(new java.awt.Font("Segoe UI Light", 0, 11)); // NOI18N
+        scrollUpSign.setForeground(new java.awt.Color(106, 113, 125));
+        scrollUpSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scrollUpSign.setText("▲");
+        scrollUpButton.add(scrollUpSign, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, 10, 18));
+
+        scrollUpButtonBar.setBackground(new java.awt.Color(64, 68, 75));
+        scrollUpButtonBar.setOpaque(true);
+        scrollUpButton.add(scrollUpButtonBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 19, 710, 1));
+
+        mainPanel.add(scrollUpButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 710, 20));
+
+        scrollDownButton.setBackground(new java.awt.Color(66, 71, 79));
+        scrollDownButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                scrollDownButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                scrollDownButtonMouseExited(evt);
+            }
+        });
+        scrollDownButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        scrollDownSign.setFont(new java.awt.Font("Segoe UI Light", 0, 11)); // NOI18N
+        scrollDownSign.setForeground(new java.awt.Color(106, 113, 125));
+        scrollDownSign.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scrollDownSign.setText("▼");
+        scrollDownButton.add(scrollDownSign, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 2, 10, 18));
+
+        scrollDownButtonBar.setBackground(new java.awt.Color(64, 68, 75));
+        scrollDownButtonBar.setOpaque(true);
+        scrollDownButton.add(scrollDownButtonBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 1));
+
+        mainPanel.add(scrollDownButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 710, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -399,11 +456,14 @@ public class SelectProductDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_productListValueChanged
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
+        searchModel.clear();
         if(!searchTextField.getText().equals("")) {
             try {
                 for(String productName : LoginSession.productNames) {
-                    if(productName.contains((searchTextField.getText()).substring(0,1).toUpperCase() + (searchTextField.getText()).substring(1).toLowerCase()))
-                        searchModel.addElement(productName);
+                    if(productName.contains((searchTextField.getText()).substring(0,1).toUpperCase() + (searchTextField.getText()).substring(1).toLowerCase())) {
+                        if(!searchModel.contains(productName))
+                            searchModel.addElement(productName);
+                    }
                 }
                 productList.setModel(searchModel);
             } catch (Exception exception) {
@@ -429,6 +489,62 @@ public class SelectProductDialog extends javax.swing.JDialog {
     private void searchTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyPressed
         val.lettersAndNumbersVal(evt, searchTextField);
     }//GEN-LAST:event_searchTextFieldKeyPressed
+
+    private void scrollDownButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scrollDownButtonMouseEntered
+        scrollDown = true;
+        scrollDownButton.setBackground(Color.decode("#464C54"));
+        scrollDownButton.repaint();
+        listMaxIndex = productList.getLastVisibleIndex();
+        this.scrollThread = new Thread(new Runnable() {
+                public void run() {
+                    while(scrollDown) {
+                    productList.ensureIndexIsVisible(listMaxIndex + 1);
+                    listMaxIndex++;
+                    productList.repaint();
+                    try {
+                        sleep(60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SelectProductDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+                }
+            });
+        scrollThread.start();
+    }//GEN-LAST:event_scrollDownButtonMouseEntered
+
+    private void scrollDownButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scrollDownButtonMouseExited
+        scrollDownButton.setBackground(Color.decode("#42474F"));
+        scrollDownButton.repaint();
+        scrollDown = false;
+    }//GEN-LAST:event_scrollDownButtonMouseExited
+
+    private void scrollUpButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scrollUpButtonMouseEntered
+        scrollUp = true;
+        scrollUpButton.setBackground(Color.decode("#464C54"));
+        scrollUpButton.repaint();
+        listMaxIndex = productList.getFirstVisibleIndex();
+        this.scrollThread = new Thread(new Runnable() {
+                public void run() {
+                    while(scrollUp) {
+                    productList.ensureIndexIsVisible(listMaxIndex - 1);
+                    listMaxIndex--;
+                    productList.repaint();
+                    try {
+                        sleep(60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SelectProductDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+                }
+            });
+        scrollThread.start();
+    }//GEN-LAST:event_scrollUpButtonMouseEntered
+
+    private void scrollUpButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scrollUpButtonMouseExited
+        scrollUpButton.setBackground(Color.decode("#42474F"));
+        scrollUpButton.repaint();
+        scrollUp = false;
+    }//GEN-LAST:event_scrollUpButtonMouseExited
 
     /**
      * @param args the command line arguments
@@ -494,6 +610,12 @@ public class SelectProductDialog extends javax.swing.JDialog {
     private javax.swing.JTextField proteinsTextField;
     private javax.swing.JLabel proteinsTextFieldBar;
     private javax.swing.JLabel rightBorder;
+    private javax.swing.JPanel scrollDownButton;
+    private javax.swing.JLabel scrollDownButtonBar;
+    private javax.swing.JLabel scrollDownSign;
+    private javax.swing.JPanel scrollUpButton;
+    private javax.swing.JLabel scrollUpButtonBar;
+    private javax.swing.JLabel scrollUpSign;
     private javax.swing.JLabel searchText;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JLabel searchTextFieldBar;

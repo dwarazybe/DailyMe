@@ -4,11 +4,11 @@ public class BmiCalculator {
     protected double bmi;
     
     protected double calculateBmi(double weight, double height) {
-        bmi = (weight / ((height * height) / 10000));
+        bmi = (double)Math.round((weight / ((height * height) / 10000)) * 10) / 10;
         return bmi;
     }
     
-    protected String rateBmi() {
+    protected String rateBmi(double bmi) {
         if(bmi < 16)
             return "WYGŁODZENIE";
         if(bmi >= 16 && bmi < 17)

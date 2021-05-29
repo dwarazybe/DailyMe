@@ -14,6 +14,24 @@ public class DatabaseOperations {
         myConn = DatabaseConnection.getConnection();
     }
     
+    public static byte[] getHashSalt(String nickname, JFrame frame) {
+        byte[] salt;
+        try {
+            String hashSaltQuery = "SELECT HashSalt FROM User WHERE Nickname = '" + nickname + "';";
+            PreparedStatement hashSalt = myConn.prepareStatement(hashSaltQuery);
+            ResultSet hashSaltResult = hashSalt.executeQuery();
+            
+            while(hashSaltResult.next()) {
+                salt = hashSaltResult.getString("HashSalt").getBytes();
+                return salt;
+            }
+            
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
+        return null;
+    }
+    
     public static boolean isLogin(String nickname, String password, String usertype, JFrame frame) {
         try {
             String userInfoQuery = "SELECT UserID, Usertype, Nickname, Name FROM User WHERE Nickname = '"
@@ -29,9 +47,9 @@ public class DatabaseOperations {
                 if(LoginSession.userID > 0)
                     return true;
                 }         
-            } catch (SQLException exception) {
+        } catch (SQLException exception) {
             JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        }
         return false;
     }
     
@@ -52,9 +70,9 @@ public class DatabaseOperations {
                 return true;
             } 
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
         return false;
     }
     
@@ -70,9 +88,9 @@ public class DatabaseOperations {
                 return true;
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
         return false;
     }
     
@@ -88,16 +106,16 @@ public class DatabaseOperations {
                 return true;
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
         return false;
     }
     
-    public static void register(String nickname, String password, String email, String name, int age, double weight, int height, double goal, int gender, JFrame frame) {
+    public static void register(String nickname, String password, String salt, String email, String name, int age, double weight, int height, double goal, int gender, JFrame frame) {
         try {
-            String registerUserQuery = "INSERT INTO User (Nickname, Name, Password, Email, Usertype) VALUES ('" + nickname +"', '" 
-                    + name + "', '" + password + "', '" + email + "', 'regular');";
+            String registerUserQuery = "INSERT INTO User (Nickname, Name, Password, Email, Usertype, HashSalt) VALUES ('" + nickname +"', '" 
+                    + name + "', '" + password + "', '" + email + "', 'regular', '" + salt + "');";
             String getUserIdQuery = "SELECT UserID FROM User WHERE Nickname = '" + nickname + "';";
             
             
@@ -116,9 +134,9 @@ public class DatabaseOperations {
             PreparedStatement userInfo = myConn.prepareStatement(userInfoQuery);
             userInfo.execute();
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void updateUserParameters(double weight, int height, int age, int userID, JFrame frame) {
@@ -142,9 +160,9 @@ public class DatabaseOperations {
                 LoginSession.productNames.add(productNamesResult.getString("Name"));
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
 
     }
     
@@ -162,9 +180,9 @@ public class DatabaseOperations {
                 LoginSession.productCarbs = productInfoResult.getDouble("Carbs");
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void archiveMealDiary(double kcal, double proteins, double fats, double carbs, JFrame frame) {
@@ -174,9 +192,9 @@ public class DatabaseOperations {
             PreparedStatement archiveMealDiary = myConn.prepareStatement(archiveMealDiaryQuery);
             archiveMealDiary.execute();
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void deleteLastMeals(JFrame frame) {
@@ -185,9 +203,9 @@ public class DatabaseOperations {
             PreparedStatement deleteLastMeals = myConn.prepareStatement(deleteLastMealsQuery);
             deleteLastMeals.execute();
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void archiveLastMeals(String name, double kcal, double proteins, double fats, double carbs, JFrame frame) {
@@ -197,9 +215,9 @@ public class DatabaseOperations {
             PreparedStatement archiveLastMeals = myConn.prepareStatement(archiveLastMealsQuery);
             archiveLastMeals.execute();
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void loadLastMeals(JFrame frame) {
@@ -225,9 +243,9 @@ public class DatabaseOperations {
                 i++;
             }
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void archiveWorkoutDiary(String type, double weight, int time, int intensityLevel, double kcal, JFrame frame) {
@@ -237,9 +255,9 @@ public class DatabaseOperations {
             PreparedStatement archiveWorkoutDiary = myConn.prepareStatement(archiveWorkoutDiaryQuery);
             archiveWorkoutDiary.execute();
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void saveNotes(String notes, JFrame frame) {
@@ -252,8 +270,8 @@ public class DatabaseOperations {
             deleteUserNotes.execute();
             saveUserNotes.execute();
 
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
         }
     }
     
@@ -267,9 +285,9 @@ public class DatabaseOperations {
                 LoginSession.userNotes = loadUserNotesResult.getString("Notes");
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void loadWorkoutStats(JFrame frame) {
@@ -318,9 +336,9 @@ public class DatabaseOperations {
                 LoginSession.firstTrainingDate = FirstDateResult.getString("MinDate");
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void loadMealsStats(JFrame frame) {
@@ -369,20 +387,20 @@ public class DatabaseOperations {
                 LoginSession.firstDiaryDate = FirstDiaryResult.getString("MinDate");
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
-    public static void loadMealDiaryDiagramData(JFrame frame) {
+    public static void loadDiaryDates(JFrame frame) {
         try {
-            String loadDiaryInterval1Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 1 DAY);";
-            String loadDiaryInterval2Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 2 DAY);";
-            String loadDiaryInterval3Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 3 DAY);";
-            String loadDiaryInterval4Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 4 DAY);";
-            String loadDiaryInterval5Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 5 DAY);";
-            String loadDiaryInterval6Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 6 DAY);";
-            String loadDiaryInterval7Query = "SELECT ROUND((Calories/25), 0) AS Calories, DATE_FORMAT(DiaryDate, '%d.%m') AS DiaryDate FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 7 DAY);";
+            String loadDiaryInterval1Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 1 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval2Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 2 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval3Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 3 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval4Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 4 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval5Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 5 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval6Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 6 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
+            String loadDiaryInterval7Query = "SELECT DATE_FORMAT((CURDATE() - INTERVAL 7 DAY), '%d.%m') AS DiaryDate FROM DUAL;";
 
             PreparedStatement loadDiaryInterval1 = myConn.prepareStatement(loadDiaryInterval1Query);
             PreparedStatement loadDiaryInterval2 = myConn.prepareStatement(loadDiaryInterval2Query);
@@ -401,62 +419,108 @@ public class DatabaseOperations {
             ResultSet loadDiaryInterval7Result = loadDiaryInterval7.executeQuery(); 
             
             while(loadDiaryInterval1Result.next()) {
-                LoginSession.mealDiaryInterval1Date = loadDiaryInterval1Result.getString("DiaryDate");
+                LoginSession.diaryInterval1Date = loadDiaryInterval1Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval2Result.next()) {
+                LoginSession.diaryInterval2Date = loadDiaryInterval2Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval3Result.next()) {
+                LoginSession.diaryInterval3Date = loadDiaryInterval3Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval4Result.next()) {
+                LoginSession.diaryInterval4Date = loadDiaryInterval4Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval5Result.next()) {
+                LoginSession.diaryInterval5Date = loadDiaryInterval5Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval6Result.next()) {
+                LoginSession.diaryInterval6Date = loadDiaryInterval6Result.getString("DiaryDate");
+            }
+            while(loadDiaryInterval7Result.next()) {
+                LoginSession.diaryInterval7Date = loadDiaryInterval7Result.getString("DiaryDate");
+            }
+  
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
+    }
+    
+    public static void loadMealDiaryDiagramData(JFrame frame) {
+        try {
+            String loadDiaryInterval1Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 1 DAY);";
+            String loadDiaryInterval2Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 2 DAY);";
+            String loadDiaryInterval3Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 3 DAY);";
+            String loadDiaryInterval4Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 4 DAY);";
+            String loadDiaryInterval5Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 5 DAY);";
+            String loadDiaryInterval6Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 6 DAY);";
+            String loadDiaryInterval7Query = "SELECT ROUND((Calories/25), 0) AS Calories FROM MealsArchive WHERE UserID = " + LoginSession.userID + " AND DiaryDate = (CURDATE() - INTERVAL 7 DAY);";
+
+            PreparedStatement loadDiaryInterval1 = myConn.prepareStatement(loadDiaryInterval1Query);
+            PreparedStatement loadDiaryInterval2 = myConn.prepareStatement(loadDiaryInterval2Query);
+            PreparedStatement loadDiaryInterval3 = myConn.prepareStatement(loadDiaryInterval3Query);
+            PreparedStatement loadDiaryInterval4 = myConn.prepareStatement(loadDiaryInterval4Query);
+            PreparedStatement loadDiaryInterval5 = myConn.prepareStatement(loadDiaryInterval5Query);
+            PreparedStatement loadDiaryInterval6 = myConn.prepareStatement(loadDiaryInterval6Query);
+            PreparedStatement loadDiaryInterval7 = myConn.prepareStatement(loadDiaryInterval7Query);
+            
+            ResultSet loadDiaryInterval1Result = loadDiaryInterval1.executeQuery(); 
+            ResultSet loadDiaryInterval2Result = loadDiaryInterval2.executeQuery(); 
+            ResultSet loadDiaryInterval3Result = loadDiaryInterval3.executeQuery(); 
+            ResultSet loadDiaryInterval4Result = loadDiaryInterval4.executeQuery(); 
+            ResultSet loadDiaryInterval5Result = loadDiaryInterval5.executeQuery(); 
+            ResultSet loadDiaryInterval6Result = loadDiaryInterval6.executeQuery(); 
+            ResultSet loadDiaryInterval7Result = loadDiaryInterval7.executeQuery(); 
+            
+            while(loadDiaryInterval1Result.next()) {
                 LoginSession.mealDiaryInterval1Kcal = loadDiaryInterval1Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval1Kcal > 192)
                     LoginSession.mealDiaryInterval1Kcal = 192;
             }
             while(loadDiaryInterval2Result.next()) {
-                LoginSession.mealDiaryInterval2Date = loadDiaryInterval2Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval2Kcal = loadDiaryInterval2Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval2Kcal > 192)
                     LoginSession.mealDiaryInterval2Kcal = 192;
             }
             while(loadDiaryInterval3Result.next()) {
-                LoginSession.mealDiaryInterval3Date = loadDiaryInterval3Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval3Kcal = loadDiaryInterval3Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval3Kcal > 192)
                     LoginSession.mealDiaryInterval3Kcal = 192;
             }
             while(loadDiaryInterval4Result.next()) {
-                LoginSession.mealDiaryInterval4Date = loadDiaryInterval4Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval4Kcal = loadDiaryInterval4Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval4Kcal > 192)
                     LoginSession.mealDiaryInterval4Kcal = 192;
             }
             while(loadDiaryInterval5Result.next()) {
-                LoginSession.mealDiaryInterval5Date = loadDiaryInterval5Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval5Kcal = loadDiaryInterval5Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval5Kcal > 192)
                     LoginSession.mealDiaryInterval5Kcal = 192;
             }
             while(loadDiaryInterval6Result.next()) {
-                LoginSession.mealDiaryInterval6Date = loadDiaryInterval6Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval6Kcal = loadDiaryInterval6Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval6Kcal > 192)
                     LoginSession.mealDiaryInterval6Kcal = 192;
             }
             while(loadDiaryInterval7Result.next()) {
-                LoginSession.mealDiaryInterval7Date = loadDiaryInterval7Result.getString("DiaryDate");
                 LoginSession.mealDiaryInterval7Kcal = loadDiaryInterval7Result.getInt("Calories");
                 if(LoginSession.mealDiaryInterval7Kcal > 192)
                     LoginSession.mealDiaryInterval7Kcal = 192;
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
     
     public static void loadWorkoutDiaryDiagramData(JFrame frame) {
         try {
-            String loadDiaryInterval1Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 1 DAY);";
-            String loadDiaryInterval2Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 2 DAY);";
-            String loadDiaryInterval3Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 3 DAY);";
-            String loadDiaryInterval4Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 4 DAY);";
-            String loadDiaryInterval5Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 5 DAY);";
-            String loadDiaryInterval6Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 6 DAY);";
-            String loadDiaryInterval7Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories, DATE_FORMAT(WorkoutDate, '%d.%m') AS WorkoutDate FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 7 DAY);";
+            String loadDiaryInterval1Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 1 DAY);";
+            String loadDiaryInterval2Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 2 DAY);";
+            String loadDiaryInterval3Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 3 DAY);";
+            String loadDiaryInterval4Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 4 DAY);";
+            String loadDiaryInterval5Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 5 DAY);";
+            String loadDiaryInterval6Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 6 DAY);";
+            String loadDiaryInterval7Query = "SELECT ROUND((SUM(Calories)/6.25), 0) AS Calories FROM WorkoutArchive WHERE UserID = " + LoginSession.userID + " AND WorkoutDate = (CURDATE() - INTERVAL 7 DAY);";
 
             PreparedStatement loadDiaryInterval1 = myConn.prepareStatement(loadDiaryInterval1Query);
             PreparedStatement loadDiaryInterval2 = myConn.prepareStatement(loadDiaryInterval2Query);
@@ -475,50 +539,43 @@ public class DatabaseOperations {
             ResultSet loadDiaryInterval7Result = loadDiaryInterval7.executeQuery(); 
             
             while(loadDiaryInterval1Result.next()) {
-                LoginSession.workoutDiaryInterval1Date = loadDiaryInterval1Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval1Kcal = loadDiaryInterval1Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval1Kcal > 192)
                     LoginSession.workoutDiaryInterval1Kcal = 192;
             }
             while(loadDiaryInterval2Result.next()) {
-                LoginSession.workoutDiaryInterval2Date = loadDiaryInterval2Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval2Kcal = loadDiaryInterval2Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval2Kcal > 192)
                     LoginSession.workoutDiaryInterval2Kcal = 192;
             }
             while(loadDiaryInterval3Result.next()) {
-                LoginSession.workoutDiaryInterval3Date = loadDiaryInterval3Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval3Kcal = loadDiaryInterval3Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval3Kcal > 192)
                     LoginSession.workoutDiaryInterval3Kcal = 192;
             }
             while(loadDiaryInterval4Result.next()) {
-                LoginSession.workoutDiaryInterval4Date = loadDiaryInterval4Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval4Kcal = loadDiaryInterval4Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval4Kcal > 192)
                     LoginSession.workoutDiaryInterval4Kcal = 192;
             }
             while(loadDiaryInterval5Result.next()) {
-                LoginSession.workoutDiaryInterval5Date = loadDiaryInterval5Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval5Kcal = loadDiaryInterval5Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval5Kcal > 192)
                     LoginSession.workoutDiaryInterval5Kcal = 192;
             }
             while(loadDiaryInterval6Result.next()) {
-                LoginSession.workoutDiaryInterval6Date = loadDiaryInterval6Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval6Kcal = loadDiaryInterval6Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval6Kcal > 192)
                     LoginSession.workoutDiaryInterval6Kcal = 192;
             }
             while(loadDiaryInterval7Result.next()) {
-                LoginSession.workoutDiaryInterval7Date = loadDiaryInterval7Result.getString("WorkoutDate");
                 LoginSession.workoutDiaryInterval7Kcal = loadDiaryInterval7Result.getInt("Calories");
                 if(LoginSession.workoutDiaryInterval7Kcal > 192)
                     LoginSession.workoutDiaryInterval7Kcal = 192;
             }
             
-            } catch (SQLException exception) {
-                JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
-            }
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(frame, "Database error: " + exception.getMessage());
+        }
     }
 }

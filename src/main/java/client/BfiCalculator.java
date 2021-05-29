@@ -5,13 +5,13 @@ public class BfiCalculator {
     
     protected double calculateBfi(double weight, double waist, int gender) {
         if(gender == 0)
-            bfi = (double) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 76.76) / (weight * 2.2)) * 100);
+            bfi = (double)Math.round((((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 76.76) / (weight * 2.2)) * 100) * 10) / 10;
         if(gender == 1)
-            bfi = (double) (((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 98.42) / (weight * 2.2)) * 100);
+            bfi = (double)Math.round((((((4.15 * waist) / 2.54) - (0.082 * weight * 2.2) - 98.42) / (weight * 2.2)) * 100) * 10) / 10;
         return bfi;
     }
     
-    protected String rateBfi(int gender) {
+    protected String rateBfi(double bfi, int gender) {
         if(gender == 0) {
             if(bfi < 13)
                 return "NIEZBĘDNA TKANKA TŁUSZCZOWA";

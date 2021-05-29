@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
     private RegisterDialog registerDialog;
     private TextMessageDialog msgDialog;
     
-    private final String hostAddress = "192.168.8.105";
+    private final String hostAddress = "25.33.207.201";
     private final int PORT = 8754;
     private BufferedReader in;
     private PrintWriter out;
@@ -44,6 +45,8 @@ public class MainFrame extends javax.swing.JFrame {
     private final BmiCalculator bmiCalc;
     private final BfiCalculator bfiCalc;
     private final Validators val;
+    private final SHA256 sha256;
+    
     private AddMealDialog addMealDialog;
     private LoadingDialog loadingDialog;
     
@@ -62,11 +65,13 @@ public class MainFrame extends javax.swing.JFrame {
     private double totalFats = 0.0;
     private double totalCarbs = 0.0;
     
-    private String usernameStr;
-    private String passwordStr;
-    private String usertypeStr;
+    private String username;
+    private String password;
+    private String encryptedPassword; 
+    private String usertype;
     
     protected boolean threadExit = false;
+    private boolean notesEditable = false;
     
     private int lastActivitiesCounter = 0;
     
@@ -82,9 +87,9 @@ public class MainFrame extends javax.swing.JFrame {
         this.bmiCalc = new BmiCalculator();
         this.bfiCalc = new BfiCalculator();
         this.val = new Validators();
+        this.sha256 = new SHA256();
         initDatabase();
-        initComponents();
-        
+        initComponents();   
     }
 
     /**
@@ -192,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame {
         modifyParamsToggleButtonOff = new javax.swing.JLabel();
         notesPanel = new javax.swing.JPanel();
         notesText = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        notesScrollPane = new javax.swing.JScrollPane();
         notesTextArea = new javax.swing.JTextArea();
         saveNotesButton = new javax.swing.JLabel();
         modifyNotesButton = new javax.swing.JLabel();
@@ -1101,7 +1106,6 @@ public class MainFrame extends javax.swing.JFrame {
         loginInfoUsernameTextField.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
         loginInfoUsernameTextField.setForeground(new java.awt.Color(172, 172, 172));
         loginInfoUsernameTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        loginInfoUsernameTextField.setText("[djbuko]");
         loginInfoUsernameTextField.setToolTipText("");
         loginInfoUsernameTextField.setBorder(null);
         loginInfoUsernameTextField.setSelectedTextColor(new java.awt.Color(172, 172, 172));
@@ -1377,6 +1381,9 @@ public class MainFrame extends javax.swing.JFrame {
         notesText.setText("Notatki:");
         notesPanel.add(notesText, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 5, -1, -1));
 
+        notesScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        notesScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         notesTextArea.setEditable(false);
         notesTextArea.setBackground(new java.awt.Color(50, 54, 61));
         notesTextArea.setColumns(20);
@@ -1389,10 +1396,15 @@ public class MainFrame extends javax.swing.JFrame {
         notesTextArea.setDisabledTextColor(new java.awt.Color(238, 238, 238));
         notesTextArea.setSelectedTextColor(new java.awt.Color(238, 238, 238));
         notesTextArea.setSelectionColor(new java.awt.Color(0, 173, 181));
-        jScrollPane1.setViewportView(notesTextArea);
-        jScrollPane1.setBorder(null);
+        notesTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                notesTextAreaKeyPressed(evt);
+            }
+        });
+        notesScrollPane.setViewportView(notesTextArea);
+        notesScrollPane.setBorder(null);
 
-        notesPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 25, 370, 230));
+        notesPanel.add(notesScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 25, 370, 230));
 
         saveNotesButton.setBackground(new java.awt.Color(63, 69, 79));
         saveNotesButton.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
@@ -4895,7 +4907,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         contactText.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
         contactText.setForeground(new java.awt.Color(238, 238, 238));
-        contactText.setText("Kontakt:  contact@client.com");
+        contactText.setText("Kontakt:  contact@dailyme.com");
         dailymeInfoPanel.add(contactText, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 45, -1, -1));
 
         allRightsReservedText.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
@@ -5008,8 +5020,7 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    
+   
     private void moveLastActivityBars(int option) {
         if(lastActivitiesCounter == 0)
             lastActivity1Panel.setVisible(true);
@@ -5046,11 +5057,12 @@ public class MainFrame extends javax.swing.JFrame {
     private void initValues() {
         if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
             bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
-            bmiRateValueTextField.setText(bmiCalc.rateBmi());
+            bmiRateValueTextField.setText(bmiCalc.rateBmi(bmiCalc.bmi));
             goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
             goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
             profileNameTextField.setText(LoginSession.userName);
             loadLastMeals();
+            DatabaseOperations.loadDiaryDates(this);
             setMealsStats();
             setWorkoutStats();
             setMealDiaryDiagram();
@@ -5227,6 +5239,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_infoButtonMouseExited
 
     private void modifyNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyNotesButtonMouseClicked
+        notesEditable = true;
         notesTextArea.setEditable(true);
         modifyNotesButtonActive = true;
         if(modifyNotesButtonActive == true)
@@ -5234,6 +5247,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_modifyNotesButtonMouseClicked
 
     private void saveNotesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveNotesButtonMouseClicked
+        notesEditable = false;
         notesTextArea.setEditable(false);
         modifyNotesButtonActive = false;
         try {
@@ -5282,7 +5296,7 @@ public class MainFrame extends javax.swing.JFrame {
             height = Integer.parseInt(heightValueTextField.getText());
             age = Integer.parseInt(ageValueTextField.getText());
             bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (double)height))));
-            bmiRateValueTextField.setText(bmiCalc.rateBmi());
+            bmiRateValueTextField.setText(bmiCalc.rateBmi(bmiCalc.bmi));
             
             try {
                 DatabaseOperations.updateUserParameters(weight, height, age, LoginSession.userID, this);
@@ -5412,20 +5426,20 @@ public class MainFrame extends javax.swing.JFrame {
             age = Integer.parseInt(calcBmrAgeValueTextField.getText());
 
             bmrResultKcalValueTextField.setText(String.valueOf(bmrCalc.calculateKcalAmount(weight, height, age, activityLevel, calcGender)) + " kcal");
-            bmrResultKcalCutValueTextField.setText(String.valueOf(bmrCalc.calculateKcalCutAmount()) + " kcal");
-            bmrResultKcalOverValueTextField.setText(String.valueOf(bmrCalc.calculateKcalOverAmount()) + " kcal");
+            bmrResultKcalCutValueTextField.setText(String.valueOf(bmrCalc.calculateKcalCutAmount(bmrCalc.kcalAmount)) + " kcal");
+            bmrResultKcalOverValueTextField.setText(String.valueOf(bmrCalc.calculateKcalOverAmount(bmrCalc.kcalAmount)) + " kcal");
 
             bmrResultProteinsValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
-            bmrResultFatsValueTextField.setText(String.valueOf(bmrCalc.calculateFatsAmount()) + "g");
-            bmrResultCarbsValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsAmount()) + "g");
+            bmrResultFatsValueTextField.setText(String.valueOf(bmrCalc.calculateFatsAmount(bmrCalc.kcalAmount)) + "g");
+            bmrResultCarbsValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsAmount(bmrCalc.kcalAmount, bmrCalc.proteinsAmount, bmrCalc.fatsAmount)) + "g");
 
             bmrResultProteinsCutValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
-            bmrResultFatsCutValueTextField.setText(String.valueOf(bmrCalc.calculateFatsCutAmount()) + "g");
-            bmrResultCarbsCutValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsCutAmount()) + "g");
+            bmrResultFatsCutValueTextField.setText(String.valueOf(bmrCalc.calculateFatsCutAmount(bmrCalc.kcalCutAmount)) + "g");
+            bmrResultCarbsCutValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsCutAmount(bmrCalc.kcalCutAmount, bmrCalc.proteinsAmount, bmrCalc.fatsCutAmount)) + "g");
 
             bmrResultProteinsOverValueTextField.setText(String.valueOf(bmrCalc.calculateProteinsAmount(weight)) + "g");
-            bmrResultFatsOverValueTextField.setText(String.valueOf(bmrCalc.calculateFatsOverAmount()) + "g");
-            bmrResultCarbsOverValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsOverAmount()) + "g");
+            bmrResultFatsOverValueTextField.setText(String.valueOf(bmrCalc.calculateFatsOverAmount(bmrCalc.kcalOverAmount)) + "g");
+            bmrResultCarbsOverValueTextField.setText(String.valueOf(bmrCalc.calculateCarbsOverAmount(bmrCalc.kcalOverAmount, bmrCalc.proteinsAmount, bmrCalc.fatsOverAmount)) + "g");
         }
     }//GEN-LAST:event_calculateBmrButtonMouseClicked
 
@@ -5520,7 +5534,7 @@ public class MainFrame extends javax.swing.JFrame {
             height = Integer.parseInt(calcBmiHeightValueTextField.getText());
 
             bmiResultValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(weight, (double)height))));
-            bmiResultRateTextField.setText(bmiCalc.rateBmi());
+            bmiResultRateTextField.setText(bmiCalc.rateBmi(bmiCalc.bmi));
         }
     }//GEN-LAST:event_calculateBmiButtonMouseClicked
 
@@ -5546,7 +5560,7 @@ public class MainFrame extends javax.swing.JFrame {
             waist = Integer.parseInt(calcBfiWaistValueTextField.getText());
 
             bfiResultValueTextField.setText(String.valueOf(df.format(bfiCalc.calculateBfi(weight, (double)waist, calcGender))) + "%");
-            bfiResultRateTextField.setText(bfiCalc.rateBfi(calcGender));
+            bfiResultRateTextField.setText(bfiCalc.rateBfi(bfiCalc.bfi, calcGender));
         }
     }//GEN-LAST:event_calculateBfiButtonMouseClicked
 
@@ -6206,7 +6220,10 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void login() {
         try {
-            if(DatabaseOperations.isLogin(usernameStr, passwordStr, usertypeStr, null)) {
+            if(DatabaseOperations.isLogin(username, encryptedPassword, usertype, null)) {
+                username = null;
+                encryptedPassword = null;
+                
                 threadExit = false;
                 displayLoadingDialog(1);
                 Thread.sleep(30);
@@ -6233,12 +6250,14 @@ public class MainFrame extends javax.swing.JFrame {
             }  
     }
     
-    private void loginButtonClicked() {        
-        usernameStr = loginTextField.getText();
-        passwordStr = new String(passwordField.getPassword());
-        usertypeStr = "regular";
+    private void loginButtonClicked() throws NoSuchAlgorithmException {        
+        username = loginTextField.getText();
+        password = new String(passwordField.getPassword());
+        usertype = "regular";
         
-        if(!(usernameStr.equals("") || passwordStr.equals(""))) {
+        if(!(username.equals("") || password.equals(""))) {
+            encryptedPassword = sha256.encryptPassword(password, DatabaseOperations.getHashSalt(username, this));
+            password = null;
             this.loadingThread = new Thread(new Runnable() {
                 public void run() {
                     login(); 
@@ -6273,13 +6292,21 @@ public class MainFrame extends javax.swing.JFrame {
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
         val.limitCharVal(evt, passwordField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            loginButtonClicked();
+            try {
+                loginButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_passwordFieldKeyPressed
 
     private void loginTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginTextFieldKeyPressed
         val.limitCharVal(evt, loginTextField);
         if(evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)
-            loginButtonClicked();
+            try {
+                loginButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loginTextFieldKeyPressed
 
     private void loginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseExited
@@ -6293,7 +6320,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonMouseEntered
 
     private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
-        loginButtonClicked();
+        try {
+            loginButtonClicked();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void startupPanelCloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startupPanelCloseButtonMouseClicked
@@ -6629,6 +6660,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void lastActivity5PanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lastActivity5PanelMouseExited
         lastActivityPanelRepaint(lastActivity5Panel, lastActivity5UsernameTextField, lastActivity5MessageTextField, 2);
     }//GEN-LAST:event_lastActivity5PanelMouseExited
+
+    private void notesTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notesTextAreaKeyPressed
+        if(notesEditable)
+            val.notesVal(evt, notesTextArea);
+    }//GEN-LAST:event_notesTextAreaKeyPressed
       
     private void setMealsStats() {
         try {
@@ -6668,25 +6704,25 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             DatabaseOperations.loadMealDiaryDiagramData(this);
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.mealDiaryInterval7Kcal), 35, LoginSession.mealDiaryInterval7Kcal));
-            mealDiaryDiagramBar1DateTextField.setText(LoginSession.mealDiaryInterval7Date);
+            mealDiaryDiagramBar1DateTextField.setText(LoginSession.diaryInterval7Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, (240 - LoginSession.mealDiaryInterval6Kcal), 35, LoginSession.mealDiaryInterval6Kcal));
-            mealDiaryDiagramBar2DateTextField.setText(LoginSession.mealDiaryInterval6Date);
+            mealDiaryDiagramBar2DateTextField.setText(LoginSession.diaryInterval6Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, (240 - LoginSession.mealDiaryInterval5Kcal), 35, LoginSession.mealDiaryInterval5Kcal));
-            mealDiaryDiagramBar3DateTextField.setText(LoginSession.mealDiaryInterval5Date);
+            mealDiaryDiagramBar3DateTextField.setText(LoginSession.diaryInterval5Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, (240 - LoginSession.mealDiaryInterval4Kcal), 35, LoginSession.mealDiaryInterval4Kcal));
-            mealDiaryDiagramBar4DateTextField.setText(LoginSession.mealDiaryInterval4Date);
+            mealDiaryDiagramBar4DateTextField.setText(LoginSession.diaryInterval4Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar5, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, (240 - LoginSession.mealDiaryInterval3Kcal), 35, LoginSession.mealDiaryInterval3Kcal));
-            mealDiaryDiagramBar5DateTextField.setText(LoginSession.mealDiaryInterval3Date);
+            mealDiaryDiagramBar5DateTextField.setText(LoginSession.diaryInterval3Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, (240 - LoginSession.mealDiaryInterval2Kcal), 35, LoginSession.mealDiaryInterval2Kcal));
-            mealDiaryDiagramBar6DateTextField.setText(LoginSession.mealDiaryInterval2Date);
+            mealDiaryDiagramBar6DateTextField.setText(LoginSession.diaryInterval2Date);
             
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar7, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, (240 - LoginSession.mealDiaryInterval1Kcal), 35, LoginSession.mealDiaryInterval1Kcal));
-            mealDiaryDiagramBar7DateTextField.setText(LoginSession.mealDiaryInterval1Date);
+            mealDiaryDiagramBar7DateTextField.setText(LoginSession.diaryInterval1Date);
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(this, "Error: " + exception.getMessage());
         } 
@@ -6696,25 +6732,25 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             DatabaseOperations.loadWorkoutDiaryDiagramData(this);
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.workoutDiaryInterval7Kcal), 35, LoginSession.workoutDiaryInterval7Kcal));
-            workoutDiaryDiagramBar1DateTextField.setText(LoginSession.workoutDiaryInterval7Date);
+            workoutDiaryDiagramBar1DateTextField.setText(LoginSession.diaryInterval7Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, (240 - LoginSession.workoutDiaryInterval6Kcal), 35, LoginSession.workoutDiaryInterval6Kcal));
-            workoutDiaryDiagramBar2DateTextField.setText(LoginSession.workoutDiaryInterval6Date);
+            workoutDiaryDiagramBar2DateTextField.setText(LoginSession.diaryInterval6Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, (240 - LoginSession.workoutDiaryInterval5Kcal), 35, LoginSession.workoutDiaryInterval5Kcal));
-            workoutDiaryDiagramBar3DateTextField.setText(LoginSession.workoutDiaryInterval5Date);
+            workoutDiaryDiagramBar3DateTextField.setText(LoginSession.diaryInterval5Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, (240 - LoginSession.workoutDiaryInterval4Kcal), 35, LoginSession.workoutDiaryInterval4Kcal));
-            workoutDiaryDiagramBar4DateTextField.setText(LoginSession.workoutDiaryInterval4Date);
+            workoutDiaryDiagramBar4DateTextField.setText(LoginSession.diaryInterval4Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar5, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, (240 - LoginSession.workoutDiaryInterval3Kcal), 35, LoginSession.workoutDiaryInterval3Kcal));
-            workoutDiaryDiagramBar5DateTextField.setText(LoginSession.workoutDiaryInterval3Date);
+            workoutDiaryDiagramBar5DateTextField.setText(LoginSession.diaryInterval3Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, (240 - LoginSession.workoutDiaryInterval2Kcal), 35, LoginSession.workoutDiaryInterval2Kcal));
-            workoutDiaryDiagramBar6DateTextField.setText(LoginSession.workoutDiaryInterval2Date);
+            workoutDiaryDiagramBar6DateTextField.setText(LoginSession.diaryInterval2Date);
             
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar7, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, (240 - LoginSession.workoutDiaryInterval1Kcal), 35, LoginSession.workoutDiaryInterval1Kcal));
-            workoutDiaryDiagramBar7DateTextField.setText(LoginSession.workoutDiaryInterval1Date);
+            workoutDiaryDiagramBar7DateTextField.setText(LoginSession.diaryInterval1Date);
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(this, "Error: " + exception.getMessage());
         } 
@@ -6985,7 +7021,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel instagramButton;
     private javax.swing.JLabel instagramIconActive;
     private javax.swing.JLabel instagramIconInactive;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel kcalIcon;
     private javax.swing.JPanel kcalPanel;
     private javax.swing.JPanel kcalStatsPanel;
@@ -7171,6 +7206,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel myProfilePanel;
     private javax.swing.JPanel namePanel;
     private javax.swing.JPanel notesPanel;
+    private javax.swing.JScrollPane notesScrollPane;
     private javax.swing.JLabel notesText;
     protected javax.swing.JTextArea notesTextArea;
     protected javax.swing.JPasswordField passwordField;

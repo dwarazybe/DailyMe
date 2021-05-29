@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.event.KeyEvent;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Validators {
@@ -8,7 +9,10 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z')) {
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' ) {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
             }
@@ -30,7 +34,11 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || evt.getKeyChar() == ' ') {
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || evt.getKeyChar() == ' ' 
+                || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń') {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
             }
@@ -52,7 +60,10 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || (evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == '@' || evt.getKeyChar() == '.' 
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' || evt.getKeyChar() == '@' || evt.getKeyChar() == '.' 
                 || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
@@ -67,6 +78,33 @@ public class Validators {
             }
             else {
                 field.setEditable(false);
+            }
+        }
+    }
+    
+    protected void notesVal(java.awt.event.KeyEvent evt, JTextArea area) {
+        String fieldString = area.getText();
+        int fieldStringLength = fieldString.length();
+        if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || (evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == ' ' || evt.getKeyChar() == '.' 
+                || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń'
+                || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
+            if(fieldStringLength < 150) {
+                area.setEditable(true);
+            }
+            else {
+                area.setEditable(false);
+            }
+        }
+        else {
+            if(evt.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getExtendedKeyCode() == KeyEvent.VK_DELETE) {
+                area.setEditable(true);
+            }
+            else {
+                area.setEditable(false);
             }
         }
     }

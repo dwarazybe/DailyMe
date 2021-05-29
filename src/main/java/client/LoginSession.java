@@ -53,34 +53,28 @@ public class LoginSession {
     public static double totalBurnedKcal;
     public static String firstTrainingDate;
     
-    public static String mealDiaryInterval1Date;
+    public static String diaryInterval1Date;
+    public static String diaryInterval2Date;
+    public static String diaryInterval3Date;
+    public static String diaryInterval4Date;
+    public static String diaryInterval5Date;
+    public static String diaryInterval6Date;
+    public static String diaryInterval7Date;
+    
     public static int mealDiaryInterval1Kcal = 0;
-    public static String mealDiaryInterval2Date;
     public static int mealDiaryInterval2Kcal = 0;
-    public static String mealDiaryInterval3Date;
     public static int mealDiaryInterval3Kcal = 0;
-    public static String mealDiaryInterval4Date;
     public static int mealDiaryInterval4Kcal = 0;
-    public static String mealDiaryInterval5Date;
     public static int mealDiaryInterval5Kcal = 0;
-    public static String mealDiaryInterval6Date;
     public static int mealDiaryInterval6Kcal = 0;
-    public static String mealDiaryInterval7Date;
     public static int mealDiaryInterval7Kcal = 0;
     
-    public static String workoutDiaryInterval1Date;
     public static int workoutDiaryInterval1Kcal = 0;
-    public static String workoutDiaryInterval2Date;
     public static int workoutDiaryInterval2Kcal = 0;
-    public static String workoutDiaryInterval3Date;
     public static int workoutDiaryInterval3Kcal = 0;
-    public static String workoutDiaryInterval4Date;
     public static int workoutDiaryInterval4Kcal = 0;
-    public static String workoutDiaryInterval5Date;
     public static int workoutDiaryInterval5Kcal = 0;
-    public static String workoutDiaryInterval6Date;
     public static int workoutDiaryInterval6Kcal = 0;
-    public static String workoutDiaryInterval7Date;
     public static int workoutDiaryInterval7Kcal = 0;
     
     public static String mealName;
