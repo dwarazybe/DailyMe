@@ -496,8 +496,8 @@ public class SelectProductDialog extends javax.swing.JDialog {
         scrollDownButton.repaint();
         listMaxIndex = productList.getLastVisibleIndex();
         this.scrollThread = new Thread(new Runnable() {
-                public void run() {
-                    while(scrollDown) {
+            public void run() {
+                while(scrollDown) {
                     productList.ensureIndexIsVisible(listMaxIndex + 1);
                     listMaxIndex++;
                     productList.repaint();
@@ -506,9 +506,9 @@ public class SelectProductDialog extends javax.swing.JDialog {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(SelectProductDialog.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    }
                 }
-            });
+            }
+        });
         scrollThread.start();
     }//GEN-LAST:event_scrollDownButtonMouseEntered
 

@@ -28,7 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
     private RegisterDialog registerDialog;
     private TextMessageDialog msgDialog;
     
-    private final String hostAddress = "25.33.207.201";
+    private final String hostAddress = "127.0.0.1";
     private final int PORT = 8754;
     private BufferedReader in;
     private PrintWriter out;
@@ -4041,7 +4041,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBmrKgText.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrKgText.setText("kg");
         calcBmrKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBmrPanel.add(calcBmrKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+        calcBmrPanel.add(calcBmrKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 90, -1, 50));
 
         calcBmrHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         calcBmrHeightText.setForeground(new java.awt.Color(138, 152, 173));
@@ -4071,7 +4071,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBmrCmText.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrCmText.setText("cm");
         calcBmrCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBmrPanel.add(calcBmrCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+        calcBmrPanel.add(calcBmrCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 185, -1, 50));
 
         calcBmrAgeText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         calcBmrAgeText.setForeground(new java.awt.Color(138, 152, 173));
@@ -4101,7 +4101,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBmrYearsText.setForeground(new java.awt.Color(238, 238, 238));
         calcBmrYearsText.setText("lat");
         calcBmrYearsText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBmrPanel.add(calcBmrYearsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 289, -1, 50));
+        calcBmrPanel.add(calcBmrYearsText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 280, -1, 50));
 
         calcBmrGenderText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         calcBmrGenderText.setForeground(new java.awt.Color(138, 152, 173));
@@ -4575,7 +4575,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBmiKgText.setForeground(new java.awt.Color(238, 238, 238));
         calcBmiKgText.setText("kg");
         calcBmiKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBmiPanel.add(calcBmiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+        calcBmiPanel.add(calcBmiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 90, -1, 50));
 
         calcBmiHeightText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         calcBmiHeightText.setForeground(new java.awt.Color(238, 238, 238));
@@ -4605,7 +4605,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBmiCmText.setForeground(new java.awt.Color(238, 238, 238));
         calcBmiCmText.setText("cm");
         calcBmiCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBmiPanel.add(calcBmiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+        calcBmiPanel.add(calcBmiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 185, -1, 50));
 
         calculateBmiButton.setBackground(new java.awt.Color(0, 173, 181));
         calculateBmiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -4717,7 +4717,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBfiKgText.setForeground(new java.awt.Color(238, 238, 238));
         calcBfiKgText.setText("kg");
         calcBfiKgText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBfiPanel.add(calcBfiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 99, -1, 50));
+        calcBfiPanel.add(calcBfiKgText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 90, -1, 50));
 
         calcBfiWaistText.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         calcBfiWaistText.setForeground(new java.awt.Color(238, 238, 238));
@@ -4747,7 +4747,7 @@ public class MainFrame extends javax.swing.JFrame {
         calcBfiCmText.setForeground(new java.awt.Color(238, 238, 238));
         calcBfiCmText.setText("cm");
         calcBfiCmText.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        calcBfiPanel.add(calcBfiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 194, -1, 50));
+        calcBfiPanel.add(calcBfiCmText, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 185, -1, 50));
 
         calculateBfiButton.setBackground(new java.awt.Color(0, 173, 181));
         calculateBfiButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -5053,45 +5053,42 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Connection error: " + exception.getMessage());
         }
     }
-
-    private void initValues() {
-        if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
-            bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
-            bmiRateValueTextField.setText(bmiCalc.rateBmi(bmiCalc.bmi));
-            goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
-            goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
-            profileNameTextField.setText(LoginSession.userName);
+    
+    protected void setUserParameters() {
+        try {
+            DatabaseOperations.setParameters(this);
+            DatabaseOperations.loadNotes(this);
+            totalKcal = 0.0;
+            totalProteins = 0.0;
+            totalFats = 0.0;
+            totalCarbs = 0.0;
+            loginInfoUsernameTextField.setText("[" + LoginSession.nickname + "]");
+            weightValueTextField.setText(String.valueOf(df.format(LoginSession.userWeight)));
+            heightValueTextField.setText(String.valueOf(LoginSession.userHeight));
+            ageValueTextField.setText(String.valueOf(LoginSession.userAge));
+            notesTextArea.setText(LoginSession.userNotes);
+            if(!(weightValueTextField.getText().equals("") || heightValueTextField.getText().equals("") || ageValueTextField.getText().equals(""))) {
+                bmiValueTextField.setText(String.valueOf(df.format(bmiCalc.calculateBmi(LoginSession.userWeight, (double)LoginSession.userHeight))));
+                bmiRateValueTextField.setText(bmiCalc.rateBmi(bmiCalc.bmi));
+                goalValueTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal)) + "kg");
+                goalLeftTextField.setText(String.valueOf(df.format(LoginSession.userWeightGoal - LoginSession.userWeight)) + "kg");
+                profileNameTextField.setText(LoginSession.userName);
+                if(LoginSession.userGender == 0) {
+                    femaleIcon.setVisible(true);
+                    maleIcon.setVisible(false);
+                }
+                else if(LoginSession.userGender == 1) {
+                    maleIcon.setVisible(true);
+                    femaleIcon.setVisible(false);
+                }
+            
+            }
             loadLastMeals();
             DatabaseOperations.loadDiaryDates(this);
             setMealsStats();
             setWorkoutStats();
             setMealDiaryDiagram();
             setWorkoutDiaryDiagram();
-            if(LoginSession.userGender == 0) {
-                femaleIcon.setVisible(true);
-                maleIcon.setVisible(false);
-            }
-            else if(LoginSession.userGender == 1) {
-                maleIcon.setVisible(true);
-                femaleIcon.setVisible(false);
-            }
-        }
-    }
-    
-    protected void setUserParameters() {
-        try {
-            DatabaseOperations.setParameters(this);
-            DatabaseOperations.loadNotes(this);
-            loginInfoUsernameTextField.setText("[" + LoginSession.nickname + "]");
-            weightValueTextField.setText(String.valueOf(df.format(LoginSession.userWeight)));
-            heightValueTextField.setText(String.valueOf(LoginSession.userHeight));
-            ageValueTextField.setText(String.valueOf(LoginSession.userAge));
-            notesTextArea.setText(LoginSession.userNotes);
-            totalKcal = 0.0;
-            totalProteins = 0.0;
-            totalFats = 0.0;
-            totalCarbs = 0.0;
-            initValues();
             
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(this, "Error: " + exception.getMessage());
@@ -5893,7 +5890,7 @@ public class MainFrame extends javax.swing.JFrame {
             addMealDialog.setVisible(true);
             while(true) {
                 if(!addMealDialog.isShowing()) {
-                    if(LoginSession.mealKcal > 0 && !(LoginSession.mealName.equals(""))) {
+                    if(LoginSession.mealKcal > 0 && !(LoginSession.mealName.equals("")) && LoginSession.isMealAdded == true) {
                         if(LoginSession.mealsNumber == 1) {
                             meal1Panel.setVisible(true);
                             setMealInfo(meal1NameTextField, meal1KcalValueTextField, meal1ProteinsValueTextField, meal1FatsValueTextField, meal1CarbsValueTextField, 0);      
@@ -5957,6 +5954,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         setTotalValues();
     }
+    
     private void setTotalValues() {
         totalKcalValueTextField.setText(String.valueOf(df.format(totalKcal)) + " kcal");
         totalProteinsValueTextField.setText(String.valueOf(df.format(totalProteins)) + "g");
@@ -6038,81 +6036,41 @@ public class MainFrame extends javax.swing.JFrame {
     private void loadLastMeals() {
         try {
             DatabaseOperations.loadLastMeals(this);
-            if(LoginSession.mealsNumber > 0) {
-                meal1Panel.setVisible(true);
-                meal1NameTextField.setText(LoginSession.mealNameArray[0]);
-                meal1KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[0])) + " kcal");
-                meal1ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[0])) + "g");
-                meal1FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[0])) + "g");
-                meal1CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[0])) + "g");
-            }
-            if(LoginSession.mealsNumber > 1) {
-                meal2Panel.setVisible(true);
-                meal2NameTextField.setText(LoginSession.mealNameArray[1]);
-                meal2KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[1])) + " kcal");
-                meal2ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[1])) + "g");
-                meal2FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[1])) + "g");
-                meal2CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[1])) + "g");
-            }
-            if(LoginSession.mealsNumber > 2) {
-                meal3Panel.setVisible(true);
-                meal3NameTextField.setText(LoginSession.mealNameArray[2]);
-                meal3KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[2])) + " kcal");
-                meal3ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[2])) + "g");
-                meal3FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[2])) + "g");
-                meal3CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[2])) + "g");
-            }
-            if(LoginSession.mealsNumber > 3) {
-                meal4Panel.setVisible(true);
-                meal4NameTextField.setText(LoginSession.mealNameArray[3]);
-                meal4KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[3])) + " kcal");
-                meal4ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[3])) + "g");
-                meal4FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[3])) + "g");
-                meal4CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[3])) + "g");
-            }
-            if(LoginSession.mealsNumber > 4) {
-                meal5Panel.setVisible(true);
-                meal5NameTextField.setText(LoginSession.mealNameArray[4]);
-                meal5KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[4])) + " kcal");
-                meal5ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[4])) + "g");
-                meal5FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[4])) + "g");
-                meal5CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[4])) + "g");
-            }
-            if(LoginSession.mealsNumber > 5) {
-                meal6Panel.setVisible(true);
-                meal6NameTextField.setText(LoginSession.mealNameArray[5]);
-                meal6KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[5])) + " kcal");
-                meal6ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[5])) + "g");
-                meal6FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[5])) + "g");
-                meal6CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[5])) + "g");
-            }
-            if(LoginSession.mealsNumber > 6) {
-                meal7Panel.setVisible(true);
-                meal7NameTextField.setText(LoginSession.mealNameArray[6]);
-                meal7KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[6])) + " kcal");
-                meal7ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[6])) + "g");
-                meal7FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[6])) + "g");
-                meal7CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[6])) + "g");
-            }
-            if(LoginSession.mealsNumber > 7) {
-                meal8Panel.setVisible(true);
-                meal8NameTextField.setText(LoginSession.mealNameArray[7]);
-                meal8KcalValueTextField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[7])) + " kcal");
-                meal8ProteinsValueTextField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[7])) + "g");
-                meal8FatsValueTextField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[7])) + "g");
-                meal8CarbsValueTextField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[7])) + "g");
-            }
+            if(LoginSession.mealsNumber > 0)
+                setMealValues(0, meal1Panel, meal1NameTextField, meal1KcalValueTextField, meal1ProteinsValueTextField, meal1FatsValueTextField, meal1CarbsValueTextField);
+            if(LoginSession.mealsNumber > 1)
+                setMealValues(1, meal2Panel, meal2NameTextField, meal2KcalValueTextField, meal2ProteinsValueTextField, meal2FatsValueTextField, meal2CarbsValueTextField);
+            if(LoginSession.mealsNumber > 2)
+                setMealValues(2, meal3Panel, meal3NameTextField, meal3KcalValueTextField, meal3ProteinsValueTextField, meal3FatsValueTextField, meal3CarbsValueTextField);
+            if(LoginSession.mealsNumber > 3)
+                setMealValues(3, meal4Panel, meal4NameTextField, meal4KcalValueTextField, meal4ProteinsValueTextField, meal4FatsValueTextField, meal4CarbsValueTextField);
+            if(LoginSession.mealsNumber > 4)
+                setMealValues(4, meal5Panel, meal5NameTextField, meal5KcalValueTextField, meal5ProteinsValueTextField, meal5FatsValueTextField, meal5CarbsValueTextField);
+            if(LoginSession.mealsNumber > 5)
+                setMealValues(5, meal6Panel, meal6NameTextField, meal6KcalValueTextField, meal6ProteinsValueTextField, meal6FatsValueTextField, meal6CarbsValueTextField);
+            if(LoginSession.mealsNumber > 6)
+                setMealValues(6, meal7Panel, meal7NameTextField, meal7KcalValueTextField, meal7ProteinsValueTextField, meal7FatsValueTextField, meal7CarbsValueTextField);
+            if(LoginSession.mealsNumber > 7)
+                setMealValues(7, meal8Panel, meal8NameTextField, meal8KcalValueTextField, meal8ProteinsValueTextField, meal8FatsValueTextField, meal8CarbsValueTextField);
             for(int i=0; i<LoginSession.mealsNumber; i++) {
                 totalKcal += LoginSession.mealKcalArray[i];
                 totalProteins += LoginSession.mealProteinsArray[i];
                 totalFats += LoginSession.mealFatsArray[i];
                 totalCarbs += LoginSession.mealCarbsArray[i];
             }
-            
             setTotalValues();
         } catch (Exception exception) {
             JOptionPane.showMessageDialog(this, "Error: " + exception.getMessage());
         }
+    }
+    
+    private void setMealValues(int index, JPanel panel, JTextField nameField, JTextField kcalField, JTextField proteinsField, JTextField fatsField, JTextField carbsField) {
+        panel.setVisible(true);
+        nameField.setText(LoginSession.mealNameArray[index]);
+        kcalField.setText(String.valueOf(df.format(LoginSession.mealKcalArray[index])) + " kcal");
+        proteinsField.setText(String.valueOf(df.format(LoginSession.mealProteinsArray[index])) + "g");
+        fatsField.setText(String.valueOf(df.format(LoginSession.mealFatsArray[index])) + "g");
+        carbsField.setText(String.valueOf(df.format(LoginSession.mealCarbsArray[index])) + "g");
     }
     
     private void emptyMealDiary() {
@@ -6459,7 +6417,6 @@ public class MainFrame extends javax.swing.JFrame {
                 intensityLevelButtonsFill(workoutDetailsIntensityLevel2ButtonFill);
                 intensityLevel = 2;
                 workoutDetailsKcalValueTextField.setText("-");
-                setMealsStats();
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(this, "Error: " + exception.getMessage());
             }        
@@ -6704,23 +6661,17 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             DatabaseOperations.loadMealDiaryDiagramData(this);
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.mealDiaryInterval7Kcal), 35, LoginSession.mealDiaryInterval7Kcal));
-            mealDiaryDiagramBar1DateTextField.setText(LoginSession.diaryInterval7Date);
-            
+            mealDiaryDiagramBar1DateTextField.setText(LoginSession.diaryInterval7Date); 
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, (240 - LoginSession.mealDiaryInterval6Kcal), 35, LoginSession.mealDiaryInterval6Kcal));
             mealDiaryDiagramBar2DateTextField.setText(LoginSession.diaryInterval6Date);
-            
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, (240 - LoginSession.mealDiaryInterval5Kcal), 35, LoginSession.mealDiaryInterval5Kcal));
             mealDiaryDiagramBar3DateTextField.setText(LoginSession.diaryInterval5Date);
-            
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, (240 - LoginSession.mealDiaryInterval4Kcal), 35, LoginSession.mealDiaryInterval4Kcal));
             mealDiaryDiagramBar4DateTextField.setText(LoginSession.diaryInterval4Date);
-            
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar5, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, (240 - LoginSession.mealDiaryInterval3Kcal), 35, LoginSession.mealDiaryInterval3Kcal));
             mealDiaryDiagramBar5DateTextField.setText(LoginSession.diaryInterval3Date);
-            
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, (240 - LoginSession.mealDiaryInterval2Kcal), 35, LoginSession.mealDiaryInterval2Kcal));
             mealDiaryDiagramBar6DateTextField.setText(LoginSession.diaryInterval2Date);
-            
             mealDiaryDiagramPanel.add(mealDiaryDiagramBar7, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, (240 - LoginSession.mealDiaryInterval1Kcal), 35, LoginSession.mealDiaryInterval1Kcal));
             mealDiaryDiagramBar7DateTextField.setText(LoginSession.diaryInterval1Date);
         } catch (Exception exception) {
@@ -6733,22 +6684,16 @@ public class MainFrame extends javax.swing.JFrame {
             DatabaseOperations.loadWorkoutDiaryDiagramData(this);
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, (240 - LoginSession.workoutDiaryInterval7Kcal), 35, LoginSession.workoutDiaryInterval7Kcal));
             workoutDiaryDiagramBar1DateTextField.setText(LoginSession.diaryInterval7Date);
-            
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, (240 - LoginSession.workoutDiaryInterval6Kcal), 35, LoginSession.workoutDiaryInterval6Kcal));
             workoutDiaryDiagramBar2DateTextField.setText(LoginSession.diaryInterval6Date);
-            
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, (240 - LoginSession.workoutDiaryInterval5Kcal), 35, LoginSession.workoutDiaryInterval5Kcal));
-            workoutDiaryDiagramBar3DateTextField.setText(LoginSession.diaryInterval5Date);
-            
+            workoutDiaryDiagramBar3DateTextField.setText(LoginSession.diaryInterval5Date); 
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, (240 - LoginSession.workoutDiaryInterval4Kcal), 35, LoginSession.workoutDiaryInterval4Kcal));
             workoutDiaryDiagramBar4DateTextField.setText(LoginSession.diaryInterval4Date);
-            
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar5, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, (240 - LoginSession.workoutDiaryInterval3Kcal), 35, LoginSession.workoutDiaryInterval3Kcal));
             workoutDiaryDiagramBar5DateTextField.setText(LoginSession.diaryInterval3Date);
-            
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, (240 - LoginSession.workoutDiaryInterval2Kcal), 35, LoginSession.workoutDiaryInterval2Kcal));
             workoutDiaryDiagramBar6DateTextField.setText(LoginSession.diaryInterval2Date);
-            
             workoutDiaryDiagramPanel.add(workoutDiaryDiagramBar7, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, (240 - LoginSession.workoutDiaryInterval1Kcal), 35, LoginSession.workoutDiaryInterval1Kcal));
             workoutDiaryDiagramBar7DateTextField.setText(LoginSession.diaryInterval1Date);
         } catch (Exception exception) {

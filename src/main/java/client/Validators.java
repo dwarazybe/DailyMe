@@ -9,10 +9,13 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
-                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
-                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
-                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' ) {
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' 
+                || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'ę' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' 
+                || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' 
+                || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń') {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
             }
@@ -34,11 +37,12 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || evt.getKeyChar() == ' ' 
-                || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
-                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
-                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
-                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń') {
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') 
+                || evt.getKeyChar() == ' ' || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'ę' 
+                || evt.getKeyChar() == 'Ę' || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' 
+                || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' || evt.getKeyChar() == 'ż' 
+                || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' 
+                || evt.getKeyChar() == 'Ć' || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń') {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
             }
@@ -60,11 +64,13 @@ public class Validators {
         String fieldString = field.getText();
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || (evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
-                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
-                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
-                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
-                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' || evt.getKeyChar() == '@' || evt.getKeyChar() == '.' 
-                || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
+                || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' 
+                || evt.getKeyChar() == 'ę' || evt.getKeyChar() == 'Ę' || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' 
+                || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
+                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' 
+                || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' 
+                || evt.getKeyChar() == '@' || evt.getKeyChar() == '.' || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' 
+                || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
             if(fieldStringLength < 35) {
                 field.setEditable(true);
             }
@@ -87,11 +93,12 @@ public class Validators {
         int fieldStringLength = fieldString.length();
         if((evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9') || (evt.getKeyChar() >= 'a' && evt.getKeyChar() <= 'z') 
                 || (evt.getKeyChar() >= 'A' && evt.getKeyChar() <= 'Z') || evt.getKeyChar() == ' ' || evt.getKeyChar() == '.' 
-                || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'e' || evt.getKeyChar() == 'Ę' 
-                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' 
-                || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
-                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń'
-                || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
+                || evt.getKeyChar() == 'ł' || evt.getKeyChar() == 'Ł' || evt.getKeyChar() == 'ę' || evt.getKeyChar() == 'Ę' 
+                || evt.getKeyChar() == 'ó' || evt.getKeyChar() == 'Ó' || evt.getKeyChar() == 'ą' || evt.getKeyChar() == 'Ą' 
+                || evt.getKeyChar() == 'ś' || evt.getKeyChar() == 'Ś' || evt.getKeyChar() == 'ż' || evt.getKeyChar() == 'Ż' 
+                || evt.getKeyChar() == 'ź' || evt.getKeyChar() == 'Ź' || evt.getKeyChar() == 'ć' || evt.getKeyChar() == 'Ć' 
+                || evt.getKeyChar() == 'ń' || evt.getKeyChar() == 'Ń' || evt.getKeyChar() == '-' || evt.getKeyChar() == '_' 
+                || evt.getKeyChar() == '!' || evt.getKeyChar() == '$' || evt.getKeyChar() == '#') {
             if(fieldStringLength < 150) {
                 area.setEditable(true);
             }

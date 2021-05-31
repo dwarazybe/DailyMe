@@ -85,6 +85,7 @@ public class LoginSession {
     
     public static String userNotes;
     
+    public static boolean isMealAdded = false;
     public static boolean isProductAdded = false;
     
     public static double userWeightGoal;

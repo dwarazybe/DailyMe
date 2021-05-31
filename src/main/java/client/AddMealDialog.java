@@ -1830,6 +1830,7 @@ public class AddMealDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_product1ButtonMouseExited
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+        LoginSession.isMealAdded = false;
         dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
 
@@ -1853,7 +1854,7 @@ public class AddMealDialog extends javax.swing.JDialog {
             LoginSession.mealProteins = totalProteins;
             LoginSession.mealFats = totalFats;
             LoginSession.mealCarbs = totalCarbs;
-            
+            LoginSession.isMealAdded = true;
             dispose();
         } 
     }
