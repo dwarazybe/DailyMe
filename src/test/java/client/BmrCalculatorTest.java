@@ -28,9 +28,6 @@ public class BmrCalculatorTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of calculateKcalAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateKcalAmount() {
         System.out.println("calculateKcalAmount");
@@ -45,9 +42,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateKcalCutAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateKcalCutAmount() {
         System.out.println("calculateKcalCutAmount");
@@ -58,9 +52,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateKcalOverAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateKcalOverAmount() {
         System.out.println("calculateKcalOverAmount");
@@ -71,9 +62,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateProteinsAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateProteinsAmount() {
         System.out.println("calculateProteinsAmount");
@@ -84,9 +72,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateFatsAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateFatsAmount() {
         System.out.println("calculateFatsAmount");
@@ -97,9 +82,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateFatsCutAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateFatsCutAmount() {
         System.out.println("calculateFatsCutAmount");
@@ -110,9 +92,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateFatsOverAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateFatsOverAmount() {
         System.out.println("calculateFatsOverAmount");
@@ -123,9 +102,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateCarbsAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateCarbsAmount() {
         System.out.println("calculateCarbsAmount");
@@ -138,9 +114,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateCarbsCutAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateCarbsCutAmount() {
         System.out.println("calculateCarbsCutAmount");
@@ -153,9 +126,6 @@ public class BmrCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of calculateCarbsOverAmount method, of class BmrCalculator.
-     */
     @Test
     public void testCalculateCarbsOverAmount() {
         System.out.println("calculateCarbsOverAmount");
@@ -167,5 +137,4 @@ public class BmrCalculatorTest {
         int result = instance.calculateCarbsOverAmount(kcalOverAmount, proteinsAmount, fatsOverAmount);
         assertEquals(expResult, result);
     }
-    
 }

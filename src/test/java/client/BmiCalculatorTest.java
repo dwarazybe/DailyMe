@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package client;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,10 +7,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author bukow
- */
 public class BmiCalculatorTest {
     
     public BmiCalculatorTest() {
@@ -37,9 +28,6 @@ public class BmiCalculatorTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of calculateBmi method, of class BmiCalculator.
-     */
     @Test
     public void testCalculateBmi() {
         System.out.println("calculateBmi");
@@ -51,9 +39,6 @@ public class BmiCalculatorTest {
         assertEquals(expResult, result, 0.0);
     }
 
-    /**
-     * Test of rateBmi method, of class BmiCalculator.
-     */
     @Test
     public void testRateBmi() {
         System.out.println("rateBmi");
@@ -62,6 +47,5 @@ public class BmiCalculatorTest {
         String expResult = "PRAWIDŁOWA";
         String result = instance.rateBmi(bmi);
         assertEquals(expResult, result);
-    }
-    
+    }   
 }

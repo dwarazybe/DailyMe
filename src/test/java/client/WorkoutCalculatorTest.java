@@ -28,9 +28,6 @@ public class WorkoutCalculatorTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of running method, of class WorkoutCalculator.
-     */
     @Test
     public void testRunning() {
         System.out.println("running");
@@ -43,9 +40,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of lifting method, of class WorkoutCalculator.
-     */
     @Test
     public void testLifting() {
         System.out.println("lifting");
@@ -57,9 +51,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of bikeRiding method, of class WorkoutCalculator.
-     */
     @Test
     public void testBikeRiding() {
         System.out.println("bikeRiding");
@@ -72,9 +63,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of football method, of class WorkoutCalculator.
-     */
     @Test
     public void testFootball() {
         System.out.println("football");
@@ -87,9 +75,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of swimming method, of class WorkoutCalculator.
-     */
     @Test
     public void testSwimming() {
         System.out.println("swimming");
@@ -102,9 +87,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of skating method, of class WorkoutCalculator.
-     */
     @Test
     public void testSkating() {
         System.out.println("skating");
@@ -117,9 +99,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of yoga method, of class WorkoutCalculator.
-     */
     @Test
     public void testYoga() {
         System.out.println("yoga");
@@ -132,9 +111,6 @@ public class WorkoutCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of jumpingRope method, of class WorkoutCalculator.
-     */
     @Test
     public void testJumpingRope() {
         System.out.println("jumpingRope");

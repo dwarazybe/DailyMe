@@ -38,5 +38,4 @@ public class SHA256Test {
         String result = instance.encryptPassword(password, salt);
         assertEquals(expResult, result);
     }
-    
 }

@@ -28,9 +28,6 @@ public class BfiCalculatorTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of calculateBfi method, of class BfiCalculator.
-     */
     @Test
     public void testCalculateBfi() {
         System.out.println("calculateBfi");
@@ -43,9 +40,6 @@ public class BfiCalculatorTest {
         assertEquals(expResult, result);
     }
 
-    /**
-     * Test of rateBfi method, of class BfiCalculator.
-     */
     @Test
     public void testRateBfi() {
         System.out.println("rateBfi");
@@ -55,6 +49,5 @@ public class BfiCalculatorTest {
         String expResult = "PRZECIĘTNA";
         String result = instance.rateBfi(bfi, gender);
         assertEquals(expResult, result);
-    }
-    
+    } 
 }
